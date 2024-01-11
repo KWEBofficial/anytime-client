@@ -5,6 +5,17 @@ import { RouteComponent } from './route';
 import { Layout } from './components/Layout';
 
 import './App.css';
+import { useState } from 'react';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+
+import CustomModal from './components/modal';
+import React from 'react';
+import FormDialog from './components/dialog';
+import ColorPick from './components/colorPick';
+import { ModalContextProvider } from './useModal';
+import Examples from './components/Example';
 
 /**
  * mui에서 제공하는 테마 설정입니다.
@@ -23,12 +34,34 @@ const theme = createTheme({
  * RouteComponent : 페이지의 라우팅을 담당하는 컴포넌트입니다. 페이지의 주소와 페이지를 매칭시켜줍니다.
  */
 function App() {
+  const [open, setOpen] = React.useState(false);
+  const openModal = () => setOpen(true);
+  const closeModal = () => setOpen(false);
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <Layout>
-          <RouteComponent />
-        </Layout>
+        <RouteComponent />
+        <ModalContextProvider>
+          <Examples />
+        </ModalContextProvider>
+        <FormDialog />
+
+        {/*}
+           <ModalContextProvider>
+            <Examples />
+          </ModalContextProvider>
+          <div>
+            <button onClick={openModal}>Open Modal</button>
+            <CustomModal isOpen={open} closeModal={closeModal}>
+              <Box>
+                <Typography variant="h6" component="h2">
+                  hi
+                </Typography>
+                <Typography sx={{ mt: 2 }}>it's me</Typography>
+              </Box>
+            </CustomModal>
+          </div>
+  {*/}
       </BrowserRouter>
     </ThemeProvider>
   );
