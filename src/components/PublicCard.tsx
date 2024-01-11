@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import CardContent from '@mui/material/CardContent';
@@ -16,18 +15,13 @@ interface PublicCardProps {
 }
 
 const PublicCard = ({ teamId, name, color, description }: PublicCardProps) => {
-  const navigate = useNavigate();
-  // onClick={() => navigate(`/team/${teamId}`)}
   const handleAddClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     // 아이콘 클릭시 구독 되는거 구현하면 될 듯
   };
 
   return (
-    <Card
-      sx={{ minWidth: 275, height: 'auto', marginBottom: 2, overflow: 'visible' }}
-      onClick={() => navigate(`/team/${teamId}`)}
-    >
+    <Card sx={{ minWidth: 275, height: 'auto', marginBottom: 2, overflow: 'visible' }}>
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', height: 'auto' }}>
         <Box sx={{ backgroundColor: color, width: '20px', flexShrink: 0 }} />
         <CardContent sx={{ flexGrow: 1, whiteSpace: 'normal', overflowWrap: 'break-word' }}>
@@ -35,6 +29,7 @@ const PublicCard = ({ teamId, name, color, description }: PublicCardProps) => {
             {name}
           </Typography>
           <Typography variant="body2" sx={{ wordWrap: 'break-word', whiteSpace: 'normal' }}>
+            {teamId}
             {description}
           </Typography>
         </CardContent>
