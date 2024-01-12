@@ -10,7 +10,7 @@ import { CustomTextfield } from '../components/CustomTextfield';
  * 회원가입을 위한 정보를 입력받습니다.
  * 회원가입 버튼을 누르면 백엔드 서버에 회원가입 요청을 보냅니다.
  */
-export function RegisterPage() {
+export default function RegisterPage() {
   const [input, setInput] = useState({
     email: '',
     membername: '',
