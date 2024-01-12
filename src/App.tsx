@@ -3,7 +3,7 @@ import { ThemeProvider, createTheme } from '@mui/material';
 
 import { RouteComponent } from './route';
 import { Layout } from './components/Layout';
-
+import { Calendar } from './components/Calendar/Calendar.module';
 import './App.css';
 
 /**
@@ -28,6 +28,7 @@ function App() {
       <BrowserRouter>
         <Layout>
           <RouteComponent />
+          <Calendar />
         </Layout>
       </BrowserRouter>
     </ThemeProvider>

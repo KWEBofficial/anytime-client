@@ -15,7 +15,7 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   return (
     <Box display={'flex'} justifyContent={'center'} sx={{ backgroundColor: 'grey' }}>
-      <Box maxWidth={430} width={'100%'} height="100vh">
+      <Box maxWidth={1920} width={'100%'} height="100vh">
         <Box height="90%" sx={{ backgroundColor: '#ffffff' }}>
           {children}
         </Box>
