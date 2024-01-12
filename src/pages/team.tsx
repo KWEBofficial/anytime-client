@@ -13,7 +13,10 @@ export default function TeamPage() {
     <Layout>
       Team {teamId} Detail page
       <NoticeBox
-        notices={['1월 12일 금요일 오후 7시 30분 중간 발표 준비해주세요', '⭐️⭐️ 1월 19일 최종발표 예정 ⭐️⭐️']}
+        notices={[
+          '1월 12일 금요일 오후 7시 30분 중간 발표 준비해주세요. 사용중인 노션 페이지랑, 와이어프레임, 다이어그램 설계 한 거 보여주고, 백엔드/프론트엔드 진행상황 설명하면 될 것 같습니다 !',
+          '1월 19일 최종발표 예정',
+        ]}
       />
       <CustomBox title="관리자" items={['관리자1', '관리자2']} />
       <CustomBox title="인원명단" items={['도유진', '신정윤', '윤현지', '이원준', '탁민재']} />

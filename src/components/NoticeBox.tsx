@@ -1,25 +1,57 @@
 import * as React from 'react';
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-
-const style = {
-  py: 0,
-  width: '100%',
-  maxWidth: 700,
-  borderRadius: 2,
-  border: '1px solid',
-  borderColor: 'divider',
-  backgroundColor: 'background.paper',
-  marginBottom: 2,
-};
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Accordion from '@mui/material/Accordion';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 interface NoticeBoxProps {
   notices: string[];
 }
 const NoticeBox = ({ notices }: NoticeBoxProps) => {
+  const MAX_LENGTH = 50;
+  const summarizeNotice = (notice: string) => {
+    if (notice.length > MAX_LENGTH) {
+      return `${notice.substring(0, MAX_LENGTH)}...`;
+    }
+    return notice;
+  };
+  const isToggleRequired = (notice: string) => notice.length > MAX_LENGTH;
+
   return (
+    <Box sx={{ width: 700 }}>
+      {notices.map((notice, index) => (
+        <Accordion key={index}>
+          <AccordionSummary
+            expandIcon={isToggleRequired(notice) ? <ExpandMoreIcon /> : null}
+            aria-controls={`panel${index}-content`}
+            id={`panel${index}-header`}
+          >
+            <Typography component="span" sx={{ width: '15%', flexShrink: 0 }}>
+              {`Notice ${index + 1}`}
+            </Typography>
+            <Typography noWrap>{summarizeNotice(notice)}</Typography>
+          </AccordionSummary>
+          {isToggleRequired(notice) && (
+            <AccordionDetails>
+              <Typography>{notice}</Typography>
+            </AccordionDetails>
+          )}
+        </Accordion>
+      ))}
+    </Box>
+  );
+};
+
+export default NoticeBox;
+
+/*  
+기존코드
+import ListItemText from '@mui/material/ListItemText';
+import ListItem from '@mui/material/ListItem';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
     <List sx={style}>
       {notices.map((notice, index) => (
         <React.Fragment key={index}>
@@ -29,8 +61,5 @@ const NoticeBox = ({ notices }: NoticeBoxProps) => {
           {index < notices.length - 1 && <Divider component="li" />}
         </React.Fragment>
       ))}
-    </List>
-  );
-};
-
-export default NoticeBox;
+    </List> 
+*/
