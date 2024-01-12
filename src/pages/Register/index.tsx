@@ -1,7 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
-import { Box, Button, Divider, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
+
+import { CustomTextfield } from '../../components/CustomTextfield';
 
 /**
  * 유저 생성 페이지입니다.
@@ -10,87 +12,165 @@ import { Box, Button, Divider, Stack, TextField, Typography } from '@mui/materia
  */
 export function RegisterPage() {
   const [input, setInput] = useState({
-    lastName: '',
-    firstName: '',
-    age: 0,
+    email: '',
+    membername: '',
+    password: '',
+    passwordConfirm: '',
   });
 
+  const [errMessage, setErrMessage] = useState({
+    email: '',
+    membername: '',
+    password: '',
+    passwordConfirm: '',
+  });
+
+  const [isErr, setIsErr] = useState({
+    email: false,
+    membername: false,
+    password: false,
+    passwordConfirm: false,
+  });
   const navigate = useNavigate();
 
-  /**
-   * 아래에서 Textfield의 값을 변경할 때 사용하는 함수입니다.
-   * Textfield의 값을 변경할 때마다 함수가 실행됩니다.
-   * input state를 변경하고 있습니다.
-   */
-  function handleInput(event: React.ChangeEvent<HTMLInputElement>) {
-    /**
-     * type이 number인 경우, event.target.value는 기본적으로 string이므로 Number() 함수를 사용해서 숫자로 변환해줍니다.
-     */
-    const value = event.target.type === 'number' ? Number(event.target.value) : event.target.value;
-
+  function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     setInput({
       ...input,
-      [event.target.id]: value,
+      [event.target.id]: event.target.value,
     });
+    const message = validation(event.target.value, event.target.id);
+    if (message) {
+      setErrMessage({
+        ...errMessage,
+        [event.target.id]: message,
+      });
+      setIsErr({
+        ...isErr,
+        [event.target.id]: true,
+      });
+    } else {
+      setErrMessage({
+        ...errMessage,
+        [event.target.id]: '',
+      });
+      setIsErr({
+        ...isErr,
+        [event.target.id]: false,
+      });
+    }
+  }
+  function validation(value: string, id: string): string {
+    const emailErrMessage = '이메일 형식으로 작성해주세요.';
+    const emailLenErrMessage = '64자 이하여야 합니다.';
+    const pwErrMessage = '적어도 하나 이상의 영문자, 숫자가 필요하며 8자 이상 입력해주세요.';
+    const pwConErrMessage = '비밀번호와 일치하지 않습니다.';
+    const emailRegExp = /^[a-zA-z0-9._-]+@[a-zA-z0-9.-]+\.[a-zA-z.]+$/;
+    const passwordRegExp = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
+    if (id === 'email') {
+      if (value.length > 64) return emailLenErrMessage;
+      if (!emailRegExp.test(value)) return emailErrMessage;
+    }
+    if (id === 'password' && !passwordRegExp.test(value)) return pwErrMessage;
+    if (id === 'passwordConfirm' && input.password !== value) return pwConErrMessage;
+    return '';
   }
 
-  /**
-   * 회원가입 버튼을 클릭하면 발생하는 함수입니다.
-   * 백엔드 서버에 회원가입 요청을 보냅니다.
-   * 회원가입이 완료되면 메인 페이지로 이동합니다.
-   * 상태코드 201은 생성 성공을 의미합니다.
-   * navigate('주소')는 해당 주소로 이동하는 함수입니다.
-   * 참고로, navigate(-1)은 이전 페이지로 이동하는 함수입니다.
-   */
   async function handleRegister() {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/user`, input, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      if (Object.values(input).some((value) => value === '')) window.alert('내용을 입력하시기 바랍니다.');
+      else if (Object.values(isErr).some((value) => value)) window.alert('요구사항을 충족하지 않았습니다.');
+      else {
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}auth/register`,
+          { email: input.email, membername: input.membername, password: input.password },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
 
-      if (response.status === 201) {
-        window.alert('회원가입이 완료되었습니다.');
-        navigate('/');
+        if (response.status === 200) {
+          window.alert('회원가입이 완료되었습니다.');
+          navigate('/');
+        }
       }
     } catch (e) {
       window.alert('회원가입에 실패했습니다.');
     }
   }
 
-  /**
-   * TextField 컴포넌트는 HTML input 태그를 감싼 컴포넌트입니다.
-   * onChange에 함수를 넣어주면, input 태그의 값이 변경될 때마다(한 글자 입력할 때마다) 함수가 실행됩니다.
-   * 함수의 이름만 써야 합니다. handleInput() 이렇게 쓰면 안됩니다.
-   * handleInput함수에 event 객체를 자동으로 넣어서 실행합니다.
-   */
   return (
-    <Box padding={2} paddingTop={4}>
+    <Box
+      padding={2}
+      paddingTop={4}
+      width={400}
+      marginTop={10}
+      marginX="auto"
+      boxShadow="0px 4px 8px rgba(0, 0, 0, 0.2)"
+    >
       <Box marginBottom={4} textAlign={'center'}>
-        <Typography variant="h4">회원 가입</Typography>
+        <Typography variant="h4">Register</Typography>
       </Box>
       <Box>
         <Box marginY={2}>
           <Divider />
         </Box>
-        <Stack spacing={2}>
-          <TextField required id="lastName" label="성" onChange={handleInput} />
-          <TextField required id="firstName" label="이름" onChange={handleInput} />
-          <TextField required id="age" label="나이" type="number" onChange={handleInput} />
+        <Stack spacing={3}>
+          <CustomTextfield
+            error={isErr.email}
+            helperText={errMessage.email}
+            required={true}
+            id="email"
+            label="e-mail"
+            onChange={onChange}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') handleRegister();
+            }}
+          />
+          <CustomTextfield
+            type="password"
+            error={isErr.password}
+            helperText={errMessage.password}
+            required={true}
+            id="password"
+            label="비밀번호"
+            onChange={onChange}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') handleRegister();
+            }}
+          />
+
+          <CustomTextfield
+            type="password"
+            error={isErr.passwordConfirm}
+            helperText={errMessage.passwordConfirm}
+            required={true}
+            id="passwordConfirm"
+            label="비밀번호 확인"
+            onChange={onChange}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') handleRegister();
+            }}
+          />
+
+          <CustomTextfield
+            error={isErr.membername}
+            helperText={errMessage.membername}
+            required={true}
+            id="membername"
+            label="이름"
+            onChange={onChange}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') handleRegister();
+            }}
+          />
         </Stack>
       </Box>
-      <Box paddingY={6}>
-        <Stack spacing={3} direction="row" justifyContent={'center'}>
-          {/* navigate(-1)은 뒤로가기와 같습니다. */}
-          {/* 함수가 간단하다면 () => handler() 형태로 간단하게 넣을 수 있습니다. */}
-          <Button variant="outlined" color="primary" onClick={() => navigate(-1)}>
-            이전
-          </Button>
-          <Button variant="contained" color="primary" onClick={handleRegister}>
-            회원 가입
-          </Button>
-        </Stack>
+      <Box paddingY={6} marginX={'auto'} width={350}>
+        <Button fullWidth variant="contained" color="primary" onClick={handleRegister}>
+          회원 가입
+        </Button>
       </Box>
     </Box>
   );
