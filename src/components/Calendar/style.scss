@@ -2,7 +2,10 @@
 @use './common.scss' as common;
 
 .calendar {
-  @include common.size(60%, 90%);
+  @include common.size(100%, 100%);
+  height: 90vh;
+  width: 88vw;
+  background-color: theme.$dashboard-color;
   .header {
     @include common.size(100%, 7%);
     @include common.flex-row(space-between, baseline);
@@ -68,7 +71,13 @@
         .not-valid {
           color: theme.$gray-color;
           .schedule {
+            @include common.size(12.9%, 100%);
+            @include common.flex-column(flex-end, flex-start);
+            padding-left: 1%;
             background: transparentize(theme.$invalid-color, 0.6);
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            border: 0.5px solid theme.$invalid-sche-color;
           }
         }
         img {
@@ -90,6 +99,7 @@
           background: transparentize(theme.$dark-gray-color, 0.6);
           border-top-right-radius: 5px;
           border-bottom-right-radius: 5px;
+          border: 0.5px solid theme.$sub-color;
         }
       }
       .col.cell.selected {
@@ -109,6 +119,7 @@
           color: rgb(0, 0, 0);
           border-top-right-radius: 5px;
           border-bottom-right-radius: 5px;
+          border: 0.5px solid theme.$step-color;
         }
       }
     }
