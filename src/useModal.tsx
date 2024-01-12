@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
-import PostUploadModal, { PostUploadModalProps } from './components/modals/PostUploadModal';
+import PromptModal from './components/modals/Prompt';
+import { PromptProps } from './components/modals/Prompt';
 import { OpenModal } from './types/modal';
 import Alert from './components/modals/Alert';
 import { AlertProps } from './components/modals/Alert';
@@ -7,7 +8,7 @@ import { AlertProps } from './components/modals/Alert';
 //IModalContext : context가 갖는 타입
 interface IModalContext {
   openAlert: OpenModal<AlertProps>;
-  openPostUploadModal: OpenModal<PostUploadModalProps>;
+  openPrompt: OpenModal<PromptProps>;
 }
 
 const ModalContext = createContext<IModalContext>({} as IModalContext);
@@ -47,23 +48,21 @@ export const ModalContextProvider = ({ children }: { children?: React.ReactNode 
   } = useDefaultModalLogic<AlertProps>();
 
   const {
-    openModal: openPostUploadModal,
-    closeModal: closePostUploadModal,
-    visible: postUploadModalVisible,
-    props: postUploadModalProps,
-  } = useDefaultModalLogic<PostUploadModalProps>();
+    openModal: openPrompt,
+    closeModal: closePrompt,
+    visible: promptVisible,
+    props: promptProps,
+  } = useDefaultModalLogic<PromptProps>();
 
   const modalContextValue: IModalContext = {
     openAlert,
-    openPostUploadModal,
+    openPrompt,
   };
 
   return (
     <ModalContext.Provider value={modalContextValue}>
       {alertProps && <Alert {...alertProps} onClose={closeAlert} visible={alertVisible} />}
-      {postUploadModalProps && (
-        <PostUploadModal {...postUploadModalProps} onClose={closePostUploadModal} visible={postUploadModalVisible} />
-      )}
+      {promptProps && <PromptModal {...promptProps} onClose={closePrompt} visible={promptVisible} />}
       {children}
     </ModalContext.Provider>
   );

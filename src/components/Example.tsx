@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { useModal } from '../useModal';
 
 function Examples() {
-  const { openAlert, openPostUploadModal } = useModal();
+  const { openAlert, openPrompt } = useModal();
 
   const openAlertExample = () => {
     openAlert({
@@ -14,12 +14,12 @@ function Examples() {
     });
   };
 
-  const openPostUploadModalExample = () => {
-    openPostUploadModal({
+  const openPromptExample = () => {
+    openPrompt({
       onSubmit: (title, content) => {
         openAlert({
-          title: 'Form Data',
-          message: `title: ${title} content: ${content}`,
+          title: '모임이 생성되었습니다',
+          message: `모임 이름: ${title} 모임 설명: ${content}`,
         });
       },
     });
@@ -32,7 +32,7 @@ function Examples() {
           <Button variant="contained" onClick={openAlertExample}>
             Alert
           </Button>
-          <Button onClick={openPostUploadModalExample}>Form</Button>
+          <Button onClick={openPromptExample}>Form</Button>
         </Grid>
       </Grid>
     </Container>

@@ -6,8 +6,9 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 import { IModal } from '../../../types/modal';
+import ColorPick from '../../colorPick';
 
-export interface PostUploadModalProps extends IModal {
+export interface PromptProps extends IModal {
   onSubmit?: (title: string, content: string) => void;
 }
 
@@ -23,7 +24,7 @@ const style = {
   p: 4,
 };
 
-const PostUploadModal = ({ visible = false, onClose, onSubmit }: PostUploadModalProps) => {
+const PromptModal = ({ visible = false, onClose, onSubmit }: PromptProps) => {
   const { register, handleSubmit: handleFormSubmit } = useForm<{
     title: string;
     content: string;
@@ -34,6 +35,8 @@ const PostUploadModal = ({ visible = false, onClose, onSubmit }: PostUploadModal
     onClose?.();
   };
 
+  //const handleClose
+
   return (
     <Modal open={visible} onClose={onClose}>
       <Box sx={style}>
@@ -41,7 +44,7 @@ const PostUploadModal = ({ visible = false, onClose, onSubmit }: PostUploadModal
           {...register('title', { required: true })}
           sx={{ width: '100%', marginBottom: 2 }}
           label="모임 이름"
-          placeholder="Enter the title"
+          placeholder="모임의 이름을 입력해주세요"
           variant="standard"
         />
         <TextField
@@ -50,9 +53,10 @@ const PostUploadModal = ({ visible = false, onClose, onSubmit }: PostUploadModal
           label="모임 설명"
           multiline
           maxRows={4}
-          placeholder="Enter the content"
+          placeholder="모임에 대한 설명을 간단히 적어주세요"
           variant="standard"
         />
+        <ColorPick />
         <Grid container justifyContent="flex-end">
           <Button variant="contained" color="success" onClick={handleFormSubmit(handleSubmit)}>
             Submit
@@ -63,4 +67,4 @@ const PostUploadModal = ({ visible = false, onClose, onSubmit }: PostUploadModal
   );
 };
 
-export default PostUploadModal;
+export default PromptModal;
