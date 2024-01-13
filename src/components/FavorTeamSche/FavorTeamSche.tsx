@@ -16,7 +16,7 @@ interface MyTeamSche {
   schedule: Schedule[];
 }
 
-export default function FavorTeam() {
+export default function FavorTeamSche() {
   const [favor, setFavor] = useState<MyTeamSche[]>([
     {
       teamname: 'test1',
@@ -104,7 +104,7 @@ export default function FavorTeam() {
   useEffect(() => {
     setFavor((curr) => curr);
   }, []);
-
+  /*
   useEffect(() => {
     setFavor((curr) => [
       ...curr,
@@ -123,10 +123,7 @@ export default function FavorTeam() {
       },
     ]);
   }, []);
-
-  console.log('favor: ');
-  favor.forEach((f) => console.log(f.teamname));
-
+  */
   const validTeam: MyTeamSche[] = [];
   for (let i = 0; i < favor.length; i += 1) {
     if (validTeam.length === 3) break;
@@ -143,7 +140,7 @@ export default function FavorTeam() {
         .filter((sche) => {
           return format(sche.endDate, 'y-M-d') >= format(new Date(), 'y-M-d');
         })
-        .sort((a, b) => (format(a.startDate, 'y-M-d') <= format(b.startDate, 'y-M-d') ? -1 : 1)),
+        .sort((a, b) => (format(a.startDate, 'y-M-d') < format(b.startDate, 'y-M-d') ? -1 : 1)),
     };
   });
 
@@ -223,9 +220,6 @@ export default function FavorTeam() {
       </Grid>,
     );
   }
-
-  console.log('validSche: ');
-  validTeam.forEach((f) => console.log(f.teamname));
 
   return (
     <Stack display={'flex'} justifyContent={'center'} direction={'row'} spacing={10} width={'88vw'}>
