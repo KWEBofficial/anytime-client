@@ -4,11 +4,13 @@ import { PromptProps } from './components/modals/Prompt';
 import { OpenModal } from './types/modal';
 import Alert from './components/modals/Alert';
 import { AlertProps } from './components/modals/Alert';
+import Confirm, { ConfirmProps } from './components/modals/Confirm';
 
 //IModalContext : context가 갖는 타입
 interface IModalContext {
   openAlert: OpenModal<AlertProps>;
   openPrompt: OpenModal<PromptProps>;
+  openConfirm: OpenModal<ConfirmProps>;
 }
 
 const ModalContext = createContext<IModalContext>({} as IModalContext);
@@ -54,15 +56,24 @@ export const ModalContextProvider = ({ children }: { children?: React.ReactNode 
     props: promptProps,
   } = useDefaultModalLogic<PromptProps>();
 
+  const {
+    openModal: openConfirm,
+    closeModal: closeConfirm,
+    props: confirmProps,
+    visible: confirmVisible,
+  } = useDefaultModalLogic<ConfirmProps>();
+
   const modalContextValue: IModalContext = {
     openAlert,
     openPrompt,
+    openConfirm,
   };
 
   return (
     <ModalContext.Provider value={modalContextValue}>
       {alertProps && <Alert {...alertProps} onClose={closeAlert} visible={alertVisible} />}
       {promptProps && <PromptModal {...promptProps} onClose={closePrompt} visible={promptVisible} />}
+      {confirmProps && <Confirm {...confirmProps} onClose={closeConfirm} visible={confirmVisible} />}
       {children}
     </ModalContext.Provider>
   );

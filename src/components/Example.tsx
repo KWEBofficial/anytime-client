@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { useModal } from '../useModal';
 
 function Examples() {
-  const { openAlert, openPrompt } = useModal();
+  const { openAlert, openPrompt, openConfirm } = useModal();
 
   const openAlertExample = () => {
     openAlert({
@@ -16,12 +16,23 @@ function Examples() {
 
   const openPromptExample = () => {
     openPrompt({
-      onSubmit: (title, content) => {
+      onSubmit: (title, content, color) => {
         openAlert({
           title: '모임이 생성되었습니다',
-          message: `모임 이름: ${title} 모임 설명: ${content}`,
+          message: `모임 이름: ${title} 모임 설명: ${content} 모임 색상: ${color}`,
         });
       },
+    });
+  };
+
+  const openConfirmExample = () => {
+    openConfirm({
+      title: 'Confirm Example',
+      message: 'Do you like this post?',
+      cancelText: 'NO',
+      confirmText: 'YES',
+      onCancel: () => openAlert({ message: 'clicked NO' }),
+      onConfirm: () => openAlert({ message: 'clicked YES' }),
     });
   };
 
@@ -33,6 +44,7 @@ function Examples() {
             Alert
           </Button>
           <Button onClick={openPromptExample}>Form</Button>
+          <Button onClick={openConfirmExample}>Confirm</Button>
         </Grid>
       </Grid>
     </Container>

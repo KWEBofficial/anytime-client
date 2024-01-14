@@ -40,7 +40,6 @@ export default function FormDialog() {
             maxRows={4}
             variant="standard"
           />
-          <ColorPick />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>취소</Button>

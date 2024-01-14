@@ -7,9 +7,10 @@ import TextField from '@mui/material/TextField';
 
 import { IModal } from '../../../types/modal';
 import ColorPick from '../../colorPick';
+import { Stack, Typography } from '@mui/material';
 
 export interface PromptProps extends IModal {
-  onSubmit?: (title: string, content: string) => void;
+  onSubmit?: (title: string, content: string, color: string) => void;
 }
 
 const style = {
@@ -25,21 +26,37 @@ const style = {
 };
 
 const PromptModal = ({ visible = false, onClose, onSubmit }: PromptProps) => {
-  const { register, handleSubmit: handleFormSubmit } = useForm<{
+  const {
+    register,
+    setValue,
+    handleSubmit: handleFormSubmit,
+  } = useForm<{
     title: string;
     content: string;
+    color: string;
   }>();
 
   const handleSubmit: Parameters<typeof handleFormSubmit>[0] = (values) => {
-    onSubmit?.(values.title, values.content);
+    onSubmit?.(values.title, values.content, values.color);
     onClose?.();
   };
 
-  //const handleClose
+  const handleCancel = () => {
+    onClose?.();
+  };
+
+  const handleColorChange = (colorEvent: { target: { value: string } }) => {
+    const selectedColor = colorEvent.target.value;
+    setValue('color', selectedColor);
+    console.log(selectedColor);
+  };
 
   return (
     <Modal open={visible} onClose={onClose}>
       <Box sx={style}>
+        <Typography variant="h6" component="h2">
+          모임 생성
+        </Typography>
         <TextField
           {...register('title', { required: true })}
           sx={{ width: '100%', marginBottom: 2 }}
@@ -56,12 +73,20 @@ const PromptModal = ({ visible = false, onClose, onSubmit }: PromptProps) => {
           placeholder="모임에 대한 설명을 간단히 적어주세요"
           variant="standard"
         />
-        <ColorPick />
-        <Grid container justifyContent="flex-end">
-          <Button variant="contained" color="success" onClick={handleFormSubmit(handleSubmit)}>
-            Submit
-          </Button>
-        </Grid>
+        <Stack direction="column" spacing={2}>
+          <Stack alignItems="center">
+            <ColorPick onColorChange={handleColorChange} />
+          </Stack>
+
+          <Stack direction="row" justifyContent="flex-end" alignItems="flex-end" spacing={2}>
+            <Button variant="outlined" onClick={handleFormSubmit(handleSubmit)}>
+              생성
+            </Button>
+            <Button variant="outlined" onClick={handleCancel}>
+              취소
+            </Button>
+          </Stack>
+        </Stack>
       </Box>
     </Modal>
   );

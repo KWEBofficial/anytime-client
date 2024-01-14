@@ -1,39 +1,29 @@
-import { useState } from 'react';
-import * as S from './colorPick.styles';
+// ColorPick.tsx
 
-export default function ColorPick() {
-  const [isSelect, setIsSelect] = useState([
-    { key: '0', value: '#FF8B8B', checked: false },
-    { key: '1', value: '#FFCA8B', checked: false },
-    { key: '2', value: '#FFEC8B', checked: false },
-    { key: '3', value: '#D3FF8B', checked: false },
-    { key: '4', value: '#9BFF8B', checked: false },
-    { key: '5', value: '#8BFFCE', checked: false },
-    { key: '6', value: '#8BFFFF', checked: false },
-    { key: '7', value: '#8BB2FF', checked: false },
-    { key: '8', value: '#8B90FF', checked: false },
-    { key: '9', value: '#D38BFF', checked: false },
-    { key: '10', value: '#FD8BFF', checked: false },
-    { key: '11', value: '#FF8BB5', checked: false },
-  ]);
-  /*
-  const onChangeCheck = (el) => (event) => {
-    const temp = isSelect.map((el, idx) => {
-      return { ...el, checked: idx === Number(event?.target.id) };
-    });
-    setIsSelect(temp);
-    props.setColor(el.value);
+import React, { useState } from 'react';
+import { ChromePicker, GithubPicker, CirclePicker, ColorResult } from 'react-color';
+
+interface ColorPickProps {
+  onColorChange: (colorEvent: { target: { value: string } }) => void;
+}
+
+//const myColorList = ['#F9D9D9', '#F9E8D9', '#F8F9D9', '#D9F9E8', '#D9EAF9', '#EAD9F9', '#F9D9F7', '#FFFFFF'];
+const myColorList = ['#FF8B8B', '#FFCA8B', '#FFEC8B', '#D3FF8B', '#9BFF8B', '#8BFFCE', '#8BFFFF', '#8BB2FF'];
+
+const ColorPick: React.FC<ColorPickProps> = ({ onColorChange }) => {
+  const [color, setColor] = useState<string>('#000');
+
+  const handleChange = (selectedColor: ColorResult) => {
+    const newColor = selectedColor.hex;
+    setColor(newColor);
+    onColorChange({ target: { value: newColor } });
   };
-  */
 
   return (
-    <S.Wrapper>
-      {isSelect.map((el, idx) => (
-        <label className="checkbox" key={el.key}>
-          <input type="checkbox" key={el.key} /*id={idx} onChange={onChangeCheck(el)} checked={Boolean(el.checked)}*/ />
-          <S.Circle className="checkbox_color" style={{ backgroundColor: el.value }}></S.Circle>
-        </label>
-      ))}
-    </S.Wrapper>
+    <div>
+      <CirclePicker color={color} onChange={handleChange} colors={myColorList} width="300" />
+    </div>
   );
-}
+};
+
+export default ColorPick;
