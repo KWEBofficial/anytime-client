@@ -65,7 +65,7 @@ export default function FavorTeamSche() {
           name: 'check222222222222',
           startDate: new Date('2024-01-11'),
           endDate: new Date('2024-01-14'),
-          explanation: 'Check that it should be appeared at FavorTeam scheBox.',
+          explanation: 'Check that it should be appeared at FavorTeam scheBox. string이 칸을 넘어갈 경우 공백을 기준으로 줄바꿈이 이루어짐.',
         },
         {
           name: 'check3',
@@ -203,10 +203,10 @@ export default function FavorTeamSche() {
                         color="text.primary"
                       >
                         {format(sche.startDate, 'y-M-d') === format(sche.endDate, 'y-M-d')
-                          ? `${format(sche.startDate, 'y년 M월 d일 HH:MM')} ~ ${format(sche.endDate, 'HH:MM')}`
-                          : `${format(sche.startDate, 'y년 M월 d일 HH:MM')} ~ ${format(
+                          ? `${format(sche.startDate, 'yy년 MM월 dd일 hh:mm')} ~ ${format(sche.endDate, 'hh:mm')}`
+                          : `${format(sche.startDate, 'yy년 MM월 dd일 hh:mm')} ~ ${format(
                               sche.endDate,
-                              'yy년 MM월 dd일 HH:MM',
+                              'yy년 MM월 dd일 hh:mm',
                             )}`}
                       </Typography>
                       <Typography sx={{ fontSize: '1.5vh', fontWeight: 'bold' }}>{sche.explanation}</Typography>
