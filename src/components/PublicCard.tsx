@@ -21,17 +21,16 @@ const PublicCard = ({ teamId, name, color, description }: PublicCardProps) => {
   };
 
   return (
-    <Card sx={{ minWidth: 275, height: 'auto', overflow: 'visible' }}>
+    <Card sx={{ minWidth: 275, height: 'auto', marginBottom: 2, overflow: 'visible' }}>
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', height: 'auto' }}>
         <Box sx={{ backgroundColor: color, width: '20px', flexShrink: 0 }} />
         <CardContent sx={{ flexGrow: 1, whiteSpace: 'normal', overflowWrap: 'break-word' }}>
-          {/* <Typography variant="h5" component="div">
+          <Typography variant="h5" component="div">
             {name}
-  </Typography> */}
+          </Typography>
           <Typography variant="body2" sx={{ wordWrap: 'break-word', whiteSpace: 'normal' }}>
             {teamId}
             {description}
-            {name}
           </Typography>
         </CardContent>
         <CardActions disableSpacing sx={{ justifyContent: 'flex-end', padding: '8px' }}>
