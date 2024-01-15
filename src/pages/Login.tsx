@@ -1,6 +1,7 @@
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import { TextField, Button, Typography, Link, Box, Grid } from '@mui/material';
 
@@ -36,6 +37,7 @@ export default function LoginPage() {
         console.log(response);
         setLoginUser(response.data.userId);
         navigate('/main');
+        enqueueSnackbar('로그인 되었습니다', { variant: 'success' });
       }
     } catch (e) {
       if (axios.isAxiosError(e) && e.response) {

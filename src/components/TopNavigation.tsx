@@ -1,6 +1,7 @@
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import * as React from 'react';
+import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
@@ -23,6 +24,7 @@ const settings = ['로그아웃'];
 function ResponsiveAppBar() {
   const navigate = useNavigate();
   const [, setLoginUser] = useRecoilState(userState);
+  const { enqueueSnackbar } = useSnackbar();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -51,6 +53,7 @@ function ResponsiveAppBar() {
       if (response.status === 200) {
         setLoginUser(null);
         navigate('/');
+        enqueueSnackbar('로그아웃이 완료되었습니다', { variant: 'success' });
       }
     } catch (e) {
       window.alert('로그아웃에 실패했습니다.');
