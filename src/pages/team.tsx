@@ -92,7 +92,13 @@ export default function TeamPage() {
         <Grid item xs={4} md={4}>
           <CustomBox title="인원명단" items={memberList} />
           <Button
-            onClick={() => navigate(`/team/${teamId}/schedule`)}
+            onClick={() => {
+              if (teamInfo.isPublic) {
+                navigate(`/team/${teamId}/admin`);
+              } else {
+                navigate(`/team/${teamId}/schedule`);
+              }
+            }}
             variant="outlined"
             style={{
               width: '100%',
@@ -105,7 +111,7 @@ export default function TeamPage() {
               color: '#696969',
             }}
           >
-            사적모임 일정생성
+            {teamInfo.isPublic ? '공적모임 어드민' : '사적모임 일정생성'}
           </Button>
         </Grid>
       </Grid>
