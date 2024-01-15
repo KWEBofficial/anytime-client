@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/named
-import TeamShowBox from '../components/TeamShowBox';
+import TeamShowBox from '../components/TeamShowBox/TeamShowBox';
+import TeamSchduleList from '../components/TeamSchduleList/TeamScheduleList';
 import { Layout } from '../components/Layout';
 
 export default function MyPage() {
@@ -7,6 +8,7 @@ export default function MyPage() {
     <Layout>
       MyPage
       <TeamShowBox />
+      <TeamSchduleList />
     </Layout>
   );
 }
