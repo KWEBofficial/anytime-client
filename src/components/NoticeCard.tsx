@@ -70,7 +70,7 @@ const NoticeCard = ({
   };
   const handleDeleteClick = () => {
     const fetchData = async () => {
-      await axios.delete(`${process.env.REACT_APP_API_URL}notice/${noticeId}`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/notice/${noticeId}`, {
         headers: {
           'Content-Type': 'application/json',
         },

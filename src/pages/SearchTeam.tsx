@@ -42,7 +42,7 @@ export default function SearchTeamPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}team/search/`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/team/search/`, {
         params: { name: keyword },
         headers: {
           'Content-Type': 'application/json',

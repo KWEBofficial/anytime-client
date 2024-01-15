@@ -19,7 +19,7 @@ interface PublicCardProps {
 const PublicCard = ({ id, teamname, color, explanation }: PublicCardProps) => {
   const handleAddClick = async () => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}team/subscribe/${id}`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/team/subscribe/${id}`, {
         headers: {
           'Content-Type': 'application/json',
         },

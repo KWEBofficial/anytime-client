@@ -81,7 +81,7 @@ export default function RegisterPage() {
       else if (Object.values(isErr).some((value) => value)) window.alert('요구사항을 충족하지 않았습니다.');
       else {
         const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}auth/register`,
+          `${process.env.REACT_APP_API_URL}/auth/register`,
           { email: input.email, membername: input.membername, password: input.password },
           {
             headers: {

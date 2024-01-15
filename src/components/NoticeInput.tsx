@@ -42,7 +42,7 @@ export default function NoticeInput({ noticeId, type, teamId, content, startDate
       else if (input.startDate > input.endDate) window.alert('게시일자가 게시기한보다 늦을 수 없습니다.');
       else {
         const response = await axios.post(
-          `${process.env.REACT_APP_API_URL}notice/create/${teamId}`,
+          `${process.env.REACT_APP_API_URL}/notice/create/${teamId}`,
           {
             startDate: input.startDate,
             endDate: input.endDate,

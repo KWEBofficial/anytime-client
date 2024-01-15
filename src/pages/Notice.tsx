@@ -54,7 +54,7 @@ export default function NoticePage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}notice/all/${teamId}`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/notice/all/${teamId}`, {
         headers: {
           'Content-Type': 'application/json',
         },
