@@ -28,7 +28,6 @@ export function RouteComponent() {
       <Route path="/team/:teamId/schedule" element={<PrivateSchedulePage />} />
       <Route path="/team/:teamId/admin" element={<AdminPage />} />
       <Route path="/team/search" element={<SearchTeamPage />} />
-      <Route path="/team/:teamId/notice" element={<NoticePage />} />
       <Route path="/notice/:teamId" element={<NoticePage />} />
     </Routes>
   );
