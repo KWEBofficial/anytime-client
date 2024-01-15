@@ -13,7 +13,6 @@ import AddIcon from '@mui/icons-material/Add';
 
 import NoticeInput from './NoticeInput';
 
-// NoticeResDTO 수정 필요
 interface NoticeAllResDTO {
   teamname: string;
   noticeId: number;
@@ -77,9 +76,12 @@ const NoticeCard = ({
         },
       });
     };
-    fetchData();
-    setSwit(() => !swit);
-    onChange((notices) => [...notices.slice(0, index), ...notices.slice(index + 1)]);
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      alert('삭제되었습니다.');
+      fetchData();
+      setSwit(() => !swit);
+      onChange((notices) => [...notices.slice(0, index), ...notices.slice(index + 1)]);
+    }
   };
   return (
     <Card sx={{ minWidth: 275, height: 'auto', marginBottom: 1 }}>

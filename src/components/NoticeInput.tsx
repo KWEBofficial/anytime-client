@@ -4,6 +4,9 @@ import { Box, Button, Checkbox, FormControlLabel, Paper, Stack } from '@mui/mate
 
 import { CustomTextfield } from './CustomTextfield';
 
+const makeTimeInput = (date: Date) => {
+  return new Date(date.getTime() + 9 * 60 * 60 * 1000).toISOString().slice(0, 16);
+};
 interface Prop {
   noticeId?: string;
   type: string;
@@ -13,12 +16,13 @@ interface Prop {
   endDate?: Date;
   isPrior?: boolean;
 }
+
 export default function NoticeInput({ noticeId, type, teamId, content, startDate, endDate, isPrior }: Prop) {
   const [input, setInput] = useState({
-    startDate: '',
-    endDate: '',
-    content: '',
-    isPrior: false,
+    startDate,
+    endDate,
+    content,
+    isPrior,
   });
   function inputChange(event: React.ChangeEvent<HTMLInputElement>) {
     setInput({
@@ -40,8 +44,8 @@ export default function NoticeInput({ noticeId, type, teamId, content, startDate
         const response = await axios.post(
           `${process.env.REACT_APP_API_URL}notice/create/${teamId}`,
           {
-            startDate: new Date(input.startDate),
-            endDate: new Date(input.endDate),
+            startDate: input.startDate,
+            endDate: input.endDate,
             content: input.content,
             isPrior: input.isPrior,
           },
@@ -62,26 +66,30 @@ export default function NoticeInput({ noticeId, type, teamId, content, startDate
   }
   async function clickUpdate() {
     try {
-      const response = await axios.patch(
-        `${process.env.REACT_APP_API_URL}notice/${noticeId}`,
-        {
-          startDate: input.startDate,
-          endDate: input.endDate,
-          content: input.content,
-          isPrior: input.isPrior,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
+      if (!input.startDate || !input.endDate || !input.content) window.alert('내용을 입력하시기 바랍니다.');
+      else if (input.startDate > input.endDate) window.alert('게시일자가 게시기한보다 늦을 수 없습니다.');
+      else {
+        const response = await axios.patch(
+          `${process.env.REACT_APP_API_URL}notice/${noticeId}`,
+          {
+            startDate: input.startDate,
+            endDate: input.endDate,
+            content: input.content,
+            isPrior: input.isPrior,
           },
-        },
-      );
-      if (response.status === 200) {
-        window.alert('공지사항이 수정되었습니다.');
-        window.location.reload();
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+        if (response.status === 200) {
+          window.alert('공지사항이 수정되었습니다.');
+          window.location.reload();
+        }
       }
     } catch (e) {
-      window.alert('공지사항 수정 실패했습니다.');
+      window.alert('공지사항 수정에 실패했습니다.');
     }
   }
 
@@ -99,7 +107,7 @@ export default function NoticeInput({ noticeId, type, teamId, content, startDate
               InputLabelProps={{ shrink: true }}
               type="datetime-local"
               onChange={inputChange}
-              defaultValue={startDate ? new Date(startDate).toISOString().slice(0, 16) : ''}
+              defaultValue={startDate ? makeTimeInput(new Date(startDate)) : ''}
               sx={{ flex: 3 }}
             ></CustomTextfield>
             <CustomTextfield
@@ -108,7 +116,7 @@ export default function NoticeInput({ noticeId, type, teamId, content, startDate
               InputLabelProps={{ shrink: true }}
               type="datetime-local"
               onChange={inputChange}
-              defaultValue={endDate ? new Date(endDate).toISOString().slice(0, 16) : ''}
+              defaultValue={endDate ? makeTimeInput(new Date(endDate)) : ''}
               sx={{ flex: 3 }}
             ></CustomTextfield>
             <FormControlLabel

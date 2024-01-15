@@ -25,6 +25,7 @@ interface NoticeAllResDTO {
 
 export default function NoticePage() {
   const teamId = String(useParams().teamId);
+  const [teamname, setTeamname] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [notices, setNotices] = useState<NoticeAllResDTO[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,13 +60,14 @@ export default function NoticePage() {
         },
       });
       setNotices(response.data.notices.reverse());
+      setTeamname(response.data.teamname);
     };
     fetchData();
   }, []);
 
   return (
     <Layout>
-      <Typography variant="h4">Notice - {teamId}</Typography>
+      <Typography variant="h4">Notice - {teamname}</Typography>
       <Card sx={{ minWidth: 275, height: '50px', marginBottom: 1 }}>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch' }}>
           <CardContent sx={{ width: '85px' }}>
