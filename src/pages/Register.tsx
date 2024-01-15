@@ -89,7 +89,6 @@ export default function RegisterPage() {
             },
           },
         );
-
         if (response.status === 200) {
           window.alert('회원가입이 완료되었습니다.');
           navigate('/');
