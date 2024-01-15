@@ -5,6 +5,7 @@ import TeamPage from '../pages/team';
 import SearchTeamPage from '../pages/SearchTeam';
 import RegisterPage from '../pages/Register';
 import PrivateSchedulePage from '../pages/PrivateSchedule';
+import NoticePage from '../pages/Notice';
 import MyPage from '../pages/MyPage';
 import MainPage from '../pages/Main';
 import LoginPage from '../pages/Login';
@@ -27,6 +28,7 @@ export function RouteComponent() {
       <Route path="/team/:teamId/schedule" element={<PrivateSchedulePage />} />
       <Route path="/team/:teamId/admin" element={<AdminPage />} />
       <Route path="/team/search" element={<SearchTeamPage />} />
+      <Route path="/team/:teamId/notice" element={<NoticePage />} />
     </Routes>
   );
 }
