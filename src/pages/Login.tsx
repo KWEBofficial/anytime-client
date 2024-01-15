@@ -34,7 +34,6 @@ export default function LoginPage() {
       });
 
       if (response.status === 200) {
-        console.log(response);
         setLoginUser(response.data.userId);
         navigate('/main');
         enqueueSnackbar('로그인 되었습니다', { variant: 'success' });

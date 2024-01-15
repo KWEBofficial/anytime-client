@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 // import { userState } from '../state/userState';
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
 import TeamTitle from '../components/TeamTitle';
@@ -90,9 +91,22 @@ export default function TeamPage() {
 
         <Grid item xs={4} md={4}>
           <CustomBox title="인원명단" items={memberList} />
-          <div>
-            <button onClick={() => navigate(`/team/${teamId}/schedule`)}>사적모임 일정생성</button>
-          </div>
+          <Button
+            onClick={() => navigate(`/team/${teamId}/schedule`)}
+            variant="outlined"
+            style={{
+              width: '100%',
+              maxWidth: 300,
+              borderRadius: 5,
+              border: '2px solid',
+              borderColor: 'divider',
+              backgroundColor: 'transparent',
+              marginBottom: 2,
+              color: '#696969',
+            }}
+          >
+            사적모임 일정생성
+          </Button>
         </Grid>
       </Grid>
     </Layout>
