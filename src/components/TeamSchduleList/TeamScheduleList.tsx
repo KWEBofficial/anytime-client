@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { format } from 'date-fns';
 import { Grid, List, ListItemText, Typography, ListItem } from '@mui/material';
+import './TeamScheduleList.css';
 
 interface Schedule {
   name: string;
