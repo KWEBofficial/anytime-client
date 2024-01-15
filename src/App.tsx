@@ -34,10 +34,16 @@ const theme = createTheme({
  * RouteComponent : 페이지의 라우팅을 담당하는 컴포넌트입니다. 페이지의 주소와 페이지를 매칭시켜줍니다.
  */
 function App() {
-  const [open, setOpen] = React.useState(false);
-  const openModal = () => setOpen(true);
-  const closeModal = () => setOpen(false);
   return (
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <RouteComponent />
+      </BrowserRouter>
+    </ThemeProvider>
+  );
+
+  /*}
+
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <RouteComponent />
@@ -45,8 +51,9 @@ function App() {
           <Examples />
         </ModalContextProvider>
         <FormDialog />
+        <Alarm />
 
-        {/*}
+        
            <ModalContextProvider>
             <Examples />
           </ModalContextProvider>
@@ -61,10 +68,10 @@ function App() {
               </Box>
             </CustomModal>
           </div>
-  {*/}
+ 
       </BrowserRouter>
     </ThemeProvider>
-  );
+    {*/
 }
 
 export default App;

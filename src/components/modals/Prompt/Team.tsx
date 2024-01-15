@@ -10,6 +10,9 @@ import ColorPick from '../../colorPick';
 import { Stack, Typography } from '@mui/material';
 
 export interface PromptProps extends IModal {
+  isPublic: boolean;
+  titleText?: string;
+  buttonText?: string;
   onSubmit?: (title: string, content: string, color: string) => void;
 }
 
@@ -20,12 +23,13 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '1px solid #000',
+  //border: '1px solid #000',
   boxShadow: 24,
+  borderRadius: 5,
   p: 4,
 };
 
-const PromptModal = ({ visible = false, onClose, onSubmit }: PromptProps) => {
+const PromptModal = ({ visible = false, onClose, isPublic, titleText, buttonText, onSubmit }: PromptProps) => {
   const {
     register,
     setValue,
@@ -48,39 +52,37 @@ const PromptModal = ({ visible = false, onClose, onSubmit }: PromptProps) => {
   const handleColorChange = (colorEvent: { target: { value: string } }) => {
     const selectedColor = colorEvent.target.value;
     setValue('color', selectedColor);
-    console.log(selectedColor);
   };
 
   return (
     <Modal open={visible} onClose={onClose}>
       <Box sx={style}>
-        <Typography variant="h6" component="h2">
-          모임 생성
-        </Typography>
-        <TextField
-          {...register('title', { required: true })}
-          sx={{ width: '100%', marginBottom: 2 }}
-          label="모임 이름"
-          placeholder="모임의 이름을 입력해주세요"
-          variant="standard"
-        />
-        <TextField
-          {...register('content', { required: true })}
-          sx={{ width: '100%', marginBottom: 2 }}
-          label="모임 설명"
-          multiline
-          maxRows={4}
-          placeholder="모임에 대한 설명을 간단히 적어주세요"
-          variant="standard"
-        />
-        <Stack direction="column" spacing={2}>
-          <Stack alignItems="center">
-            <ColorPick onColorChange={handleColorChange} />
-          </Stack>
+        <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}>
+          <Typography variant="h6" component="h2">
+            {titleText}
+          </Typography>
+          <TextField
+            {...register('title', { required: true })}
+            sx={{ width: '100%' }}
+            label="모임 이름"
+            placeholder="모임의 이름을 입력해주세요"
+            variant="standard"
+          />
+          <TextField
+            {...register('content', { required: true })}
+            sx={{ width: '100%' }}
+            label="모임 설명"
+            multiline
+            maxRows={4}
+            placeholder="모임에 대한 설명을 간단히 적어주세요"
+            variant="standard"
+          />
+
+          <ColorPick isPublic={isPublic} onColorChange={handleColorChange} />
 
           <Stack direction="row" justifyContent="flex-end" alignItems="flex-end" spacing={2}>
             <Button variant="outlined" onClick={handleFormSubmit(handleSubmit)}>
-              생성
+              {buttonText}
             </Button>
             <Button variant="outlined" onClick={handleCancel}>
               취소

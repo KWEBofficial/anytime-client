@@ -1,16 +1,18 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
-import PromptModal from './components/modals/Prompt';
-import { PromptProps } from './components/modals/Prompt';
+import PromptModal from './components/modals/Prompt/Team';
+import { PromptProps } from './components/modals/Prompt/Team';
 import { OpenModal } from './types/modal';
 import Alert from './components/modals/Alert';
 import { AlertProps } from './components/modals/Alert';
 import Confirm, { ConfirmProps } from './components/modals/Confirm';
+import SchedulePrompt, { SchedulePromptProps } from './components/modals/Prompt/Schedule';
 
 //IModalContext : context가 갖는 타입
 interface IModalContext {
   openAlert: OpenModal<AlertProps>;
   openPrompt: OpenModal<PromptProps>;
   openConfirm: OpenModal<ConfirmProps>;
+  openSchedulePrompt: OpenModal<SchedulePromptProps>;
 }
 
 const ModalContext = createContext<IModalContext>({} as IModalContext);
@@ -63,10 +65,18 @@ export const ModalContextProvider = ({ children }: { children?: React.ReactNode 
     visible: confirmVisible,
   } = useDefaultModalLogic<ConfirmProps>();
 
+  const {
+    openModal: openSchedulePrompt,
+    closeModal: closeSchedulePrompt,
+    props: schedulePromptProps,
+    visible: schedulePromptVisible,
+  } = useDefaultModalLogic<SchedulePromptProps>();
+
   const modalContextValue: IModalContext = {
     openAlert,
     openPrompt,
     openConfirm,
+    openSchedulePrompt,
   };
 
   return (
@@ -74,6 +84,9 @@ export const ModalContextProvider = ({ children }: { children?: React.ReactNode 
       {alertProps && <Alert {...alertProps} onClose={closeAlert} visible={alertVisible} />}
       {promptProps && <PromptModal {...promptProps} onClose={closePrompt} visible={promptVisible} />}
       {confirmProps && <Confirm {...confirmProps} onClose={closeConfirm} visible={confirmVisible} />}
+      {schedulePromptProps && (
+        <SchedulePrompt {...schedulePromptProps} onClose={closeSchedulePrompt} visible={schedulePromptVisible} />
+      )}
       {children}
     </ModalContext.Provider>
   );

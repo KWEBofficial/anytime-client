@@ -23,12 +23,16 @@ import AddIcon from '@mui/icons-material/Add';
 
 import ResponsiveAppBar from './TopNavigation';
 
+import { useModal } from '../useModal';
+import { PromptProps } from './modals/Prompt/Team';
+
 const drawerWidth = 180;
 
 export default function ClippedDrawer() {
   const navigate = useNavigate();
   const [openPrivate, setOpenPrivate] = useState(false);
   const [openPublic, setOpenPublic] = useState(false);
+  const { openAlert, openPrompt } = useModal();
 
   const handlePrivateClick = () => {
     setOpenPrivate(!openPrivate);
@@ -40,6 +44,20 @@ export default function ClippedDrawer() {
 
   const navigateToTeam = (teamId: number) => {
     navigate(`/team/${teamId}`);
+  };
+
+  const createTeam = (isPublic: boolean) => {
+    openPrompt({
+      isPublic: isPublic,
+      titleText: '모임 생성',
+      buttonText: '생성',
+      onSubmit: (title, content, color) => {
+        openAlert({
+          title: '모임이 생성되었습니다',
+          message: `모임 이름: ${title} 모임 설명: ${content} 모임 색상: ${color}`,
+        });
+      },
+    });
   };
 
   return (
@@ -78,7 +96,7 @@ export default function ClippedDrawer() {
                     </ListItemIcon>
                     <ListItemText primary={text} />
                     <ListItemIcon sx={{ minWidth: 'auto', mr: 0 }}>
-                      <AddIcon />
+                      <AddIcon onClick={() => createTeam(false)} />
                     </ListItemIcon>
                   </ListItemButton>
                 </ListItem>
@@ -107,7 +125,7 @@ export default function ClippedDrawer() {
                       <SearchIcon />
                     </ListItemIcon>
                     <ListItemIcon sx={{ minWidth: 'auto', mr: 0 }}>
-                      <AddIcon />
+                      <AddIcon onClick={() => createTeam(true)} />
                     </ListItemIcon>
                   </ListItemButton>
                 </ListItem>
