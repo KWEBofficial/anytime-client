@@ -10,7 +10,7 @@ export default function AdminPage() {
     <Layout>
       AdminPage
       <div>
-        <button onClick={() => navigate(`/team/${teamId}/notice`)}>공지사항 페이지</button>
+        <button onClick={() => navigate(`/notice/${teamId}`)}>공지사항 페이지</button>
       </div>
     </Layout>
   );
