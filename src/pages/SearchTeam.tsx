@@ -47,6 +47,7 @@ export default function SearchTeamPage() {
         headers: {
           'Content-Type': 'application/json',
         },
+        withCredentials: true,
       });
       setTeamInfoAll(response.data);
       setTeamInfoFind(response.data);

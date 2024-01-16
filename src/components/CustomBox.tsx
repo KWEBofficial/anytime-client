@@ -1,4 +1,5 @@
-import { Box, Typography, List, ListItem } from '@mui/material';
+import { Box, Typography, List, ListItemButton } from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
 
 const style = {
   py: 0,
@@ -11,22 +12,35 @@ const style = {
   marginBottom: 2,
   color: '#696969',
 };
-
-interface CustomBoxProps {
-  title: string;
-  items: string[];
+interface TeamMemberDTO {
+  id: number;
+  name: string;
+  isAdmin: boolean;
 }
-const CustomBox = ({ title, items }: CustomBoxProps) => {
+interface CustomBoxProps {
+  onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => void;
+  title: string;
+  items: TeamMemberDTO[];
+}
+
+const CustomBox = ({ title, items, onClick }: CustomBoxProps) => {
   return (
     <Box sx={style}>
       <Typography variant="h6" textAlign="center" fontWeight="bold">
         {title}
       </Typography>
       <List>
-        {items.map((item) => (
-          <ListItem style={{ justifyContent: 'center' }}>
-            <Typography lineHeight={1}>{item}</Typography>
-          </ListItem>
+        {items.map((item, index) => (
+          <ListItemButton
+            key={index}
+            style={{ justifyContent: 'center' }}
+            onClick={(e) => {
+              onClick(e, index);
+            }}
+          >
+            <Typography lineHeight={1}>{item.name}</Typography>
+            {item.isAdmin ? <CheckIcon /> : ''}
+          </ListItemButton>
         ))}
       </List>
     </Box>
