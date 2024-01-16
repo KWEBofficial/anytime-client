@@ -58,6 +58,7 @@ export default function NoticePage() {
         headers: {
           'Content-Type': 'application/json',
         },
+        withCredentials: true,
       });
       setNotices(response.data.notices.reverse());
       setTeamname(response.data.teamname);
