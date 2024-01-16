@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client';
 import React from 'react';
-import { ModalContextProvider } from './useModal';
+import { ModalContextProvider } from './components/Modal/useModal';
 
 import App from './App';
 import './index.css';

@@ -23,8 +23,8 @@ import AddIcon from '@mui/icons-material/Add';
 
 import ResponsiveAppBar from './TopNavigation';
 
-import { useModal } from '../useModal';
-import { PromptProps } from './modals/Prompt/Team';
+import { useModal } from './Modal/useModal';
+import { PromptProps } from './Modal/Prompt/Team';
 
 const drawerWidth = 180;
 
@@ -54,7 +54,7 @@ export default function ClippedDrawer() {
       onSubmit: (title, content, color) => {
         openAlert({
           title: '모임이 생성되었습니다',
-          message: `모임 이름: ${title} 모임 설명: ${content} 모임 색상: ${color}`,
+          //message: `모임 이름: ${title} 모임 설명: ${content} 모임 색상: ${color}`,
         });
       },
     });

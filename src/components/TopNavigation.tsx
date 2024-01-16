@@ -1,5 +1,7 @@
+import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import * as React from 'react';
+import axios from 'axios';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,13 +14,17 @@ import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import AppBar from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
-import Alarm from './alarm';
+import Alarm from './Alarm';
+
+import { userState } from '../state/userState';
+import Examples from './Example';
 
 const pages = ['알람'];
 const settings = ['로그아웃'];
 
 function ResponsiveAppBar() {
   const navigate = useNavigate();
+  const [, setLoginUser] = useRecoilState(userState);
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -37,6 +43,21 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  async function handleLogout() {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/logout`, null, {
+        withCredentials: true,
+      });
+
+      if (response.status === 200) {
+        setLoginUser(null);
+        navigate('/');
+      }
+    } catch (e) {
+      window.alert('로그아웃에 실패했습니다.');
+    }
+  }
 
   return (
     <AppBar position="static" sx={{ backgroundColor: '#d3e9f6', boxShadow: 'none' }}>
@@ -89,11 +110,17 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Alarm />
+              </MenuItem>
+
+              {/*}
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
+              {*/}
             </Menu>
           </Box>
           <Typography
@@ -116,11 +143,13 @@ function ResponsiveAppBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
             <Alarm />
+            {/*}
             {pages.map((page) => (
               <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: '#696969', display: 'block' }}>
                 {page}
               </Button>
             ))}
+            {*/}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -146,7 +175,13 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key={setting}
+                  onClick={() => {
+                    handleCloseUserMenu();
+                    handleLogout();
+                  }}
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

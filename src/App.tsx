@@ -1,21 +1,11 @@
+import { RecoilRoot } from 'recoil';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material';
 
 import { RouteComponent } from './route';
-// import { Layout } from './components/Layout';
 
 import './App.css';
-import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-
-import CustomModal from './components/modal';
-import React from 'react';
-import FormDialog from './components/dialog';
-import ColorPick from './components/colorPick';
-import { ModalContextProvider } from './useModal';
-import Examples from './components/Example';
+import { ModalContextProvider } from './components/Modal/useModal';
 
 /**
  * mui에서 제공하는 테마 설정입니다.
@@ -35,11 +25,13 @@ const theme = createTheme({
  */
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <RouteComponent />
-      </BrowserRouter>
-    </ThemeProvider>
+    <RecoilRoot>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <RouteComponent />
+        </BrowserRouter>
+      </ThemeProvider>
+    </RecoilRoot>
   );
 
   /*}

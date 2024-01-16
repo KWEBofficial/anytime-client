@@ -1,12 +1,11 @@
 import { useForm } from 'react-hook-form';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 import { IModal } from '../../../types/modal';
-import ColorPick from '../../colorPick';
+import ColorPick from '../../ColorPick';
 import { Stack, Typography } from '@mui/material';
 
 export interface PromptProps extends IModal {

@@ -1,11 +1,11 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
-import PromptModal from './components/modals/Prompt/Team';
-import { PromptProps } from './components/modals/Prompt/Team';
-import { OpenModal } from './types/modal';
-import Alert from './components/modals/Alert';
-import { AlertProps } from './components/modals/Alert';
-import Confirm, { ConfirmProps } from './components/modals/Confirm';
-import SchedulePrompt, { SchedulePromptProps } from './components/modals/Prompt/Schedule';
+import PromptModal from './Prompt/Team';
+import { PromptProps } from './Prompt/Team';
+import { OpenModal } from '../../types/modal';
+import Alert from './Alert';
+import { AlertProps } from './Alert';
+import Confirm, { ConfirmProps } from './Confirm';
+import SchedulePrompt, { SchedulePromptProps } from './Prompt/Schedule';
 
 //IModalContext : context가 갖는 타입
 interface IModalContext {
