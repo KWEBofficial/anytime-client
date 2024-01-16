@@ -1,4 +1,3 @@
-
 import { useRecoilValue } from 'recoil';
 
 import { userState } from '../state/userState';
@@ -9,7 +8,6 @@ export default function MyPage() {
   return (
     <Layout>
       <div>현재 유저 id: {userId}</div>MyPage
-
     </Layout>
   );
 }
