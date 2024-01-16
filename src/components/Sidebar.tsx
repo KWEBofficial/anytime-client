@@ -1,11 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import * as React from 'react';
-// import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Toolbar from '@mui/material/Toolbar';
 import ListItemText from '@mui/material/ListItemText';
-// import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItem from '@mui/material/ListItem';
@@ -16,8 +14,8 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
-// import InboxIcon from '@mui/icons-material/MoveToInbox';
-// import MailIcon from '@mui/icons-material/Mail';
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
+import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import SearchIcon from '@mui/icons-material/Search';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
@@ -40,6 +38,8 @@ export default function ClippedDrawer() {
   const [openPrivate, setOpenPrivate] = useState(false);
   const [openPublic, setOpenPublic] = useState(false);
   const [myTeam, setMyTeam] = useState<TeamInfo[]>([]);
+  const [publicIsFavor, setPublicIsFavor] = useState<number[]>([]);
+  const [privateIsFavor, setPrivateIsFavor] = useState<number[]>([]);
 
   const handlePrivateClick = () => {
     setOpenPrivate(!openPrivate);
@@ -64,7 +64,17 @@ export default function ClippedDrawer() {
         });
 
         if (response.status === 200) {
-          setMyTeam(response.data);
+          const { data } = response;
+          setMyTeam(data);
+
+          const initialPublicIsFavor = data
+            .filter((team: TeamInfo) => team.isPublic === 1)
+            .map((team: TeamInfo) => (team.isFavor === 1 ? 1 : 0));
+          const initialPrivateIsFavor = data
+            .filter((team: TeamInfo) => team.isPublic === 0)
+            .map((team: TeamInfo) => (team.isFavor === 1 ? 1 : 0));
+          setPublicIsFavor(initialPublicIsFavor);
+          setPrivateIsFavor(initialPrivateIsFavor);
         }
       } catch (e) {
         /* empty */
@@ -77,6 +87,36 @@ export default function ClippedDrawer() {
   const publicTeamIds = myTeam.filter((team) => team.isPublic === 1).map((team) => team.teamId);
   const privateTeamNames = myTeam.filter((team) => team.isPublic === 0).map((team) => team.teamname);
   const privateTeamIds = myTeam.filter((team) => team.isPublic === 0).map((team) => team.teamId);
+
+  const toggleFavor = async (teamId: number) => {
+    // 별 눌렀을때 patch 요청 보내기
+    try {
+      await axios.patch(
+        `${process.env.REACT_APP_API_URL}/team/favorite/${teamId}`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        },
+      );
+    } catch (e) {
+      /* empty */
+    }
+  };
+
+  // 별 모양 변경을 위한 함수
+  const togglePrivateFavor = (index: number) => {
+    const updatedIsFavor = [...privateIsFavor];
+    updatedIsFavor[index] = updatedIsFavor[index] === 0 ? 1 : 0;
+    setPrivateIsFavor(updatedIsFavor);
+  };
+  const togglePublicFavor = (index: number) => {
+    const updatedIsFavor = [...publicIsFavor];
+    updatedIsFavor[index] = updatedIsFavor[index] === 0 ? 1 : 0;
+    setPublicIsFavor(updatedIsFavor);
+  };
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -126,6 +166,15 @@ export default function ClippedDrawer() {
                       onClick={() => navigateToTeam(privateTeamIds[index])}
                     >
                       <ListItemText primary={name} />
+                      <div
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          toggleFavor(privateTeamIds[index]);
+                          togglePrivateFavor(index);
+                        }}
+                      >
+                        {privateIsFavor[index] ? <StarRoundedIcon /> : <StarBorderRoundedIcon />}
+                      </div>
                     </ListItemButton>
                   ))}
                 </Collapse>
@@ -158,6 +207,15 @@ export default function ClippedDrawer() {
                       onClick={() => navigateToTeam(publicTeamIds[index])}
                     >
                       <ListItemText primary={name} />
+                      <div
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          toggleFavor(publicTeamIds[index]);
+                          togglePublicFavor(index);
+                        }}
+                      >
+                        {publicIsFavor[index] ? <StarRoundedIcon /> : <StarBorderRoundedIcon />}
+                      </div>
                     </ListItemButton>
                   ))}
                 </Collapse>
@@ -169,25 +227,3 @@ export default function ClippedDrawer() {
     </Box>
   );
 }
-
-/*
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <ResponsiveAppBar />
-      </AppBar>
-*/
-
-/*
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Rhoncus dolor purus non enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus. Convallis convallis tellus id interdum
-          velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate eu
-          scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt
-          lobortis feugiat vivamus at augue. At augue eget arcu dictum varius duis at consectetur lorem. Velit sed
-          ullamcorper morbi tincidunt. Lorem donec massa sapien faucibus et molestie ac.
-        </Typography>
-      </Box>
-*/
