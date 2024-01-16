@@ -53,6 +53,7 @@ export default function NoticeInput({ noticeId, type, teamId, content, startDate
             headers: {
               'Content-Type': 'application/json',
             },
+            withCredentials: true,
           },
         );
         if (response.status === 200) {

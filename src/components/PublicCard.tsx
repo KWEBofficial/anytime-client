@@ -23,6 +23,7 @@ const PublicCard = ({ id, teamname, color, explanation }: PublicCardProps) => {
         headers: {
           'Content-Type': 'application/json',
         },
+        withCredentials: true,
       });
       if (response.status === 200) {
         window.alert('구독되었습니다.');
