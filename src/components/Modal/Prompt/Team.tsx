@@ -57,7 +57,7 @@ const PromptModal = ({ visible = false, onClose, isPublic, titleText, buttonText
     <Modal open={visible} onClose={onClose}>
       <Box sx={style}>
         <Stack direction="column" justifyContent="center" alignItems="center" spacing={2}>
-          <Typography variant="h6" component="h2">
+          <Typography variant="h6" component="h2" sx={{ fontWeight: '500', letterSpacing: 0 }}>
             {titleText}
           </Typography>
           <TextField

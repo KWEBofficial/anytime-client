@@ -25,6 +25,7 @@ import ResponsiveAppBar from './TopNavigation';
 
 import { useModal } from './Modal/useModal';
 import { PromptProps } from './Modal/Prompt/Team';
+import axios from 'axios';
 
 const drawerWidth = 180;
 
@@ -46,16 +47,32 @@ export default function ClippedDrawer() {
     navigate(`/team/${teamId}`);
   };
 
-  const createTeam = (isPublic: boolean) => {
+  async function createTeam(teamname: string, explanation: string, color: string, isPublic: boolean) {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/team/create`,
+        { teamname: teamname, color: 1, explanation: explanation, isPublic: isPublic },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      if (response.status === 201) {
+        openAlert({ title: '모임이 성공적으로 생성되었습니다' });
+      }
+    } catch (e) {
+      openAlert({ title: '모임 생성에 실패하였습니다..' });
+    }
+  }
+
+  const createTeamModal = (isPublic: boolean) => {
     openPrompt({
       isPublic: isPublic,
       titleText: '모임 생성',
       buttonText: '생성',
       onSubmit: (title, content, color) => {
-        openAlert({
-          title: '모임이 생성되었습니다',
-          //message: `모임 이름: ${title} 모임 설명: ${content} 모임 색상: ${color}`,
-        });
+        createTeam(title, content, color, isPublic);
       },
     });
   };
@@ -96,7 +113,7 @@ export default function ClippedDrawer() {
                     </ListItemIcon>
                     <ListItemText primary={text} />
                     <ListItemIcon sx={{ minWidth: 'auto', mr: 0 }}>
-                      <AddIcon onClick={() => createTeam(false)} />
+                      <AddIcon onClick={() => createTeamModal(false)} />
                     </ListItemIcon>
                   </ListItemButton>
                 </ListItem>
@@ -125,7 +142,7 @@ export default function ClippedDrawer() {
                       <SearchIcon />
                     </ListItemIcon>
                     <ListItemIcon sx={{ minWidth: 'auto', mr: 0 }}>
-                      <AddIcon onClick={() => createTeam(true)} />
+                      <AddIcon onClick={() => createTeamModal(true)} />
                     </ListItemIcon>
                   </ListItemButton>
                 </ListItem>

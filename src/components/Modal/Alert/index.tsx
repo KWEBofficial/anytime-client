@@ -32,11 +32,7 @@ const Alert = ({ visible = false, onClose, title, message, onOk }: AlertProps) =
   return (
     <Modal open={visible} onClose={onClose}>
       <Box sx={style}>
-        {title && (
-          <Typography variant="h6" component="h2">
-            {title}
-          </Typography>
-        )}
+        {title && <Typography variant="h6">{title}</Typography>}
         {message && <Typography sx={{ mt: 2 }}>{message}</Typography>}
         <Grid container justifyContent="flex-end">
           <Button onClick={handleOk}>OK</Button>

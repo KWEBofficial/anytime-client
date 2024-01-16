@@ -1,13 +1,46 @@
 import * as React from 'react';
+import axios from 'axios';
 import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { Checkbox, Divider, List, ListItem, ListItemText, Stack } from '@mui/material';
+import { Divider, IconButton, List, ListItem, ListItemText, Stack } from '@mui/material';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../state/userState';
+
+//AlarmResDTO
+interface AlarmProps {
+  id: number;
+  content: string;
+  createdAt: string;
+  isRead: boolean;
+}
 
 export default function Alarm() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-  //const [checked, setChecked] = React.useState([1]);
+  const [selectedContents, setSelectedContents] = React.useState<number[]>([]);
+  const [alarmInfo, setAlarmInfo] = React.useState<AlarmProps[]>([]);
+
+  const userId = useRecoilValue(userState);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/alarm`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      setAlarmInfo(response.data);
+    };
+    fetchData();
+  }, []);
+
+  const deleteData = async (id: number) => {
+    const response = await axios.delete(`${process.env.REACT_APP_API_URL}/alarm/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -15,12 +48,27 @@ export default function Alarm() {
 
   const handleClose = () => {
     setAnchorEl(null);
+    //db에서 selectedContent에 있는 것들을 지움
+    selectedContents.map((id) => deleteData(id));
+    setAlarmInfo((prevAlarmInfo) => prevAlarmInfo.filter((item) => !selectedContents.includes(item.id)));
+    setSelectedContents([]);
   };
 
-  //const handleToggle = (value: number) => () => {
-  //  const currentIndex = checked.indexOf(value);
-  //  console.log(currentIndex);
-  //}
+  const handleDeleteClick = (index: number) => {
+    setSelectedContents((prevSelected) => {
+      if (prevSelected.includes(index)) {
+        return prevSelected.filter((item) => item !== index);
+      } else {
+        return [...prevSelected, index];
+      }
+    });
+  };
+
+  const textStyle = (index: number) => {
+    return {
+      color: selectedContents.includes(index) ? '#bcbcbc' : '#173A5E',
+    };
+  };
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
@@ -49,20 +97,17 @@ export default function Alarm() {
         }}
       >
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-          {contents.map((content) => (
-            <Stack direction="column" justifyContent="center">
+          {alarmInfo.map((alarm) => (
+            <Stack direction="column" justifyContent="center" key={alarm.id}>
               <ListItem
                 alignItems="flex-start"
                 secondaryAction={
-                  <Checkbox
-                    edge="end"
-                    //onChange={handleToggle(value)}
-                    //checked={checked.indexOf(value) !== -1}
-                    //inputProps={{ 'aria-labelledby': labelId }}
-                  />
+                  <IconButton edge="end" onClick={() => handleDeleteClick(alarm.id)}>
+                    <DeleteOutlineIcon />
+                  </IconButton>
                 }
               >
-                <ListItemText primary={content[0]} secondary={content[1]} />
+                <ListItemText primary={alarm.content} secondary={alarm.createdAt} sx={textStyle(alarm.id)} />
               </ListItem>
               <Divider component="li" />
             </Stack>
