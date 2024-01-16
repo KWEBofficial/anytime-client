@@ -1,14 +1,15 @@
-// eslint-disable-next-line import/named
-import TeamShowBox from '../components/TeamShowBox/TeamShowBox';
-import TeamSchduleList from '../components/TeamSchduleList/TeamScheduleList';
+
+import { useRecoilValue } from 'recoil';
+
+import { userState } from '../state/userState';
 import { Layout } from '../components/Layout';
 
 export default function MyPage() {
+  const userId = useRecoilValue(userState);
   return (
     <Layout>
-      MyPage
-      <TeamShowBox />
-      <TeamSchduleList />
+      <div>현재 유저 id: {userId}</div>MyPage
+
     </Layout>
   );
 }

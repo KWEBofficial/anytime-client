@@ -1,10 +1,11 @@
+import { RecoilRoot } from 'recoil';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material';
 
 import { RouteComponent } from './route';
-// import { Layout } from './components/Layout';
 
 import './App.css';
+// import { Layout } from './components/Layout';
 
 /**
  * mui에서 제공하는 테마 설정입니다.
@@ -24,11 +25,13 @@ const theme = createTheme({
  */
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <RouteComponent />
-      </BrowserRouter>
-    </ThemeProvider>
+    <RecoilRoot>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <RouteComponent />
+        </BrowserRouter>
+      </ThemeProvider>
+    </RecoilRoot>
   );
 }
 
