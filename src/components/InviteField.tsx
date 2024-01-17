@@ -30,6 +30,7 @@ interface TeamInfo {
   member: TeamMember[];
   schedule: TeamSchedule[];
 }
+
 interface InviteFieldProps {
   teamId?: string;
   setTeamInfo?: React.Dispatch<React.SetStateAction<TeamInfo>>;
@@ -63,7 +64,7 @@ export function InviteField({ teamId, setTeamInfo }: InviteFieldProps) {
         if (setTeamInfo)
           setTeamInfo((prevState) => ({
             ...prevState,
-            members: [...prevState.member, { id: member.data.memberId, name: member.data.membername, isAdmin: false }],
+            member: [...prevState.member, { id: member.data.memberId, name: member.data.membername, isAdmin: 0 }],
           }));
       }
     } catch (e) {

@@ -58,12 +58,12 @@ export default function NoticeInput({ noticeId, type, teamId, content, startDate
           },
         );
         if (response.status === 200) {
-          enqueueSnackbar('공지사항이 수정되었습니다', { variant: 'success' });
           window.location.reload();
+          enqueueSnackbar('공지사항이 생성되었습니다', { variant: 'success' });
         }
       }
     } catch (e) {
-      enqueueSnackbar('공지사항 수정에 실패했습니다.', { variant: 'error' });
+      enqueueSnackbar('공지사항 생성에 실패했습니다.', { variant: 'error' });
     }
   }
   async function clickUpdate() {
@@ -87,8 +87,8 @@ export default function NoticeInput({ noticeId, type, teamId, content, startDate
           },
         );
         if (response.status === 200) {
-          enqueueSnackbar('공지사항이 수정되었습니다', { variant: 'success' });
           window.location.reload();
+          enqueueSnackbar('공지사항이 수정되었습니다', { variant: 'success' });
         }
       }
     } catch (e) {
