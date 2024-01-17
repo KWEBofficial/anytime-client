@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 import { IModal } from '../../../types/modal';
-import ColorPick from '../../ColorPick';
+import ColorPick from '../../colorPick';
 import { Stack, Typography } from '@mui/material';
 
 export interface PromptProps extends IModal {
