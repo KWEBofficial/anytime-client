@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import { Box, Button, TextField } from '@mui/material';
-// 초대하고자 하는 멤버의 id를 email로 조회
-// 그 id와 teamId를 넘겨서 초대
+
 const style = {
   py: 0,
   width: '100%',
@@ -35,9 +34,7 @@ interface InviteFieldProps {
   teamId?: string;
   setTeamInfo?: React.Dispatch<React.SetStateAction<TeamInfo>>;
 }
-// 멤버를 초대하고 인원 명단에 바로 추가되었으면 함
-// 그럼 state에 추가해야 함
-//
+
 export function InviteField({ teamId, setTeamInfo }: InviteFieldProps) {
   const [keyword, setKeyword] = useState('');
 
@@ -51,7 +48,6 @@ export function InviteField({ teamId, setTeamInfo }: InviteFieldProps) {
         withCredentials: true,
       });
       const Id = member.data.memberId;
-      console.log(member.data);
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/team/member`,
         { teamId, memberId: Id },
@@ -62,7 +58,6 @@ export function InviteField({ teamId, setTeamInfo }: InviteFieldProps) {
           withCredentials: true,
         },
       );
-      console.log(response);
       if (response.status === 200) {
         enqueueSnackbar(`${keyword} 유저가 초대되었습니다. `, { variant: 'success' });
         if (setTeamInfo)
