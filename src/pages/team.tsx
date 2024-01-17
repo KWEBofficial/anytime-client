@@ -78,13 +78,82 @@ export default function TeamPage() {
 
   const memberList = teamInfo.member.map((member) => member.name);
 
+  const onClick = () => {};
+  const height = '90vh';
+  const width = '55vw';
+  const sches = [
+    {
+      name: 'KWEB 해커톤 최종발표',
+      startDate: new Date('2024-01-19'),
+      endDate: new Date('2024-01-19'),
+      explanation: '우정정보관',
+      color: 'red',
+    },
+    {
+      name: '해커톤 시작',
+      startDate: new Date('2024-01-08'),
+      endDate: new Date('2024-01-13'),
+      explanation: 'test1',
+      color: 'red',
+    },
+    {
+      name: '해커톤 시작222',
+      startDate: new Date('2024-01-02'),
+      endDate: new Date('2024-01-04'),
+      explanation: 'test2',
+      color: 'red',
+    },
+    {
+      name: 'testtest',
+      startDate: new Date('2023-12-31'),
+      endDate: new Date('2023-12-31'),
+      explanation: 'test2',
+      color: '',
+    },
+    {
+      name: 'testtttt',
+      startDate: new Date('2024-01-29'),
+      endDate: new Date('2024-02-02'),
+      explanation: 'test2',
+      color: '',
+    },
+    {
+      name: 'stacktest',
+      startDate: new Date('2024-01-10'),
+      endDate: new Date('2024-01-10'),
+      explanation: 'test2',
+      color: 'blue',
+    },
+    {
+      name: 'stacktest',
+      startDate: new Date('2024-01-10'),
+      endDate: new Date('2024-01-10'),
+      explanation: 'test2',
+      color: '',
+    },
+    {
+      name: 'stacktest',
+      startDate: new Date('2024-01-10'),
+      endDate: new Date('2024-01-10'),
+      explanation: 'test2',
+      color: '',
+    },
+    {
+      name: 'stacktest',
+      startDate: new Date('2024-01-10'),
+      endDate: new Date('2024-01-10'),
+      explanation: 'test2',
+      color: '',
+    },
+  ];
+
   return (
     <Layout>
       <Grid container>
         <Grid item xs={8}>
           <TeamTitle title={teamInfo.teamname} />
           <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>
-            <Calendar />
+            <Calendar onClick={onClick} height={height} width={width} schedules={sches} />
           </Box>
           <TeamExp explanation={teamInfo.explanation} />
         </Grid>
