@@ -4,7 +4,7 @@ import TeamTitle from '../components/TeamTitle';
 import TeamExp from '../components/TeamExp';
 import NoticeBox from '../components/NoticeBox';
 import { Layout } from '../components/Layout';
-// import CustomBox from '../components/CustomBox';
+import CustomBox from '../components/CustomBox';
 
 export default function TeamPage() {
   const params = useParams();
@@ -22,8 +22,8 @@ export default function TeamPage() {
           '1월 19일 최종발표 예정',
         ]}
       />
-      {/*      <CustomBox title="관리자" items={['관리자1', '관리자2']} />
-      <CustomBox title="인원명단" items={['도유진', '신정윤', '윤현지', '이원준', '탁민재']} /> */}
+      <CustomBox title="관리자" items={['관리자1', '관리자2']} />
+      <CustomBox title="인원명단" items={['도유진', '신정윤', '윤현지', '이원준', '탁민재']} />
       <div>
         <button onClick={() => navigate(`/team/${teamId}/schedule`)}>사적모임 일정생성</button>
         <button onClick={() => navigate(`/team/${teamId}/admin`)}>공적모임 어드민</button>
