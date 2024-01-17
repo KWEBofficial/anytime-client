@@ -11,11 +11,6 @@ const style = {
   marginBottom: 2,
   color: '#696969',
 };
-interface TeamMemberDTO {
-  id: number;
-  name: string;
-  isAdmin: boolean;
-}
 interface TeamSchedule {
   id: number;
   schedulename: string;
@@ -23,25 +18,22 @@ interface TeamSchedule {
   endTime: Date;
   explanation: string;
 }
-interface NoticeResDTO {
-  noticeId: number;
-  content: string;
-  createdAt: Date;
-  isPrior: boolean;
+interface TeamMember {
+  id: number;
+  name: string;
+  isAdmin: number;
 }
-interface TeamReadResDTO {
+interface TeamInfo {
   teamname: string;
   color: number;
   explanation: string;
-  isPublic: boolean;
-  members: TeamMemberDTO[];
-  schedules: TeamSchedule[];
-  notices: NoticeResDTO[];
-  isAdmin: boolean;
+  isPublic: number;
+  member: TeamMember[];
+  schedule: TeamSchedule[];
 }
 interface InviteFieldProps {
   teamId?: string;
-  setTeamInfo: React.Dispatch<React.SetStateAction<TeamReadResDTO>>;
+  setTeamInfo?: React.Dispatch<React.SetStateAction<TeamInfo>>;
 }
 // 멤버를 초대하고 인원 명단에 바로 추가되었으면 함
 // 그럼 state에 추가해야 함
@@ -73,10 +65,11 @@ export function InviteField({ teamId, setTeamInfo }: InviteFieldProps) {
       console.log(response);
       if (response.status === 200) {
         enqueueSnackbar(`${keyword} 유저가 초대되었습니다. `, { variant: 'success' });
-        setTeamInfo((prevState) => ({
-          ...prevState,
-          members: [...prevState.members, { id: member.data.memberId, name: member.data.membername, isAdmin: false }],
-        }));
+        if (setTeamInfo)
+          setTeamInfo((prevState) => ({
+            ...prevState,
+            members: [...prevState.member, { id: member.data.memberId, name: member.data.membername, isAdmin: false }],
+          }));
       }
     } catch (e) {
       enqueueSnackbar('초대에 실패했습니다.', { variant: 'error' });
