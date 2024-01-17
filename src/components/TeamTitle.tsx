@@ -31,7 +31,7 @@ export default function TeamTitle({ title }: TeamTitleProps) {
   return (
     <AppBar position="static" sx={{ backgroundColor: '#fff', boxShadow: 'none' }}>
       <Toolbar>
-        <Typography variant="h3" sx={{ color: '#696969', marginRight: '200px' }}>
+        <Typography variant="h3" sx={{ color: '#696969', marginRight: '300px', marginBottom: 2 }}>
           {title}
         </Typography>
         <IconButton sx={{ color: '#696969' }} aria-label="Edit">
