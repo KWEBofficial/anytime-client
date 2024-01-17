@@ -8,19 +8,20 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 interface TeamTitleProps {
   title: string;
+  onClick?: () => void;
 }
 
-export default function TeamTitle({ title }: TeamTitleProps) {
+export default function TeamTitle({ title, onClick }: TeamTitleProps) {
   return (
     <AppBar position="static" sx={{ backgroundColor: '#fff', boxShadow: 'none' }}>
       <Toolbar>
-        <Typography variant="h3" sx={{ color: '#696969', marginRight: '200px' }}>
+        <Typography variant="h3" sx={{ color: '#696969', marginRight: '300px', marginBottom: 2 }}>
           {title}
         </Typography>
         <IconButton sx={{ color: '#696969' }} aria-label="Edit">
           <EditIcon />
         </IconButton>
-        <IconButton sx={{ color: '#696969' }} aria-label="Delete">
+        <IconButton sx={{ color: '#696969' }} aria-label="Delete" onClick={onClick}>
           <DeleteIcon />
         </IconButton>
       </Toolbar>

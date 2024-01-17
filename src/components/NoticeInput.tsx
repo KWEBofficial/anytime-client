@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import { Box, Button, Checkbox, FormControlLabel, Paper, Stack } from '@mui/material';
 
@@ -57,12 +58,12 @@ export default function NoticeInput({ noticeId, type, teamId, content, startDate
           },
         );
         if (response.status === 200) {
-          window.alert('공지사항이 생성되었습니다.');
+          enqueueSnackbar('공지사항이 수정되었습니다', { variant: 'success' });
           window.location.reload();
         }
       }
     } catch (e) {
-      window.alert('공지사항 생성에 실패했습니다.');
+      enqueueSnackbar('공지사항 수정에 실패했습니다.', { variant: 'error' });
     }
   }
   async function clickUpdate() {
@@ -82,15 +83,16 @@ export default function NoticeInput({ noticeId, type, teamId, content, startDate
             headers: {
               'Content-Type': 'application/json',
             },
+            withCredentials: true,
           },
         );
         if (response.status === 200) {
-          window.alert('공지사항이 수정되었습니다.');
+          enqueueSnackbar('공지사항이 수정되었습니다', { variant: 'success' });
           window.location.reload();
         }
       }
     } catch (e) {
-      window.alert('공지사항 수정에 실패했습니다.');
+      enqueueSnackbar('공지사항 수정에 실패했습니다.', { variant: 'error' });
     }
   }
 

@@ -12,6 +12,7 @@ const style = {
   color: '#696969',
   paddingLeft: 1,
   paddingRight: 1,
+  marginTop: 2,
 };
 
 interface TeamExpProps {

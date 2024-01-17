@@ -1,12 +1,13 @@
-// import { useRecoilValue } from 'recoil'; // 로그인 유저 정보를 쓰기 위함
+import { useRecoilValue } from 'recoil'; // 로그인 유저 정보를 쓰기 위함
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
-// import { userState } from '../state/userState'; // 로그인 유저 정보를 쓰기 위함
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
+import { userState } from '../state/userState'; // 로그인 유저 정보를 쓰기 위함
 import TeamTitle from '../components/TeamTitle';
 import TeamExp from '../components/TeamExp';
 import NoticeBox from '../components/NoticeBox';
@@ -22,7 +23,8 @@ import { Calendar } from '../components/Calendar/Calendar';
 // 공지사항 페이지 이동 /완 /로그인 후 어드민 페이지는 잘 오는데 공지사항 페이지로 가면 401에러가 뜸 공지사항 문제일 듯
 // withCredentials: true, 를 axios에 추가해야 함
 // 관리자에서 인원 명단으로 인원 명단에서 관리자로 갈 수 있게 만들기 /완
-//
+// 본인은 관리자에서 제외할 수 없게
+// 공지사항은 getNotices를 백에서 2개만 주는 걸로 수정
 
 interface TeamSchedule {
   id: number;
@@ -57,7 +59,7 @@ export default function AdminPage() {
   const params = useParams();
   const { teamId } = params;
   const navigate = useNavigate();
-
+  const userId = useRecoilValue(userState);
   const [teamInfo, setTeamInfo] = useState<TeamReadResDTO>({
     teamname: '',
     color: 0,
@@ -68,9 +70,29 @@ export default function AdminPage() {
     notices: [],
     isAdmin: false,
   });
+  const handleDeleteClick = async () => {
+    const fetchData = async () => {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/team/${teamId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
+    };
+
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      fetchData();
+      navigate('/main');
+      enqueueSnackbar('모임이 삭제되었습니다', { variant: 'success' });
+    }
+  };
 
   const handleMemberClick = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
     try {
+      if (teamInfo.members[index].id === userId) {
+        enqueueSnackbar('본인의 권한은 변경할 수 없습니다.', { variant: 'error' });
+        return;
+      }
       const response = await axios.patch(
         `${process.env.REACT_APP_API_URL}/team/admin`,
         { memberId: teamInfo.members[index].id, teamId, isAdmin: !teamInfo.members[index].isAdmin },
@@ -81,19 +103,20 @@ export default function AdminPage() {
           withCredentials: true,
         },
       );
-      if (response.status === 200) console.log(response);
-      console.log(event);
-      setTeamInfo({
-        ...teamInfo,
-        members: [
-          ...teamInfo.members.slice(0, index), // 기존 members 배열에서 해당 인덱스 이전의 요소들을 그대로 복사
-          {
-            ...teamInfo.members[index], // 해당 인덱스에 있는 객체를 복사
-            isAdmin: !teamInfo.members[index].isAdmin, // 또는 다른 값을 할당
-          },
-          ...teamInfo.members.slice(index + 1), // 해당 인덱스 이후의 요소들을 그대로 복사
-        ],
-      });
+      if (response.status === 200) {
+        setTeamInfo({
+          ...teamInfo,
+          members: [
+            ...teamInfo.members.slice(0, index), // 기존 members 배열에서 해당 인덱스 이전의 요소들을 그대로 복사
+            {
+              ...teamInfo.members[index], // 해당 인덱스에 있는 객체를 복사
+              isAdmin: !teamInfo.members[index].isAdmin, // 또는 다른 값을 할당
+            },
+            ...teamInfo.members.slice(index + 1), // 해당 인덱스 이후의 요소들을 그대로 복사
+          ],
+        });
+        enqueueSnackbar('권한이 변경되었습니다', { variant: 'success' });
+      }
     } catch (e) {
       /* empty */
     }
@@ -127,12 +150,14 @@ export default function AdminPage() {
     };
     fetchData();
   }, []);
+  const memberList = teamInfo.members.map((member) => member.name);
+  const isAdminList = teamInfo.members.map((member) => member.isAdmin);
 
   return (
     <Layout>
       <Grid container>
         <Grid item xs={8}>
-          <TeamTitle title={teamInfo.teamname} />
+          <TeamTitle title={teamInfo.teamname} onClick={handleDeleteClick} />
           <NoticeBox notices={teamInfo.notices.map((notice) => notice.content)} />
           <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>
             <Calendar />
@@ -140,7 +165,7 @@ export default function AdminPage() {
           <TeamExp explanation={teamInfo.explanation} />
         </Grid>
         <Grid item xs={4} md={4}>
-          <CustomBox title="인원명단" items={teamInfo.members} onClick={handleMemberClick} />
+          <CustomBox title="인원명단" items={memberList} isAdmins={isAdminList} onClick={handleMemberClick} />
           <Button
             onClick={() => {
               navigate(`/notice/${teamId}`);
