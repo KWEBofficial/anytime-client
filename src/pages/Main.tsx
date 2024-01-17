@@ -13,6 +13,8 @@ export default function MainPage() {
   const width = '88vw';
   const sches: ScheType[] = [
     {
+      scheId: 1,
+      teamId: 2,
       name: 'KWEB 해커톤 최종발표',
       startDate: new Date('2024-01-19'),
       endDate: new Date('2024-01-19'),
@@ -20,6 +22,8 @@ export default function MainPage() {
       color: 'red',
     },
     {
+      scheId: 2,
+      teamId: 2,
       name: '해커톤 시작',
       startDate: new Date('2024-01-08'),
       endDate: new Date('2024-01-13'),
@@ -27,6 +31,8 @@ export default function MainPage() {
       color: 'red',
     },
     {
+      scheId: 3,
+      teamId: 2,
       name: '해커톤 시작222',
       startDate: new Date('2024-01-02'),
       endDate: new Date('2024-01-04'),
@@ -34,6 +40,8 @@ export default function MainPage() {
       color: 'red',
     },
     {
+      scheId: 4,
+      teamId: 2,
       name: 'testtest',
       startDate: new Date('2023-12-31'),
       endDate: new Date('2023-12-31'),
@@ -41,6 +49,8 @@ export default function MainPage() {
       color: '',
     },
     {
+      scheId: 5,
+      teamId: 2,
       name: 'testtttt',
       startDate: new Date('2024-01-29'),
       endDate: new Date('2024-02-02'),
@@ -48,6 +58,8 @@ export default function MainPage() {
       color: '',
     },
     {
+      scheId: 6,
+      teamId: 2,
       name: 'stacktest',
       startDate: new Date('2024-01-10'),
       endDate: new Date('2024-01-10'),
@@ -55,6 +67,8 @@ export default function MainPage() {
       color: 'blue',
     },
     {
+      scheId: 7,
+      teamId: 3,
       name: 'Fastest Start Time',
       startDate: new Date('2024-01-10 06:00'),
       endDate: new Date('2024-01-10'),
@@ -62,6 +76,8 @@ export default function MainPage() {
       color: '',
     },
     {
+      scheId: 8,
+      teamId: 3,
       name: 'overflow test',
       startDate: new Date('2024-01-10'),
       endDate: new Date('2024-01-10'),
@@ -69,6 +85,8 @@ export default function MainPage() {
       color: '',
     },
     {
+      scheId: 9,
+      teamId: 2,
       name: 'stacktest',
       startDate: new Date('2024-01-10'),
       endDate: new Date('2024-01-10'),
@@ -76,6 +94,8 @@ export default function MainPage() {
       color: '',
     },
     {
+      scheId: 10,
+      teamId: 2,
       name: 'stacktest',
       startDate: new Date('2024-01-10'),
       endDate: new Date('2024-01-10'),
@@ -83,6 +103,8 @@ export default function MainPage() {
       color: '',
     },
     {
+      scheId: 11,
+      teamId: 2,
       name: 'stacktest',
       startDate: new Date('2024-01-10'),
       endDate: new Date('2024-01-10'),
@@ -90,6 +112,8 @@ export default function MainPage() {
       color: '',
     },
     {
+      scheId: 12,
+      teamId: 3,
       name: 'December stack test',
       startDate: new Date('202-12-13'),
       endDate: new Date('2023-12-14'),
@@ -97,6 +121,8 @@ export default function MainPage() {
       color: '',
     },
     {
+      scheId: 13,
+      teamId: 3,
       name: 'December stack test',
       startDate: new Date('2023-12-13'),
       endDate: new Date('2023-12-14'),
@@ -104,6 +130,8 @@ export default function MainPage() {
       color: '',
     },
     {
+      scheId: 14,
+      teamId: 3,
       name: 'December stack test',
       startDate: new Date('2023-12-13'),
       endDate: new Date('2023-12-14'),
@@ -111,6 +139,8 @@ export default function MainPage() {
       color: '',
     },
     {
+      scheId: 15,
+      teamId: 3,
       name: 'December stack test',
       startDate: new Date('2023-12-13'),
       endDate: new Date('2023-12-14'),
@@ -118,6 +148,8 @@ export default function MainPage() {
       color: '',
     },
     {
+      scheId: 16,
+      teamId: 3,
       name: 'December stack test',
       startDate: new Date('2023-12-13'),
       endDate: new Date('2023-12-14'),

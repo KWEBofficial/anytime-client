@@ -83,6 +83,8 @@ export default function TeamPage() {
   const width = '55vw';
   const sches = [
     {
+      scheId: 1,
+      teamId: 2,
       name: 'KWEB 해커톤 최종발표',
       startDate: new Date('2024-01-19'),
       endDate: new Date('2024-01-19'),
@@ -90,6 +92,8 @@ export default function TeamPage() {
       color: 'red',
     },
     {
+      scheId: 2,
+      teamId: 2,
       name: '해커톤 시작',
       startDate: new Date('2024-01-08'),
       endDate: new Date('2024-01-13'),
@@ -97,6 +101,8 @@ export default function TeamPage() {
       color: 'red',
     },
     {
+      scheId: 3,
+      teamId: 2,
       name: '해커톤 시작222',
       startDate: new Date('2024-01-02'),
       endDate: new Date('2024-01-04'),
@@ -104,6 +110,8 @@ export default function TeamPage() {
       color: 'red',
     },
     {
+      scheId: 4,
+      teamId: 2,
       name: 'testtest',
       startDate: new Date('2023-12-31'),
       endDate: new Date('2023-12-31'),
@@ -111,6 +119,8 @@ export default function TeamPage() {
       color: '',
     },
     {
+      scheId: 5,
+      teamId: 2,
       name: 'testtttt',
       startDate: new Date('2024-01-29'),
       endDate: new Date('2024-02-02'),
@@ -118,6 +128,8 @@ export default function TeamPage() {
       color: '',
     },
     {
+      scheId: 6,
+      teamId: 2,
       name: 'stacktest',
       startDate: new Date('2024-01-10'),
       endDate: new Date('2024-01-10'),
@@ -125,6 +137,8 @@ export default function TeamPage() {
       color: 'blue',
     },
     {
+      scheId: 7,
+      teamId: 2,
       name: 'stacktest',
       startDate: new Date('2024-01-10'),
       endDate: new Date('2024-01-10'),
@@ -132,6 +146,8 @@ export default function TeamPage() {
       color: '',
     },
     {
+      scheId: 8,
+      teamId: 2,
       name: 'stacktest',
       startDate: new Date('2024-01-10'),
       endDate: new Date('2024-01-10'),
@@ -139,6 +155,8 @@ export default function TeamPage() {
       color: '',
     },
     {
+      scheId: 9,
+      teamId: 2,
       name: 'stacktest',
       startDate: new Date('2024-01-10'),
       endDate: new Date('2024-01-10'),
