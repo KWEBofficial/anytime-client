@@ -28,6 +28,7 @@ export default function Alarm() {
         headers: {
           'Content-Type': 'application/json',
         },
+        withCredentials: true,
       });
       setAlarmInfo(response.data);
     };
@@ -39,6 +40,7 @@ export default function Alarm() {
       headers: {
         'Content-Type': 'application/json',
       },
+      withCredentials: true,
     });
   };
 
@@ -72,14 +74,6 @@ export default function Alarm() {
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
-
-  const contents = [
-    ['고딩팸에 술약속 일정이 추가되었습니다', '2024년 10월 18일 18:00'],
-    ['KWEB에 해커톤 회의 일정이 추가되었습니다', '2024년 1월 4일 13:00'],
-    ['모임3의 일정1이 삭제되었습니다', '2024년 3월 1일 11:00'],
-    ['모임4의 일정3이 변경되었습니다', '2024년 11월 11일 20:00'],
-    ['모임5에 초대되었습니다', '2024년 12월 1일 21:00'],
-  ];
 
   return (
     <div>

@@ -15,7 +15,7 @@ import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import AppBar from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
-import Alarm from './Alarm';
+import Alarm from './alarm';
 
 import { userState } from '../state/userState';
 import Examples from './Example';

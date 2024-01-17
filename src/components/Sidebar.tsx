@@ -26,8 +26,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ResponsiveAppBar from './TopNavigation';
 
 import { useModal } from './Modal/useModal';
-import { PromptProps } from './Modal/Prompt/Team';
-import axios from 'axios';
+//import { PromptProps } from './Modal/Prompt/Team';
 
 const drawerWidth = 180;
 
@@ -92,6 +91,7 @@ export default function ClippedDrawer() {
           headers: {
             'Content-Type': 'application/json',
           },
+          withCredentials: true,
         },
       );
       if (response.status === 201) {
