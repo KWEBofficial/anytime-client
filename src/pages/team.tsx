@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import TeamTitle from '../components/TeamTitle';
 import TeamExp from '../components/TeamExp';
 import { Layout } from '../components/Layout';
+import { InviteField } from '../components/InviteField';
 import CustomBox from '../components/CustomBox';
 import { Calendar } from '../components/Calendar/Calendar';
 
@@ -90,6 +91,7 @@ export default function TeamPage() {
         </Grid>
 
         <Grid item xs={4} md={4}>
+          <InviteField teamId={teamId} setTeamInfo={setTeamInfo} />
           <CustomBox title="인원명단" items={memberList} />
           <Button
             onClick={() => {

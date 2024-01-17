@@ -64,9 +64,9 @@ export default function FavorTeamSche() {
         {
           name: 'check222222222222',
           startDate: new Date('2024-01-11'),
-          endDate: new Date('2024-01-14'),
+          endDate: new Date('2024-01-17'),
           explanation:
-            'Check that it should be appeared at FavorTeam scheBox. string이 칸을 넘어갈 경우 공백을 기준으로 줄바꿈이 이루어짐.',
+            'Check that it should be appeared at FavorTeam scheBox. If string overflow occured, then it change the line at space.',
         },
         {
           name: 'check3',
