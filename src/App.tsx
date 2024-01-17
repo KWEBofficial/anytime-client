@@ -1,11 +1,12 @@
 import { RecoilRoot } from 'recoil';
 import { BrowserRouter } from 'react-router-dom';
+import { SnackbarProvider } from 'notistack';
 import { ThemeProvider, createTheme } from '@mui/material';
 
 import { RouteComponent } from './route';
 
 import './App.css';
-// import { Layout } from './components/Layout';
+import { ModalContextProvider } from './components/Modal/useModal';
 
 /**
  * mui에서 제공하는 테마 설정입니다.
@@ -25,14 +26,47 @@ const theme = createTheme({
  */
 function App() {
   return (
-    <RecoilRoot>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <RouteComponent />
-        </BrowserRouter>
-      </ThemeProvider>
-    </RecoilRoot>
+    <SnackbarProvider maxSnack={3}>
+      <RecoilRoot>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <RouteComponent />
+          </BrowserRouter>
+        </ThemeProvider>
+      </RecoilRoot>
+    </SnackbarProvider>
   );
+
+  /*}
+
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <RouteComponent />
+        <ModalContextProvider>
+          <Examples />
+        </ModalContextProvider>
+        <FormDialog />
+        <Alarm />
+
+        
+           <ModalContextProvider>
+            <Examples />
+          </ModalContextProvider>
+          <div>
+            <button onClick={openModal}>Open Modal</button>
+            <CustomModal isOpen={open} closeModal={closeModal}>
+              <Box>
+                <Typography variant="h6" component="h2">
+                  hi
+                </Typography>
+                <Typography sx={{ mt: 2 }}>it's me</Typography>
+              </Box>
+            </CustomModal>
+          </div>
+ 
+      </BrowserRouter>
+    </ThemeProvider>
+    {*/
 }
 
 export default App;
