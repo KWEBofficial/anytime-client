@@ -24,7 +24,7 @@ const CustomBox = ({ title, items }: CustomBoxProps) => {
       </Typography>
       <List>
         {items.map((item) => (
-          <ListItem style={{ justifyContent: 'center' }}>
+          <ListItem key={item} style={{ justifyContent: 'center' }}>
             <Typography lineHeight={1}>{item}</Typography>
           </ListItem>
         ))}
