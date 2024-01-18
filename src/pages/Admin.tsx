@@ -165,6 +165,7 @@ export default function AdminPage() {
             title={teamInfo.teamname}
             isAdmin={teamInfo.isAdmin}
             onClick={handleDeleteClick}
+            isPublic={true}
           />
           <TeamExp explanation={teamInfo.explanation} />
           <Calendar width="700px" height="800px" schedules={sche} isEditable={true} />

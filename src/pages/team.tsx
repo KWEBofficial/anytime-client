@@ -146,12 +146,18 @@ export default function TeamPage() {
   const width = '55vw';
   let isEditable = true;
   if (teamInfo.isPublic) isEditable = false;
+
   return (
     <Layout>
       <Grid container sx={{ marginTop: 2, minWidth: '1100px' }}>
         <Grid lg={0.5} xl={1}></Grid>
         <Grid item xs={8} xl={7}>
-          <TeamTitle title={teamInfo.teamname} teamId={teamId as unknown as number} isAdmin={teamInfo.isAdmin} />
+          <TeamTitle
+            title={teamInfo.teamname}
+            teamId={teamId as unknown as number}
+            isAdmin={teamInfo.isAdmin}
+            isPublic={Boolean(teamInfo.isPublic)}
+          />
           <TeamExp explanation={teamInfo.explanation} />
           {teamInfo.isPublic ? <NoticeBox notices={teamInfo.notice.map((n) => n.content)} /> : null}
           <Calendar isEditable={isEditable} height={height} width={width} schedules={sches} />

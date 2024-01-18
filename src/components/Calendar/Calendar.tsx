@@ -265,6 +265,7 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
     scheduleId: number,
   ) {
     try {
+      console.log(scheduleId);
       const response = await axios.patch(
         `${process.env.REACT_APP_API_URL}/schedule/${scheduleId}`,
         { name: scheName, startTime, endTime, explanation },
@@ -314,7 +315,6 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
     openSchedulePrompt({
       isEmpty: false,
       isEditable: isMyPage && sche.teamId !== 0 ? false : isEditable,
-      scheduleId: sche.scheId,
       name: sche.name,
       startDate: sche.startDate,
       endDate: sche.endDate,
