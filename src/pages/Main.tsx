@@ -78,7 +78,7 @@ export default function MainPage() {
 
   return (
     <Layout>
-      <Calendar isEditable={isEditable} height={height} width={width} schedules={sches} />
+      <Calendar isEditable={isEditable} height={height} width={width} schedules={sche} />
       <FavorTeamSche />
     </Layout>
   );
