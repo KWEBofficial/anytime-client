@@ -13,7 +13,7 @@ import TeamExp from '../components/TeamExp';
 import NoticeBox from '../components/NoticeBox';
 import { Layout } from '../components/Layout';
 import CustomBox from '../components/CustomBox';
-import { Calendar } from '../components/Calendar/Calendar';
+// import { Calendar } from '../components/Calendar/Calendar';
 
 interface TeamSchedule {
   id: number;
@@ -148,9 +148,7 @@ export default function AdminPage() {
         <Grid item xs={8}>
           <TeamTitle title={teamInfo.teamname} onClick={handleDeleteClick} />
           <NoticeBox notices={teamInfo.notices.map((notice) => notice.content)} />
-          <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>
-            <Calendar />
-          </Box>
+          <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>{/* <Calendar /> */}</Box>
           <TeamExp explanation={teamInfo.explanation} />
         </Grid>
         <Grid item xs={4} md={4}>
