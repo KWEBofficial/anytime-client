@@ -1,6 +1,5 @@
 /* eslint-disable */
 import React, { createContext, useCallback, useContext, useState } from 'react';
-
 import { OpenModal } from '../../types/modal';
 
 import PromptModal from './Prompt/Team';
@@ -9,7 +8,6 @@ import SchedulePrompt, { SchedulePromptProps } from './Prompt/Schedule';
 import Confirm, { ConfirmProps } from './Confirm';
 import Alert from './Alert';
 import { AlertProps } from './Alert';
-
 // IModalContext : context가 갖는 타입
 interface IModalContext {
   openAlert: OpenModal<AlertProps>;
