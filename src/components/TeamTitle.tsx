@@ -5,6 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import AppBar from '@mui/material/AppBar';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+
 import { useModal } from './Modal/useModal';
 
 interface TeamTitleProps {
@@ -20,10 +21,10 @@ export default function TeamTitle({ title, onClick }: TeamTitleProps) {
       isPublic: isPublic,
       titleText: '모임 수정',
       buttonText: '수정',
-      onSubmit: (title, content, color) => {
+      onSubmit: (teamName, content, color) => {
         openAlert({
           title: '모임 정보가 수정되었습니다',
-          //message: `모임 이름: ${title} 모임 설명: ${content} 모임 색상: ${color}`,
+          message: `모임 이름: ${teamName} 모임 설명: ${content} 모임 색상: ${color}`,
         });
       },
     });
