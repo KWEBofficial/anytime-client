@@ -81,8 +81,9 @@ export default function TeamPage() {
 
   return (
     <Layout>
-      <Grid container>
-        <Grid item xs={8}>
+      <Grid container sx={{ marginTop: 5, minWidth: '1100px' }}>
+        <Grid lg={0.5} xl={1}></Grid>
+        <Grid item xs={8} xl={7}>
           <TeamTitle title={teamInfo.teamname} />
           <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>
             <Calendar />
@@ -90,8 +91,10 @@ export default function TeamPage() {
           <TeamExp explanation={teamInfo.explanation} />
         </Grid>
 
-        <Grid item xs={4} md={4}>
+
+        <Grid item xs={3} xl={4}>
           <InviteField teamId={teamId} setTeamInfo={setTeamInfo} />
+
           <CustomBox title="인원명단" items={memberList} />
           <Button
             onClick={() => {

@@ -1,25 +1,24 @@
 import { useForm } from 'react-hook-form';
-import Box from '@mui/material/Box';
+import React from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-
-import { IModal } from '../../../types/modal';
+import Box from '@mui/material/Box';
 import { Stack, Typography } from '@mui/material';
 
-import dayjs, { Dayjs } from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import React from 'react';
+import { IModal } from '../../../types/modal';
 
 export interface SchedulePromptProps extends IModal {
   onSubmit?: (title: string, content: string, start: Dayjs | null, end: Dayjs | null) => void;
 }
 
 const style = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -79,7 +78,7 @@ const SchedulePrompt = ({ visible = false, onClose, onSubmit }: SchedulePromptPr
             sx={{ width: '100%', marginBottom: 2 }}
             label="제목"
             placeholder="어떤 일정이 있나요?"
-            //variant="standard"
+            // variant="standard"
           />
           <TextField
             {...register('content', { required: false })}
@@ -88,7 +87,7 @@ const SchedulePrompt = ({ visible = false, onClose, onSubmit }: SchedulePromptPr
             multiline
             rows={4}
             placeholder="간단 메모"
-            //variant="standard"
+            // variant="standard"
           />
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
