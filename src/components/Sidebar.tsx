@@ -22,6 +22,8 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import AddIcon from '@mui/icons-material/Add';
 
 import ResponsiveAppBar from './TopNavigation';
+import { useModal } from './Modal/useModal';
+// import { PromptProps } from './Modal/Prompt/Team';
 
 const drawerWidth = 180;
 
@@ -40,6 +42,7 @@ export default function ClippedDrawer() {
   const [myTeam, setMyTeam] = useState<TeamInfo[]>([]);
   const [publicIsFavor, setPublicIsFavor] = useState<number[]>([]);
   const [privateIsFavor, setPrivateIsFavor] = useState<number[]>([]);
+  const { openAlert, openPrompt } = useModal();
 
   const handlePrivateClick = () => {
     setOpenPrivate(!openPrivate);
@@ -118,6 +121,37 @@ export default function ClippedDrawer() {
     setPublicIsFavor(updatedIsFavor);
   };
 
+  async function createTeam(teamname: string, explanation: string, color: string, isPublic: boolean) {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/team/create`,
+        { teamname, color: 1, explanation, isPublic },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        },
+      );
+      if (response.status === 201) {
+        openAlert({ title: '모임이 성공적으로 생성되었습니다' });
+      }
+    } catch (e) {
+      openAlert({ title: '모임 생성에 실패하였습니다..' });
+    }
+  }
+
+  const createTeamModal = (isPublic: boolean) => {
+    openPrompt({
+      isPublic,
+      titleText: '모임 생성',
+      buttonText: '생성',
+      onSubmit: (title, content, color) => {
+        createTeam(title, content, color, isPublic);
+      },
+    });
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -154,7 +188,7 @@ export default function ClippedDrawer() {
                     </ListItemIcon>
                     <ListItemText primary={text} />
                     <ListItemIcon sx={{ minWidth: 'auto', mr: 0 }}>
-                      <AddIcon />
+                      <AddIcon onClick={() => createTeamModal(false)} />
                     </ListItemIcon>
                   </ListItemButton>
                 </ListItem>
@@ -195,7 +229,7 @@ export default function ClippedDrawer() {
                       <SearchIcon />
                     </ListItemIcon>
                     <ListItemIcon sx={{ minWidth: 'auto', mr: 0 }}>
-                      <AddIcon />
+                      <AddIcon onClick={() => createTeamModal(true)} />
                     </ListItemIcon>
                   </ListItemButton>
                 </ListItem>

@@ -15,8 +15,10 @@ import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import AppBar from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
+import Alarm from './alarm';
 
 import { userState } from '../state/userState';
+import Examples from './Example';
 
 const pages = ['알람'];
 const settings = ['로그아웃'];
@@ -111,11 +113,17 @@ function ResponsiveAppBar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Alarm />
+              </MenuItem>
+
+              {/*}
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
+              {*/}
             </Menu>
           </Box>
           <Typography
@@ -137,11 +145,14 @@ function ResponsiveAppBar() {
             언제든지
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
+            <Alarm />
+            {/*}
             {pages.map((page) => (
               <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: '#696969', display: 'block' }}>
                 {page}
               </Button>
             ))}
+            {*/}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
