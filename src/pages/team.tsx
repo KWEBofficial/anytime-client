@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
+import { ScheType } from '../models/calendar';
 import TeamTitle from '../components/TeamTitle';
 import TeamExp from '../components/TeamExp';
 import { Layout } from '../components/Layout';
@@ -28,7 +29,7 @@ interface TeamMember {
 }
 interface TeamInfo {
   teamname: string;
-  color: number;
+  color: string;
   explanation: string;
   isPublic: number;
   member: TeamMember[];
@@ -41,9 +42,11 @@ export default function TeamPage() {
   const navigate = useNavigate();
   // const userId = useRecoilValue(userState); // {userId}
 
+  const [sches, setSche] = useState<ScheType[]>([]);
+
   const [teamInfo, setTeamInfo] = useState<TeamInfo>({
     teamname: '',
-    color: 0,
+    color: '',
     explanation: '',
     isPublic: 0,
     member: [],
@@ -77,94 +80,28 @@ export default function TeamPage() {
     fetchData();
   }, [teamId]);
 
+  useEffect(() => {
+    setSche(
+      teamInfo.schedule.map((t) => {
+        const result: ScheType = {
+          teamId: teamId as unknown as number,
+          scheId: t.id,
+          name: t.schedulename,
+          startDate: new Date(t.startTime),
+          endDate: new Date(t.endTime),
+          explanation: t.explanation,
+          color: teamInfo.color,
+        };
+        return result;
+      }),
+    );
+  }, [teamInfo.schedule]);
+
   const memberList = teamInfo.member.map((member) => member.name);
 
   const onClick = () => {};
   const height = '90vh';
   const width = '55vw';
-  const sches = [
-    {
-      scheId: 1,
-      teamId: 2,
-      name: 'KWEB 해커톤 최종발표',
-      startDate: new Date('2024-01-19'),
-      endDate: new Date('2024-01-19'),
-      explanation: '우정정보관',
-      color: 'red',
-    },
-    {
-      scheId: 2,
-      teamId: 2,
-      name: '해커톤 시작',
-      startDate: new Date('2024-01-08'),
-      endDate: new Date('2024-01-13'),
-      explanation: 'test1',
-      color: 'red',
-    },
-    {
-      scheId: 3,
-      teamId: 2,
-      name: '해커톤 시작222',
-      startDate: new Date('2024-01-02'),
-      endDate: new Date('2024-01-04'),
-      explanation: 'test2',
-      color: 'red',
-    },
-    {
-      scheId: 4,
-      teamId: 2,
-      name: 'testtest',
-      startDate: new Date('2023-12-31'),
-      endDate: new Date('2023-12-31'),
-      explanation: 'test2',
-      color: '',
-    },
-    {
-      scheId: 5,
-      teamId: 2,
-      name: 'testtttt',
-      startDate: new Date('2024-01-29'),
-      endDate: new Date('2024-02-02'),
-      explanation: 'test2',
-      color: '',
-    },
-    {
-      scheId: 6,
-      teamId: 2,
-      name: 'stacktest',
-      startDate: new Date('2024-01-10'),
-      endDate: new Date('2024-01-10'),
-      explanation: 'test2',
-      color: 'blue',
-    },
-    {
-      scheId: 7,
-      teamId: 2,
-      name: 'stacktest',
-      startDate: new Date('2024-01-10'),
-      endDate: new Date('2024-01-10'),
-      explanation: 'test2',
-      color: '',
-    },
-    {
-      scheId: 8,
-      teamId: 2,
-      name: 'stacktest',
-      startDate: new Date('2024-01-10'),
-      endDate: new Date('2024-01-10'),
-      explanation: 'test2',
-      color: '',
-    },
-    {
-      scheId: 9,
-      teamId: 2,
-      name: 'stacktest',
-      startDate: new Date('2024-01-10'),
-      endDate: new Date('2024-01-10'),
-      explanation: 'test2',
-      color: '',
-    },
-  ];
 
   return (
     <Layout>

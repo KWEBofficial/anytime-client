@@ -24,7 +24,7 @@ interface TeamMember {
 }
 interface TeamInfo {
   teamname: string;
-  color: number;
+  color: string;
   explanation: string;
   isPublic: number;
   member: TeamMember[];
