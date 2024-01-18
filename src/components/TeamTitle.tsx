@@ -8,6 +8,8 @@ import AppBar from '@mui/material/AppBar';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+import { useSidebar } from '../contexts/sidebarContext';
+
 import { useModal } from './Modal/useModal';
 
 interface TeamTitleProps {
@@ -20,6 +22,7 @@ interface TeamTitleProps {
 export default function TeamTitle({ title, teamId, isAdmin, onClick }: TeamTitleProps) {
   const { openAlert, openPrompt } = useModal();
   const navigate = useNavigate();
+  const { refresh } = useSidebar();
 
   const editTeam = (isPublic: boolean) => {
     openPrompt({
@@ -45,6 +48,7 @@ export default function TeamTitle({ title, teamId, isAdmin, onClick }: TeamTitle
       });
       if (response.status === 200) {
         openAlert({ title: '모임이 삭제되었습니다.' });
+        refresh();
         navigate(`/main`, { replace: true });
       }
     } catch (e) {
@@ -62,6 +66,7 @@ export default function TeamTitle({ title, teamId, isAdmin, onClick }: TeamTitle
       });
       if (response.status === 200) {
         openAlert({ title: '모임에서 탈퇴되었습니다.' });
+        refresh();
         navigate(`/main`, { replace: true });
       }
     } catch (e) {
