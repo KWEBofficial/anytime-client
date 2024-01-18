@@ -14,7 +14,7 @@ import TeamExp from '../components/TeamExp';
 import NoticeBox from '../components/NoticeBox';
 import { Layout } from '../components/Layout';
 import CustomBox from '../components/CustomBox';
-// import { Calendar } from '../components/Calendar/Calendar';
+import { Calendar } from '../components/Calendar/Calendar';
 
 interface TeamSchedule {
   id: number;
