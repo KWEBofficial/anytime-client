@@ -19,7 +19,7 @@ export interface SchedulePromptProps extends IModal {
 }
 
 const style = {
-  position: 'absolute',
+  position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
