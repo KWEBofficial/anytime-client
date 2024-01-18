@@ -24,9 +24,8 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import AddIcon from '@mui/icons-material/Add';
 
 import ResponsiveAppBar from './TopNavigation';
-
 import { useModal } from './Modal/useModal';
-//import { PromptProps } from './Modal/Prompt/Team';
+// import { PromptProps } from './Modal/Prompt/Team';
 
 const drawerWidth = 180;
 
@@ -86,7 +85,7 @@ export default function ClippedDrawer() {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/team/create`,
-        { teamname: teamname, color: 1, explanation: explanation, isPublic: isPublic },
+        { teamname, color: 1, explanation, isPublic },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -104,7 +103,7 @@ export default function ClippedDrawer() {
 
   const createTeamModal = (isPublic: boolean) => {
     openPrompt({
-      isPublic: isPublic,
+      isPublic,
       titleText: '모임 생성',
       buttonText: '생성',
       onSubmit: (title, content, color) => {

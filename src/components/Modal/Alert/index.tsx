@@ -1,8 +1,8 @@
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
 import { IModal } from '../../../types/modal';
 
@@ -13,7 +13,7 @@ export interface AlertProps extends IModal {
 }
 
 const style = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
