@@ -6,6 +6,7 @@ import axios from 'axios';
 import { TextField, Button, Typography, Link, Box, Grid } from '@mui/material';
 
 import { userState } from '../state/userState';
+import Intro from '../components/intro';
 
 export default function LoginPage() {
   const [input, setInput] = useState({
@@ -50,7 +51,9 @@ export default function LoginPage() {
 
   return (
     <Grid container style={{ height: '100vh' }}>
-      <Grid item xs={8}></Grid>
+      <Grid item xs={8}>
+        <Intro />
+      </Grid>
       <Grid item xs={4} sx={{ backgroundColor: '#d3e9f6', height: '100%' }}>
         <Box sx={{ maxWidth: 300, margin: 'auto', p: 4, marginTop: 10 }}>
           <Typography variant="body2" fontWeight="bold" color="#696969">
