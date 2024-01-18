@@ -1,7 +1,7 @@
 import { useRecoilValue } from 'recoil';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Box, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 import { userState } from '../state/userState';
 import { AllScheSearchDTO } from '../models/AllScheSearch';
@@ -9,12 +9,6 @@ import TeamShowBox from '../components/TeamShowBox/TeamShowBox';
 // import { useModal } from '../components/Modal/useModal';
 import { Layout } from '../components/Layout';
 import { Calendar } from '../components/Calendar/Calendar';
-// import Examples from '../components/Example';
-
-// 일단 컴포넌트 대충 배열
-// sche:scheType[] 만들기 useEffect로 teamInfo가 바뀌면 다시 만들도록
-// teamShowBox에서 ishide 바뀌면 axios랑 teamInfo의 ishide가 바뀌게 만들어서 useEffect 할 수 있도록 하면 sche가 새롭게 업데이트 되겠지?
-//
 
 interface ScheType {
   scheId: number;
@@ -23,7 +17,7 @@ interface ScheType {
   startDate: Date;
   endDate: Date;
   explanation: string;
-  color: string; // 개인 일정의 경우 color를 빈 문자열로 설정하시면 됩니다.
+  color: string;
 }
 export default function MyPage() {
   const userId = useRecoilValue(userState);
@@ -119,15 +113,13 @@ export default function MyPage() {
   }, [allSche]);
   return (
     <Layout>
-      <Grid container sx={{ marginTop: 5, minWidth: '1100px' }}>
+      <Grid container sx={{ minWidth: '1100px' }}>
         <Grid lg={0.5} xl={1}></Grid>
         <Grid item xs={8} xl={7}>
-          <Typography variant="h3" sx={{ color: '#696969', marginRight: '300px', marginBottom: 2 }}>
-            {member}
+          <Typography variant="h4" sx={{ color: '#696969', marginRight: '300px', marginBottom: 2 }}>
+            {member}님의 일정
           </Typography>
-          <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>
             <Calendar width={'55vw'} height={'90vh'} schedules={sche} isEditable={true} isMyPage={true} />
-          </Box>
         </Grid>
 
         <Grid item xs={3} xl={4}>

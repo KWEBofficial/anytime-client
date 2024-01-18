@@ -9,10 +9,6 @@ import NoticeInput from '../components/NoticeInput';
 import NoticeCard from '../components/NoticeCard';
 import { Layout } from '../components/Layout';
 
-// teamId로부터 teamname 가져와야 함
-// teamId -> teamname, noticeId, content, createAt, startDate, endDate, isPrior
-// 새로운 API, DTO
-
 interface NoticeAllResDTO {
   teamname: string;
   noticeId: number;
@@ -25,7 +21,6 @@ interface NoticeAllResDTO {
 
 export default function NoticePage() {
   const teamId = String(useParams().teamId);
-  const [teamname, setTeamname] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [notices, setNotices] = useState<NoticeAllResDTO[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,15 +56,14 @@ export default function NoticePage() {
         withCredentials: true,
       });
       setNotices(response.data.notices.reverse());
-      setTeamname(response.data.teamname);
     };
     fetchData();
   }, []);
 
   return (
     <Layout>
-      <Typography sx={{ marginTop: 10, marginLeft: 10 }} variant="h4">
-        Notice - {teamname}
+      <Typography sx={{ marginTop: 5, marginLeft: 10 }} variant="h4">
+        공지사항
       </Typography>
 
       <Grid container sx={{ minWidth: 850, marginTop: 5 }}>

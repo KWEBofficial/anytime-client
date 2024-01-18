@@ -1,25 +1,80 @@
-import { ScheType } from '../models/calendar';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
+import { AllScheSearchDTO } from '../models/AllScheSearch';
 import { Layout } from '../components/Layout';
 import FavorTeamSche from '../components/FavorTeamSche/FavorTeamSche';
 import { Calendar } from '../components/Calendar/Calendar';
 
+interface ScheType {
+  scheId: number;
+  teamId: number;
+  name: string;
+  startDate: Date;
+  endDate: Date;
+  explanation: string;
+  color: string;
+}
+
 export default function MainPage() {
+  const [sche, setSche] = useState<ScheType[]>([]);
+  const [allSche, setAllSche] = useState<AllScheSearchDTO>({
+    mySchedules: [],
+    teamSchedules: [],
+  });
+
   const isEditable = false;
-  /* 예시를 위해 메인페이지에서는 schedule을 클릭했을 때 alert를 띄우는 함수를 설정했습니다. 
-  기타 페이지에서는 클릭한 스케쥴을 수정하는 모달을 띄우는 등의 함수를 설정할 수 있습니다. */
+
   const height = '90vh';
-  const width = '88vw';
-  const sches: ScheType[] = [
-    {
-      scheId: 1,
-      teamId: 2,
-      name: 'KWEB 해커톤 최종발표',
-      startDate: new Date('2024-01-19'),
-      endDate: new Date('2024-01-19'),
-      explanation: '우정정보관',
-      color: 'red',
-    },
-  ]; // 스케쥴을 받아온 뒤 ScheType[] 형식으로 변환해주세요.
+  const width = '80vw';
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/schedule`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        });
+
+        if (response.status === 200) {
+          setAllSche(response.data);
+        }
+      } catch (e) {
+        /* empty */
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    setSche(() => [
+      ...allSche.mySchedules.map((mySche) => ({
+        scheId: mySche.scheId,
+        teamId: 0,
+        name: mySche.name,
+        startDate: new Date(mySche.startTime),
+        endDate: new Date(mySche.endTime),
+        explanation: mySche.explanation,
+        color: '',
+      })),
+      ...allSche.teamSchedules
+        .filter((teamInfo) => !teamInfo.isHide)
+        .flatMap(
+          (teamInfo) =>
+            teamInfo.schedules?.map((Sche) => ({
+              scheId: Sche.scheId,
+              teamId: teamInfo.teamId,
+              name: Sche.name,
+              startDate: new Date(Sche.startTime),
+              endDate: new Date(Sche.endTime),
+              explanation: Sche.explanation,
+              color: teamInfo.color,
+            })) || [],
+        ),
+    ]);
+  }, [allSche]);
 
   return (
     <Layout>
