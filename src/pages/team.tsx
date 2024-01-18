@@ -79,9 +79,10 @@ export default function TeamPage() {
 
   const memberList = teamInfo.member.map((member) => member.name);
 
-  const onClick = () => {};
+  // const onClick = () => {};
   const height = '90vh';
   const width = '55vw';
+  const isEditable = true;
   const sches = [
     {
       scheId: 1,
@@ -173,7 +174,7 @@ export default function TeamPage() {
         <Grid item xs={8} xl={7}>
           <TeamTitle title={teamInfo.teamname} />
           <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>
-            <Calendar onClick={onClick} height={height} width={width} schedules={sches} />
+            <Calendar isEditable={isEditable} height={height} width={width} schedules={sches} />
           </Box>
           <TeamExp explanation={teamInfo.explanation} />
         </Grid>
