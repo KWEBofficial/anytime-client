@@ -119,7 +119,7 @@ export default function MyPage() {
           <Typography variant="h4" sx={{ color: '#696969', marginRight: '300px', marginBottom: 2 }}>
             {member}님의 일정
           </Typography>
-            <Calendar width={'55vw'} height={'90vh'} schedules={sche} isEditable={true} isMyPage={true} />
+          <Calendar width={'55vw'} height={'90vh'} schedules={sche} isEditable={true} isMyPage={true} />
         </Grid>
 
         <Grid item xs={3} xl={4}>

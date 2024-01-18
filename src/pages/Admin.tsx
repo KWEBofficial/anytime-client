@@ -13,7 +13,6 @@ import TeamExp from '../components/TeamExp';
 import { Layout } from '../components/Layout';
 import CustomBox from '../components/CustomBox';
 import { Calendar } from '../components/Calendar/Calendar';
-// import { Calendar } from '../components/Calendar/Calendar';
 
 interface TeamSchedule {
   id: number;
@@ -168,8 +167,7 @@ export default function AdminPage() {
             onClick={handleDeleteClick}
           />
           <TeamExp explanation={teamInfo.explanation} />
-            <Calendar width="700px" height="800px" schedules={sche} isEditable={true} />
-          <Calendar width="700px" height="800px" schedules={sche} onClick={() => {}} />
+          <Calendar width="700px" height="800px" schedules={sche} isEditable={true} />
         </Grid>
         <Grid item xs={4} md={4}>
           <CustomBox title="인원명단" items={memberList} isAdmins={isAdminList} onClick={handleMemberClick} />

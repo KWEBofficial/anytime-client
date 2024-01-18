@@ -50,7 +50,7 @@ export function InviteField({ teamId, setTeamInfo }: InviteFieldProps) {
 
   const handleClick = async () => {
     try {
-      const member = await axios.get(`${process.env.REACT_APP_API_URL}/member/search`, {
+      const member = await axios.get(`${process.env.REACT_APP_API_URL}/member/search/${keyword}`, {
         params: { email: keyword },
         headers: {
           'Content-Type': 'application/json',
@@ -68,6 +68,7 @@ export function InviteField({ teamId, setTeamInfo }: InviteFieldProps) {
           withCredentials: true,
         },
       );
+      console.log(3);
       if (response.status === 200) {
         enqueueSnackbar(`${keyword} 유저가 초대되었습니다. `, { variant: 'success' });
         if (setTeamInfo)
