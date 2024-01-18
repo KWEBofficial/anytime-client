@@ -18,7 +18,7 @@ export default function TeamTitle({ title, onClick }: TeamTitleProps) {
 
   const editTeam = (isPublic: boolean) => {
     openPrompt({
-      isPublic: isPublic,
+      isPublic,
       titleText: '모임 수정',
       buttonText: '수정',
       onSubmit: (teamName, content, color) => {

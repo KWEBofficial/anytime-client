@@ -178,7 +178,6 @@ export default function TeamPage() {
           <TeamExp explanation={teamInfo.explanation} />
         </Grid>
 
-
         <Grid item xs={3} xl={4}>
           <InviteField teamId={teamId} setTeamInfo={setTeamInfo} />
 

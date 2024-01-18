@@ -17,7 +17,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import { userState } from '../state/userState';
 
-import Examples from './Example';
+// import Examples from './Example';
 import Alarm from './alarm';
 
 // const pages = ['알람'];
@@ -138,7 +138,6 @@ function ResponsiveAppBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
             <Alarm />
-            <Examples />
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

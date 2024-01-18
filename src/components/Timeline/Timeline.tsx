@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
 import { addDays, addHours, addMinutes, format, startOfDay } from 'date-fns';
+import axios from 'axios';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers/';
 import { Grid, Stack, List, Box, Divider, Button } from '@mui/material';
 import './style.scss';
+
+import { useModal } from '../Modal/useModal';
 
 interface Sche {
   startDate: Date;
@@ -126,7 +128,12 @@ const RenderTime = ({ isVisible }: RenderTimeProps) => {
   return <Stack sx={{ display: 'flex', justifyContent: 'center', paddingTop: '13px' }}>{time}</Stack>;
 };
 
-export default function Timeline() {
+interface TimelineProps {
+  teamId: number;
+}
+
+export default function Timeline({ teamId }: TimelineProps) {
+  const { openAlert, openSchedulePrompt } = useModal();
   const [start, setStart] = useState<Date | null>(null);
   const [end, setEnd] = useState<Date | null>(null);
   const [total, setTotal] = useState<TeamMemSche[]>([
@@ -223,7 +230,38 @@ export default function Timeline() {
     onMouseMove={handleMouseMove}
   */
 
+  async function createSchedule(scheName: string, explanation: string, startTime: Date, endTime: Date) {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/schedule/create/${teamId}`,
+        { name: scheName, startTime, endTime, explanation },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        },
+      );
+      if (response.status === 200) {
+        openAlert({ title: '일정이 성공적으로 생성되었습니다' });
+      }
+    } catch (e) {
+      openAlert({ title: '일정 생성에 실패하였습니다..' });
+    }
+  }
+
+  const scheduleModal = () => {
+    openSchedulePrompt({
+      isEmpty: true,
+      onSubmit: (title, content, startTime, endTime) => {
+        if (startTime != null && endTime != null) createSchedule(title, content, startTime.toDate(), endTime.toDate());
+        else openAlert({ title: '일정 생성 실패', message: '일정의 시작과 끝을 입력해주세요' });
+      },
+    });
+  };
+
   const onClick = () => {
+    scheduleModal();
     // 모달 실행하여 새로운 일정을 추가할 경우 setTeamSche 실행 후 기간 초기화 => 사적모임 메인페이지로 이동?
     setTeamSche((curr) => curr); // 새로운 팀 일정 추가
     setStart(null);

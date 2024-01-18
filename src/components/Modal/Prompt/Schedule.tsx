@@ -6,7 +6,6 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
-import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { Stack, Typography } from '@mui/material';
@@ -32,11 +31,7 @@ const style = {
 };
 
 const SchedulePrompt = ({ visible = false, onClose, isEmpty, onSubmit }: SchedulePromptProps) => {
-  const {
-    register,
-    setValue,
-    handleSubmit: handleFormSubmit,
-  } = useForm<{
+  const { register, handleSubmit: handleFormSubmit } = useForm<{
     title: string;
     content: string;
     start: Dayjs | null;
@@ -84,7 +79,7 @@ const SchedulePrompt = ({ visible = false, onClose, isEmpty, onSubmit }: Schedul
               sx={{ width: '100%', marginBottom: 2 }}
               label="제목"
               placeholder="어떤 일정이 있나요?"
-              //variant="standard"
+              // variant="standard"
             />
             <TextField
               {...register('content', { required: false })}
@@ -93,7 +88,7 @@ const SchedulePrompt = ({ visible = false, onClose, isEmpty, onSubmit }: Schedul
               multiline
               rows={4}
               placeholder="간단 메모"
-              //variant="standard"
+              // variant="standard"
             />
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
