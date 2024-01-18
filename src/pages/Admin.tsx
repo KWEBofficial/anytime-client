@@ -169,7 +169,6 @@ export default function AdminPage() {
           />
           <TeamExp explanation={teamInfo.explanation} />
             <Calendar width="700px" height="800px" schedules={sche} isEditable={true} />
-          <Calendar width="700px" height="800px" schedules={sche} onClick={() => {}} />
         </Grid>
         <Grid item xs={4} md={4}>
           <CustomBox title="인원명단" items={memberList} isAdmins={isAdminList} onClick={handleMemberClick} />
