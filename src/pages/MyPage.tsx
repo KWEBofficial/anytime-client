@@ -17,7 +17,7 @@ interface ScheType {
   startDate: Date;
   endDate: Date;
   explanation: string;
-  color: string; // 개인 일정의 경우 color를 빈 문자열로 설정하시면 됩니다.
+  color: string;
 }
 export default function MyPage() {
   const userId = useRecoilValue(userState);
@@ -111,11 +111,11 @@ export default function MyPage() {
   }, [allSche]);
   return (
     <Layout>
-      <Grid container sx={{ marginTop: 5, minWidth: '1100px' }}>
+      <Grid container sx={{ minWidth: '1100px' }}>
         <Grid lg={0.5} xl={1}></Grid>
         <Grid item xs={8} xl={7}>
-          <Typography variant="h3" sx={{ color: '#696969', marginRight: '300px', marginBottom: 2 }}>
-            {member}
+          <Typography variant="h4" sx={{ color: '#696969', marginRight: '300px', marginBottom: 2 }}>
+            {member}님의 일정
           </Typography>
           <Calendar width={'55vw'} height={'90vh'} schedules={sche} onClick={editSchedule} />
         </Grid>

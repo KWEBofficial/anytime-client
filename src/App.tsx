@@ -4,8 +4,8 @@ import { SnackbarProvider } from 'notistack';
 import { ThemeProvider, createTheme } from '@mui/material';
 
 import { RouteComponent } from './route';
-
 import './App.css';
+import { SidebarProvider } from './contexts/sidebarContext';
 
 // import { ModalContextProvider } from './components/Modal/useModal';
 
@@ -27,15 +27,17 @@ const theme = createTheme({
  */
 function App() {
   return (
-    <SnackbarProvider maxSnack={3}>
-      <RecoilRoot>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter>
-            <RouteComponent />
-          </BrowserRouter>
-        </ThemeProvider>
-      </RecoilRoot>
-    </SnackbarProvider>
+    <SidebarProvider>
+      <SnackbarProvider maxSnack={3}>
+        <RecoilRoot>
+          <ThemeProvider theme={theme}>
+            <BrowserRouter>
+              <RouteComponent />
+            </BrowserRouter>
+          </ThemeProvider>
+        </RecoilRoot>
+      </SnackbarProvider>
+    </SidebarProvider>
   );
 
   /*
