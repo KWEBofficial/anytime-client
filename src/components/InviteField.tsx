@@ -10,6 +10,13 @@ const style = {
   marginBottom: 2,
   color: '#696969',
 };
+
+interface TeamNotice {
+  noticeId: number;
+  content: string;
+  createdAt: Date;
+  isPrior: boolean;
+}
 interface TeamSchedule {
   id: number;
   schedulename: string;
@@ -24,11 +31,13 @@ interface TeamMember {
 }
 interface TeamInfo {
   teamname: string;
-  color: number;
+  color: string;
   explanation: string;
   isPublic: number;
   member: TeamMember[];
   schedule: TeamSchedule[];
+  notice: TeamNotice[];
+  isAdmin: number;
 }
 
 interface InviteFieldProps {
@@ -76,13 +85,19 @@ export function InviteField({ teamId, setTeamInfo }: InviteFieldProps) {
       <TextField
         size="small"
         id="keyword"
-        label="유저의 e-mail을 입력하세요"
+        label="초대할 유저의 e-mail을 입력하세요"
         onChange={(event) => setKeyword(event.target.value)}
         onKeyDown={(event) => {
           if (event.key === 'Enter') handleClick();
         }}
+        sx={{ width: '200px' }}
       />
-      <Button variant="contained" color="primary" onClick={handleClick} sx={{ marginLeft: '3px' }}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleClick}
+        sx={{ marginLeft: '5px', backgroundColor: '#d3e9f6', color: '#696969' }}
+      >
         초대
       </Button>
     </Box>

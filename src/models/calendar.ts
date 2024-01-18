@@ -27,7 +27,8 @@ export interface ScheType {
 
 export interface CalendarProps {
   // onClick: (sche: ScheType) => void;
-  isEditable?: boolean;
+  isMyPage?: boolean;
+  isEditable: boolean;
   height: string;
   width: string;
   schedules: ScheType[];

@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import React, { useState } from 'react';
 import {
   format,
@@ -213,10 +214,12 @@ const RenderCells = ({ currentMonth, selectedDate, schedule, onDateClick, onSche
   );
 };
 
-export const Calendar = ({ isEditable, height, width, schedules }: CalendarProps) => {
+export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const { openAlert, openSchedulePrompt } = useModal();
+  const params = useParams();
+  const { teamId } = params;
 
   const prevMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
@@ -229,13 +232,7 @@ export const Calendar = ({ isEditable, height, width, schedules }: CalendarProps
     if (isEditable) createScheduleModal();
   };
 
-  async function createSchedule(
-    scheName: string,
-    explanation: string,
-    startTime: Date,
-    endTime: Date,
-    teamId?: number,
-  ) {
+  async function createSchedule(scheName: string, explanation: string, startTime: Date, endTime: Date) {
     try {
       const apiUrl = teamId
         ? `${process.env.REACT_APP_API_URL}/schedule/create/${teamId}`
@@ -315,7 +312,7 @@ export const Calendar = ({ isEditable, height, width, schedules }: CalendarProps
   const editScheduleModal = (sche: ScheType) => {
     openSchedulePrompt({
       isEmpty: false,
-      isEditable,
+      isEditable: isMyPage && sche.teamId !== 0 ? false : isEditable,
       scheduleId: sche.scheId,
       name: sche.name,
       startDate: sche.startDate,

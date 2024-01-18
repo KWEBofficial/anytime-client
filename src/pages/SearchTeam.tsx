@@ -57,8 +57,8 @@ export default function SearchTeamPage() {
   return (
     <Layout>
       <Box sx={{ minWidth: 750, justifyContent: 'center' }}>
-        <Box sx={{ margin: 10, display: 'flex', justifyContent: 'center' }}>
-          <Typography variant="h2">
+        <Box sx={{ margin: 5, display: 'flex', justifyContent: 'center' }}>
+          <Typography variant="h3" sx={{ color: '#696969' }}>
             <strong>언제든지 팀 찾기</strong>
           </Typography>
         </Box>
@@ -69,13 +69,18 @@ export default function SearchTeamPage() {
             }}
             size="small"
             id="keyword"
-            label="팀명"
+            label="검색할 모임의 이름을 입력해주세요"
             onChange={(event) => setKeyword(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === 'Enter') handleFindTeamClick();
             }}
           />
-          <Button variant="contained" color="primary" onClick={handleFindTeamClick} sx={{ marginLeft: '3px' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleFindTeamClick}
+            sx={{ marginLeft: '5px', backgroundColor: '#d3e9f6', color: '#696969', boxShadow: 'none' }}
+          >
             검색
           </Button>
         </Box>

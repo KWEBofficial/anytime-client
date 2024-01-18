@@ -67,7 +67,7 @@ const RenderCells = ({ start, end, validSche }: RenderCellsProps) => {
             daily[2 * i] = (
               <Grid
                 sx={{
-                  backgroundColor: '#f3c5b6',
+                  backgroundColor: '#d3e9f6',
                   paddingTop: '7px',
                   paddingBottom: '6px',
                   paddingLeft: '115px',
@@ -92,7 +92,7 @@ const RenderCells = ({ start, end, validSche }: RenderCellsProps) => {
         >
           {format(day, 'yyyy-MM-dd')}
         </Box>
-        <Box sx={{ border: '2px solid gray' }}>{daily}</Box>
+        <Box sx={{ border: '2px solid #696969' }}>{daily}</Box>
       </List>,
     );
     day = addDays(day, 1);
@@ -115,7 +115,7 @@ const RenderTime = ({ isVisible }: RenderTimeProps) => {
         sx={{
           fontSize: '17.44px',
           fontWeight: 'bold',
-          border: '0.1px solid gray',
+          border: '0.1px solid #696969',
           display: 'flex',
           justifyContent: 'center',
         }}
@@ -294,7 +294,12 @@ export default function Timeline({ teamId }: TimelineProps) {
                 value={end}
                 onChange={(newValue) => setEnd(newValue)}
               />
-              <Button color="secondary" variant={'outlined'} onClick={onClick}>
+              <Button
+                color="secondary"
+                variant={'outlined'}
+                onClick={onClick}
+                sx={{ color: '#696969', borderColor: '#696969' }}
+              >
                 모임 일정 추가
               </Button>
             </DemoContainer>
