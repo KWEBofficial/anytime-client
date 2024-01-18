@@ -1,19 +1,25 @@
-export interface ScheduleDTO {
+export interface AllScheSearchDTO {
   [x: string]: any;
-  name: string;
-  startDate: Date;
-  endDate: Date;
-  explanation: string;
-}
-export interface TeamScheduleDTO {
-  [x: string]: any;
-  teamId: number;
-  teamname: string;
-  schedules: ScheduleDTO[];
+  mySchedules: ScheduleDTO[];
+  teamSchedules: TeamScheduleDTO[];
 }
 
 export interface AllScheSearchDTO {
-  [x: string]: any;
-  MySchedules: ScheduleDTO[];
-  TeamSchedules: TeamScheduleDTO[];
+  mySchedules: ScheduleDTO[];
+  teamSchedules: TeamScheduleDTO[];
+}
+
+interface ScheduleDTO {
+  scheId: number;
+  name: string;
+  startTime: Date;
+  endTime: Date;
+  explanation: string;
+}
+interface TeamScheduleDTO {
+  teamId: number;
+  teamname: string;
+  isHide: boolean;
+  color: string;
+  schedules: ScheduleDTO[];
 }

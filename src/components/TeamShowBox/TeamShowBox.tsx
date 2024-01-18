@@ -1,48 +1,55 @@
 import * as React from 'react';
-import FormLabel from '@mui/material/FormLabel';
+import axios from 'axios';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import { blue, green, grey, red } from '@mui/material/colors';
-import { Checkbox, Box, List } from '@mui/material';
+import { grey } from '@mui/material/colors';
+import { Checkbox, Box, List, Typography } from '@mui/material';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+
 import './TeamShowBox.css';
+import { AllScheSearchDTO } from '../../models/AllScheSearch';
 
 interface Team {
+  id: number;
   name: string;
+  isHide: boolean;
   color: string;
 }
+interface TeamShowBoxProps {
+  teams: Team[];
+  setState: React.Dispatch<React.SetStateAction<AllScheSearchDTO>>;
+}
 
-export default function TeamShowBox() {
-  const teams: Team[] = [
-    {
-      name: 'teamasdfasdfasfsfSDFsfdasdfka;fjahsjdfklafsadhsdfhdhdhsadjfasdlfasdlfjasdlfasfasdfha;skvmzx.wAHDIJKDKDKDKDKASJXKZ.Z.CKEKOCKMFIFKMCMEKOFOETLLYPVKFMFKVMFMKMDKLSJDVKLZFJLASKDJF;AEKSDJF;KASJDF;ASDJF;AJSDFJA',
-      color: red[400],
-    },
-    {
-      name: 'team2',
-      color: blue[300],
-    },
-    {
-      name: 'team3',
-      color: green[400],
-    },
-    {
-      name: 'team3',
-      color: green[400],
-    },
-    {
-      name: 'team3',
-      color: green[400],
-    },
-    {
-      name: 'team3',
-      color: green[400],
-    },
-  ];
-
-  const teamBox = teams.map((t) => {
+export default function TeamShowBox({ teams, setState }: TeamShowBoxProps) {
+  const handleClick = async (id: number, index: number) => {
+    try {
+      const response = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/team/hide/${id}`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        },
+      );
+      if (response.status === 200) {
+        setState((prevState) => ({
+          ...prevState,
+          teamSchedules: [
+            ...prevState.teamSchedules.slice(0, index),
+            { ...prevState.teamSchedules[index], isHide: !prevState.teamSchedules[index].isHide },
+            ...prevState.teamSchedules.slice(index + 1),
+          ],
+        }));
+      }
+    } catch (e) {
+      /* empty */
+    }
+  };
+  const teamBox = teams.map((t, index) => {
     const k = (
       <Box
         sx={{
@@ -70,9 +77,10 @@ export default function TeamShowBox() {
               }}
               icon={<VisibilityOffIcon sx={{ color: 'black' }} />}
               checkedIcon={<VisibilityIcon sx={{ color: 'black' }} />}
-              defaultChecked
+              checked={!t.isHide}
             />
           }
+          onClick={() => handleClick(t.id, index)}
           label={t.name}
           labelPlacement="start"
         />
@@ -100,7 +108,7 @@ export default function TeamShowBox() {
       }}
     >
       <FormControl component="fieldset">
-        <FormLabel sx={{ color: 'black' }}>팀 표시/숨김</FormLabel>
+        <Typography sx={{ color: 'black', textAlign: 'center' }}>팀 표시/숨김</Typography>
         <FormGroup className="scroll" sx={{ maxHeight: '20vw', overflow: 'scroll' }} aria-label="position" row>
           <List> {teamBox}</List>
         </FormGroup>
