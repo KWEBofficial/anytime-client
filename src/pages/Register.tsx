@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 
@@ -91,12 +92,12 @@ export default function RegisterPage() {
           },
         );
         if (response.status === 200) {
-          window.alert('회원가입이 완료되었습니다.');
           navigate('/');
+          enqueueSnackbar('회원가입이 완료되었습니다.', { variant: 'success' });
         }
       }
     } catch (e) {
-      window.alert('회원가입에 실패했습니다.');
+      enqueueSnackbar('회원가입에 실패했습니다.', { variant: 'error' });
     }
   }
 

@@ -9,9 +9,10 @@ import { useModal } from './Modal/useModal';
 
 interface TeamTitleProps {
   title: string;
+  onClick?: () => void;
 }
 
-export default function TeamTitle({ title }: TeamTitleProps) {
+export default function TeamTitle({ title, onClick }: TeamTitleProps) {
   const { openAlert, openPrompt } = useModal();
 
   const editTeam = (isPublic: boolean) => {
@@ -37,7 +38,7 @@ export default function TeamTitle({ title }: TeamTitleProps) {
         <IconButton sx={{ color: '#696969' }} aria-label="Edit">
           <EditIcon onClick={() => editTeam(true)} />
         </IconButton>
-        <IconButton sx={{ color: '#696969' }} aria-label="Delete">
+        <IconButton sx={{ color: '#696969' }} aria-label="Delete" onClick={onClick}>
           <DeleteIcon />
         </IconButton>
       </Toolbar>
