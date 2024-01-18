@@ -45,7 +45,7 @@ export default function ClippedDrawer() {
   const [myTeam, setMyTeam] = useState<TeamInfo[]>([]);
   const [publicIsFavor, setPublicIsFavor] = useState<number[]>([]);
   const [privateIsFavor, setPrivateIsFavor] = useState<number[]>([]);
-  const { openAlert, openPrompt } = useModal();
+  const { openPrompt } = useModal();
   const { refresh } = useSidebar();
 
   const handlePrivateClick = () => {
@@ -143,7 +143,7 @@ export default function ClippedDrawer() {
         refresh();
       }
     } catch (e) {
-      openAlert({ title: '모임 생성에 실패하였습니다..' });
+      enqueueSnackbar('모임 생성에 실패하였습니다..', { variant: 'error' });
     }
   }
 
@@ -153,7 +153,8 @@ export default function ClippedDrawer() {
       titleText: '모임 생성',
       buttonText: '생성',
       onSubmit: (title, content, color) => {
-        createTeam(title, content, color, isPublic);
+        if (color) createTeam(title, content, color, isPublic);
+        else enqueueSnackbar('모임 생성 실패 : 모임 색상을 선택해주세요', { variant: 'error' });
       },
     });
   };

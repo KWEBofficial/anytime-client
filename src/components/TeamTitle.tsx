@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
@@ -17,28 +18,36 @@ interface TeamTitleProps {
   teamId: number;
   onClick?: () => void;
   isAdmin: boolean;
+  isPublic: boolean;
 }
 
-export default function TeamTitle({ title, teamId, isAdmin, onClick }: TeamTitleProps) {
-  const { openAlert, openPrompt } = useModal();
+export default function TeamTitle({ title, teamId, isAdmin, isPublic, onClick }: TeamTitleProps) {
+  const { openPrompt, openConfirm } = useModal();
   const navigate = useNavigate();
   const { refresh } = useSidebar();
 
-  const editTeam = (isPublic: boolean) => {
-    openPrompt({
-      isPublic,
-      titleText: '모임 수정',
-      buttonText: '수정',
-      onSubmit: (teamName, content, color) => {
-        openAlert({
-          title: '모임 정보가 수정되었습니다',
-          message: `모임 이름: ${teamName} 모임 설명: ${content} 모임 색상: ${color}`,
-        });
-      },
-    });
-  };
+  async function editTeamFunc(teamname: string, explanation: string, color: string) {
+    try {
+      const response = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/team/${teamId}`,
+        { teamname, color, explanation },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        },
+      );
+      if (response.status === 200) {
+        enqueueSnackbar('모임 정보가 수정되었습니다.', { variant: 'success' });
+        refresh();
+      }
+    } catch (e) {
+      enqueueSnackbar('모임 정보 수정에 실패하였습니다..', { variant: 'error' });
+    }
+  }
 
-  const deleteTeam = async () => {
+  async function deleteTeamFunc() {
     try {
       const response = await axios.delete(`${process.env.REACT_APP_API_URL}/team/${teamId}`, {
         headers: {
@@ -47,16 +56,16 @@ export default function TeamTitle({ title, teamId, isAdmin, onClick }: TeamTitle
         withCredentials: true,
       });
       if (response.status === 200) {
-        openAlert({ title: '모임이 삭제되었습니다.' });
+        enqueueSnackbar('모임이 삭제되었습니다.', { variant: 'success' });
         refresh();
         navigate(`/main`, { replace: true });
       }
     } catch (e) {
-      openAlert({ title: '모임 삭제를 실패하였습니다..' });
+      enqueueSnackbar('모임 삭제에 실패하였습니다.', { variant: 'error' });
     }
-  };
+  }
 
-  const exitTeam = async () => {
+  async function exitTeamFunc() {
     try {
       const response = await axios.delete(`${process.env.REACT_APP_API_URL}/team/subscribe/${teamId}`, {
         headers: {
@@ -65,13 +74,45 @@ export default function TeamTitle({ title, teamId, isAdmin, onClick }: TeamTitle
         withCredentials: true,
       });
       if (response.status === 200) {
-        openAlert({ title: '모임에서 탈퇴되었습니다.' });
+        enqueueSnackbar('모임에서 탈퇴되었습니다.', { variant: 'success' });
         refresh();
         navigate(`/main`, { replace: true });
       }
     } catch (e) {
-      openAlert({ title: '모임 탈퇴를 실패하였습니다..' });
+      enqueueSnackbar('모임 탈퇴에 실패하였습니다.', { variant: 'error' });
     }
+  }
+
+  const editTeam = () => {
+    openPrompt({
+      isPublic,
+      titleText: '모임 수정',
+      buttonText: '수정',
+      onSubmit: (teamName, content, color) => {
+        if (color) editTeamFunc(teamName, content, color);
+        else enqueueSnackbar('모임 생성 실패 : 모임 색상을 선택해주세요', { variant: 'error' });
+      },
+    });
+  };
+
+  const deleteTeam = () => {
+    openConfirm({
+      title: '모임 삭제',
+      message: '정말 삭제하시겠습니까?',
+      cancelText: '아니오',
+      confirmText: '예',
+      onConfirm: () => deleteTeamFunc(),
+    });
+  };
+
+  const exitTeam = () => {
+    openConfirm({
+      title: '모임 탈퇴',
+      message: '정말 탈퇴하시겠습니까?',
+      cancelText: '아니오',
+      confirmText: '예',
+      onConfirm: () => exitTeamFunc(),
+    });
   };
 
   return (
@@ -82,7 +123,7 @@ export default function TeamTitle({ title, teamId, isAdmin, onClick }: TeamTitle
         </Typography>
         {isAdmin ? (
           <IconButton sx={{ color: '#696969' }} aria-label="Edit">
-            <EditIcon onClick={() => editTeam(true)} />
+            <EditIcon onClick={() => editTeam()} />
           </IconButton>
         ) : null}
         <IconButton sx={{ color: '#696969' }} aria-label="Delete" onClick={onClick}>
