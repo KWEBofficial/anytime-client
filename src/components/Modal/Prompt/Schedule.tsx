@@ -1,17 +1,17 @@
 import { useForm } from 'react-hook-form';
+import React from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import TextField from '@mui/material/TextField';
+import Modal from '@mui/material/Modal';
+import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { Stack, Typography } from '@mui/material';
 
 import { IModal } from '../../../types/modal';
-
-import dayjs, { Dayjs } from 'dayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import React from 'react';
-import TextField from '@mui/material/TextField';
-import Modal from '@mui/material/Modal';
 
 export interface SchedulePromptProps extends IModal {
   isEmpty: boolean; // 일정 생성 or 일정 확인 및 수정
@@ -20,7 +20,7 @@ export interface SchedulePromptProps extends IModal {
 }
 
 const style = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',

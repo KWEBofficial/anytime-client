@@ -56,31 +56,39 @@ export default function SearchTeamPage() {
   }, []);
   return (
     <Layout>
-      <Typography variant="h4">SearchTeamPage</Typography>
-
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <TextField
-          size="small"
-          id="keyword"
-          label="팀명"
-          onChange={(event) => setKeyword(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') handleFindTeamClick();
-          }}
+      <Box sx={{ minWidth: 750, justifyContent: 'center' }}>
+        <Box sx={{ margin: 10, display: 'flex', justifyContent: 'center' }}>
+          <Typography variant="h2">
+            <strong>언제든지 팀 찾기</strong>
+          </Typography>
+        </Box>
+        <Box sx={{ m: 2, display: 'flex', justifyContent: 'center' }}>
+          <TextField
+            sx={{
+              width: '30vw',
+            }}
+            size="small"
+            id="keyword"
+            label="팀명"
+            onChange={(event) => setKeyword(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') handleFindTeamClick();
+            }}
+          />
+          <Button variant="contained" color="primary" onClick={handleFindTeamClick} sx={{ marginLeft: '3px' }}>
+            검색
+          </Button>
+        </Box>
+        {currentInfos.map((info) => (
+          <PublicCard key={info.id} {...info} />
+        ))}
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          sx={{ display: 'flex', justifyContent: 'center' }}
         />
-        <Button variant="contained" color="primary" onClick={handleFindTeamClick} sx={{ marginLeft: '3px' }}>
-          검색
-        </Button>
       </Box>
-      {currentInfos.map((info) => (
-        <PublicCard key={info.id} {...info} />
-      ))}
-      <Pagination
-        count={totalPages}
-        page={currentPage}
-        onChange={handlePageChange}
-        sx={{ display: 'flex', justifyContent: 'center' }}
-      />
     </Layout>
   );
 }
