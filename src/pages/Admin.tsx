@@ -5,7 +5,6 @@ import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import { isDeclareInterface } from '@babel/types';
 
 import { userState } from '../state/userState';
 import { ScheType } from '../models/calendar';
@@ -162,7 +161,12 @@ export default function AdminPage() {
     <Layout>
       <Grid container>
         <Grid item xs={8}>
-          <TeamTitle title={teamInfo.teamname} onClick={handleDeleteClick} />
+          <TeamTitle
+            teamId={teamId as unknown as number}
+            title={teamInfo.teamname}
+            isAdmin={teamInfo.isAdmin}
+            onClick={handleDeleteClick}
+          />
           <TeamExp explanation={teamInfo.explanation} />
           <Calendar width="700px" height="800px" schedules={sche} isEditable={true} />
         </Grid>
