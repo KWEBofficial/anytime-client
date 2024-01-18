@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
@@ -18,7 +19,7 @@ interface TeamTitleProps {
 }
 
 export default function TeamTitle({ title, teamId, isAdmin, onClick }: TeamTitleProps) {
-  const { openAlert, openPrompt } = useModal();
+  const { openAlert, openPrompt, openConfirm } = useModal();
   const navigate = useNavigate();
 
   const editTeam = (isPublic: boolean) => {
@@ -35,7 +36,7 @@ export default function TeamTitle({ title, teamId, isAdmin, onClick }: TeamTitle
     });
   };
 
-  const deleteTeam = async () => {
+  async function deleteTeamFunc() {
     try {
       const response = await axios.delete(`${process.env.REACT_APP_API_URL}/team/${teamId}`, {
         headers: {
@@ -44,15 +45,15 @@ export default function TeamTitle({ title, teamId, isAdmin, onClick }: TeamTitle
         withCredentials: true,
       });
       if (response.status === 200) {
-        openAlert({ title: '모임이 삭제되었습니다.' });
+        enqueueSnackbar('모임이 삭제되었습니다.', { variant: 'success' });
         navigate(`/main`, { replace: true });
       }
     } catch (e) {
-      openAlert({ title: '모임 삭제를 실패하였습니다..' });
+      enqueueSnackbar('모임 삭제에 실패하였습니다.', { variant: 'error' });
     }
-  };
+  }
 
-  const exitTeam = async () => {
+  async function exitTeamFunc() {
     try {
       const response = await axios.delete(`${process.env.REACT_APP_API_URL}/team/subscribe/${teamId}`, {
         headers: {
@@ -61,12 +62,32 @@ export default function TeamTitle({ title, teamId, isAdmin, onClick }: TeamTitle
         withCredentials: true,
       });
       if (response.status === 200) {
-        openAlert({ title: '모임에서 탈퇴되었습니다.' });
+        enqueueSnackbar('모임에서 탈퇴되었습니다.', { variant: 'success' });
         navigate(`/main`, { replace: true });
       }
     } catch (e) {
-      openAlert({ title: '모임 탈퇴를 실패하였습니다..' });
+      enqueueSnackbar('모임 탈퇴에 실패하였습니다.', { variant: 'error' });
     }
+  }
+
+  const deleteTeam = () => {
+    openConfirm({
+      title: '모임 삭제',
+      message: '정말 삭제하시겠습니까?',
+      cancelText: '아니오',
+      confirmText: '예',
+      onConfirm: () => deleteTeamFunc(),
+    });
+  };
+
+  const exitTeam = () => {
+    openConfirm({
+      title: '모임 탈퇴',
+      message: '정말 탈퇴하시겠습니까?',
+      cancelText: '아니오',
+      confirmText: '예',
+      onConfirm: () => exitTeamFunc(),
+    });
   };
 
   return (

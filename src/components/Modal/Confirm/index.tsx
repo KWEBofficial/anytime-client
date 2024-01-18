@@ -24,6 +24,7 @@ const style = {
   bgcolor: 'background.paper',
   border: '1px solid #000',
   boxShadow: 24,
+  borderRadius: 5,
   p: 4,
 };
 
@@ -55,8 +56,8 @@ const Confirm = ({
         )}
         {message && <Typography sx={{ mt: 2 }}>{message}</Typography>}
         <Grid container justifyContent="flex-end">
-          <Button onClick={handleCancel}>{cancelText}</Button>
           <Button onClick={handleConfirm}>{confirmText}</Button>
+          <Button onClick={handleCancel}>{cancelText}</Button>
         </Grid>
       </Box>
     </Modal>
