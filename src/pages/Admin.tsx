@@ -5,6 +5,7 @@ import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import { isDeclareInterface } from '@babel/types';
 
 import { userState } from '../state/userState';
 import { ScheType } from '../models/calendar';
@@ -163,7 +164,7 @@ export default function AdminPage() {
         <Grid item xs={8}>
           <TeamTitle title={teamInfo.teamname} onClick={handleDeleteClick} />
           <TeamExp explanation={teamInfo.explanation} />
-          <Calendar width="700px" height="800px" schedules={sche} onClick={() => {}} />
+          <Calendar width="700px" height="800px" schedules={sche} isEditable={true} />
         </Grid>
         <Grid item xs={4} md={4}>
           <CustomBox title="인원명단" items={memberList} isAdmins={isAdminList} onClick={handleMemberClick} />
