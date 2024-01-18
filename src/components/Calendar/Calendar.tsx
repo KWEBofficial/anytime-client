@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import React, { useState } from 'react';
 import {
   format,
@@ -131,7 +132,16 @@ const RenderCells = ({ currentMonth, selectedDate, schedule, onDateClick, onSche
           color = validSche[j].color === '' ? color : validSche[j].color;
           color = cN === 'disabled' ? '#929292' : color;
           schesBox.push(
-            <Grid container key={j} className="scheBox" onClick={() => onScheClick(validSche[j])} xs={12}>
+            <Grid
+              container
+              key={j}
+              className="scheBox"
+              onClick={(e) => {
+                onScheClick(validSche[j]);
+                e.stopPropagation();
+              }}
+              xs={12}
+            >
               <Grid
                 xs={1}
                 sm={1}
@@ -204,10 +214,12 @@ const RenderCells = ({ currentMonth, selectedDate, schedule, onDateClick, onSche
   );
 };
 
-export const Calendar = ({ onClick, height, width, schedules }: CalendarProps) => {
+export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const { openAlert, openSchedulePrompt } = useModal();
+  const params = useParams();
+  const { teamId } = params;
 
   const prevMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
@@ -217,16 +229,10 @@ export const Calendar = ({ onClick, height, width, schedules }: CalendarProps) =
   };
   const onDateClick = (day: Date) => {
     setSelectedDate(day);
-    scheduleModal();
+    if (isEditable) createScheduleModal();
   };
 
-  async function createSchedule(
-    scheName: string,
-    explanation: string,
-    startTime: Date,
-    endTime: Date,
-    teamId?: number,
-  ) {
+  async function createSchedule(scheName: string, explanation: string, startTime: Date, endTime: Date) {
     try {
       const apiUrl = teamId
         ? `${process.env.REACT_APP_API_URL}/schedule/create/${teamId}`
@@ -250,12 +256,75 @@ export const Calendar = ({ onClick, height, width, schedules }: CalendarProps) =
     }
   }
 
-  const scheduleModal = () => {
+  async function editSchedule(
+    scheName: string,
+    explanation: string,
+    startTime: Date,
+    endTime: Date,
+    scheduleId: number,
+  ) {
+    try {
+      const response = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/schedule/${scheduleId}`,
+        { name: scheName, startTime, endTime, explanation },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        },
+      );
+      if (response.status === 200) {
+        openAlert({ title: '일정이 성공적으로 수정되었습니다' });
+      }
+    } catch (e) {
+      openAlert({ title: '일정 수정에 실패하였습니다..' });
+    }
+  }
+
+  async function deleteSchedule(scheduleId: number) {
+    try {
+      const response = await axios.delete(`${process.env.REACT_APP_API_URL}/schedule/${scheduleId}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        openAlert({ title: '일정이 성공적으로 삭제되었습니다' });
+      }
+    } catch (e) {
+      openAlert({ title: '일정 삭제에 실패하였습니다..' });
+    }
+  }
+
+  const createScheduleModal = () => {
     openSchedulePrompt({
       isEmpty: true,
+      isEditable,
       onSubmit: (title, content, startTime, endTime) => {
         if (startTime != null && endTime != null) createSchedule(title, content, startTime.toDate(), endTime.toDate());
         else openAlert({ title: '일정 생성 실패', message: '일정의 시작과 끝을 입력해주세요' });
+      },
+    });
+  };
+
+  const editScheduleModal = (sche: ScheType) => {
+    openSchedulePrompt({
+      isEmpty: false,
+      isEditable: isMyPage && sche.teamId !== 0 ? false : isEditable,
+      scheduleId: sche.scheId,
+      name: sche.name,
+      startDate: sche.startDate,
+      endDate: sche.endDate,
+      explanation: sche.explanation,
+      onSubmit: (title, content, startTime, endTime) => {
+        if (startTime != null && endTime != null)
+          editSchedule(title, content, startTime.toDate(), endTime.toDate(), sche.scheId);
+        else openAlert({ title: '일정 수정 실패', message: '일정의 시작과 끝을 입력해주세요' });
+      },
+      onDelete: (ondelete) => {
+        if (ondelete) deleteSchedule(sche.scheId);
       },
     });
   };
@@ -290,7 +359,7 @@ export const Calendar = ({ onClick, height, width, schedules }: CalendarProps) =
         selectedDate={selectedDate}
         schedule={sches}
         onDateClick={onDateClick}
-        onScheClick={onClick}
+        onScheClick={editScheduleModal}
       />
     </Box>
   );

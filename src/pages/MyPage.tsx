@@ -6,7 +6,7 @@ import { Box, Grid, Typography } from '@mui/material';
 import { userState } from '../state/userState';
 import { AllScheSearchDTO } from '../models/AllScheSearch';
 import TeamShowBox from '../components/TeamShowBox/TeamShowBox';
-import { useModal } from '../components/Modal/useModal';
+// import { useModal } from '../components/Modal/useModal';
 import { Layout } from '../components/Layout';
 import { Calendar } from '../components/Calendar/Calendar';
 // import Examples from '../components/Example';
@@ -33,8 +33,9 @@ export default function MyPage() {
     mySchedules: [],
     teamSchedules: [],
   });
+  /*
   const { openAlert, openSchedulePrompt } = useModal();
-
+  
   const editSchedule = (Sche: ScheType) => {
     if (Sche.teamId)
       openSchedulePrompt({
@@ -47,6 +48,7 @@ export default function MyPage() {
         },
       });
   };
+  */
 
   useEffect(() => {
     const fetchData = async () => {
@@ -124,7 +126,7 @@ export default function MyPage() {
             {member}
           </Typography>
           <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>
-            <Calendar width={'55vw'} height={'90vh'} schedules={sche} onClick={editSchedule} />
+            <Calendar width={'55vw'} height={'90vh'} schedules={sche} isEditable={true} isMyPage={true} />
           </Box>
         </Grid>
 

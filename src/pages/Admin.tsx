@@ -14,6 +14,8 @@ import TeamExp from '../components/TeamExp';
 import NoticeBox from '../components/NoticeBox';
 import { Layout } from '../components/Layout';
 import CustomBox from '../components/CustomBox';
+import { isDeclareInterface } from '@babel/types';
+import { Calendar } from '../components/Calendar/Calendar';
 // import { Calendar } from '../components/Calendar/Calendar';
 
 interface TeamSchedule {
@@ -166,7 +168,7 @@ export default function AdminPage() {
           <NoticeBox notices={teamInfo.notices.map((notice) => notice.content)} />
 
           <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>
-            <Calendar width="700px" height="800px" schedules={sche} onClick={() => {}} />
+            <Calendar width="700px" height="800px" schedules={sche} isEditable={true} />
           </Box>
 
           <TeamExp explanation={teamInfo.explanation} />

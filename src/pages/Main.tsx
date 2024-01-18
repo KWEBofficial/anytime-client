@@ -4,9 +4,7 @@ import FavorTeamSche from '../components/FavorTeamSche/FavorTeamSche';
 import { Calendar } from '../components/Calendar/Calendar';
 
 export default function MainPage() {
-  const onClick = (sche: ScheType) => {
-    alert(sche.name);
-  };
+  const isEditable = false;
   /* 예시를 위해 메인페이지에서는 schedule을 클릭했을 때 alert를 띄우는 함수를 설정했습니다. 
   기타 페이지에서는 클릭한 스케쥴을 수정하는 모달을 띄우는 등의 함수를 설정할 수 있습니다. */
   const height = '90vh';
@@ -25,7 +23,7 @@ export default function MainPage() {
 
   return (
     <Layout>
-      <Calendar onClick={onClick} height={height} width={width} schedules={sches} />
+      <Calendar isEditable={isEditable} height={height} width={width} schedules={sches} />
       <FavorTeamSche />
     </Layout>
   );
