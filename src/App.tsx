@@ -6,7 +6,6 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import { RouteComponent } from './route';
 
 import './App.css';
-import { ModalContextProvider } from './components/Modal/useModal';
 
 /**
  * mui에서 제공하는 테마 설정입니다.
@@ -37,7 +36,7 @@ function App() {
     </SnackbarProvider>
   );
 
-  /*}
+  /*
 
     <ThemeProvider theme={theme}>
       <BrowserRouter>
@@ -66,7 +65,7 @@ function App() {
  
       </BrowserRouter>
     </ThemeProvider>
-    {*/
+    */
 }
 
 export default App;

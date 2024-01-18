@@ -1,10 +1,4 @@
 export interface AllScheSearchDTO {
-  [x: string]: any;
-  mySchedules: ScheduleDTO[];
-  teamSchedules: TeamScheduleDTO[];
-}
-
-export interface AllScheSearchDTO {
   mySchedules: ScheduleDTO[];
   teamSchedules: TeamScheduleDTO[];
 }
@@ -16,7 +10,7 @@ interface ScheduleDTO {
   endTime: Date;
   explanation: string;
 }
-interface TeamScheduleDTO {
+export interface TeamScheduleDTO {
   teamId: number;
   teamname: string;
   isHide: boolean;

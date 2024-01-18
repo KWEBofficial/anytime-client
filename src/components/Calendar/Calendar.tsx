@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   format,
   addMonths,
@@ -10,21 +10,16 @@ import {
   isSameMonth,
   isSameDay,
   addDays,
+  addWeeks,
   parse,
+  isToday,
 } from 'date-fns';
-// import axios from 'axios';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import ArrowCircleRightSharpIcon from '@mui/icons-material/ArrowCircleRightSharp';
 import ArrowCircleLeftSharpIcon from '@mui/icons-material/ArrowCircleLeftSharp';
 import './style.scss';
 
-interface StateTypes {
-  name: string;
-  startDate: Date;
-  endDate: Date;
-  explanation: string;
-  color: string;
-}
+import { ScheType, CalendarProps } from '../../models/calendar';
 
 interface RenderHeaderProps {
   currentMonth: Date;
@@ -69,11 +64,12 @@ const RenderDays = () => {
 interface RenderCellsProps {
   currentMonth: Date;
   selectedDate: Date;
+  schedule: ScheType[];
   onDateClick: (date: Date) => void;
-  schedule: StateTypes[];
+  onScheClick: (sche: ScheType) => void;
 }
 
-const RenderCells = ({ currentMonth, selectedDate, onDateClick, schedule }: RenderCellsProps) => {
+const RenderCells = ({ currentMonth, selectedDate, schedule, onDateClick, onScheClick }: RenderCellsProps) => {
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
@@ -84,8 +80,8 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick, schedule }: Rend
   let day = startDate;
   let formattedDate = '';
 
-  const isValidSche = (sche: StateTypes[]) => {
-    const validSche = [];
+  const isValidSche = (sche: ScheType[]) => {
+    const validSche: ScheType[] = [];
     if (!sche) return [];
     for (let i = 0; i < sche.length; i += 1) {
       const scheStart = sche[i].startDate;
@@ -105,6 +101,8 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick, schedule }: Rend
     return validSche;
   };
 
+  const rowHeight = isSameMonth(monthStart, addWeeks(startDate, 5)) ? '16.6%' : '20%';
+
   while (day <= endDate) {
     for (let i = 0; i < 7; i += 1) {
       formattedDate = format(day, 'd');
@@ -114,6 +112,8 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick, schedule }: Rend
         cN = 'disabled';
       } else if (isSameDay(day, selectedDate)) {
         cN = 'selected';
+      } else if (isToday(day)) {
+        cN = 'today';
       } else if (format(currentMonth, 'M') !== format(day, 'M')) {
         cN = 'not-valid';
       } else {
@@ -124,13 +124,12 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick, schedule }: Rend
       const validSche = isValidSche(schedule);
 
       if (validSche) {
-        const length = validSche.length <= 3 ? validSche.length : 3;
-        for (let j = 0; j < length; j += 1) {
+        for (let j = 0; j < validSche.length; j += 1) {
           let color = '#96B1D0';
           color = validSche[j].color === '' ? color : validSche[j].color;
           color = cN === 'disabled' ? '#929292' : color;
           schesBox.push(
-            <Grid container key={j} className="scheBox" onClick={() => alert(validSche[j].name)}>
+            <Grid container key={j} className="scheBox" onClick={() => onScheClick(validSche[j])} xs={12}>
               <Grid
                 xs={1}
                 sm={1}
@@ -139,6 +138,7 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick, schedule }: Rend
                 xl={1}
                 sx={{
                   backgroundColor: color,
+                  border: 'border: 0.5px solid #9da7d4',
                   borderTopLeftRadius: '5px',
                   borderBottomLeftRadius: '5px',
                 }}
@@ -152,6 +152,8 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick, schedule }: Rend
                 display="flex"
                 justifyContent="center"
                 className={'schedule'}
+                whiteSpace={'nowrap'}
+                overflow={'hidden'}
               >
                 {validSche[j].name}
               </Grid>
@@ -160,49 +162,47 @@ const RenderCells = ({ currentMonth, selectedDate, onDateClick, schedule }: Rend
         }
       }
 
+      const dateOnClick = cN === 'disabled' ? () => {} : () => onDateClick(parse(cloneDay, 'yyyy-MM-dd', new Date()));
+      // 해당 월에 포함되지 않는 일자 cell을 클릭할 경우 아무런 변화가 없도록 처리.
       days.push(
-        <Grid
-          className={`col cell ${cN}`}
-          key={cloneDay}
-          onClick={() => onDateClick(parse(cloneDay, 'yyyy-MM-dd', new Date()))}
-        >
-          <Grid
+        <Grid className={`col cell ${cN}`} key={cloneDay} onClick={dateOnClick} overflow={'scroll'}>
+          <Stack
             sx={{
               alignItems: 'start',
               p: 0.5,
+              width: '100%',
             }}
-            container
             className={format(currentMonth, 'M') !== format(day, 'M') ? 'text not-valid' : ''}
           >
-            <Grid
+            <Box
               sx={{
                 fontWeight: 'bold',
                 fontSize: 20,
               }}
             >
               {formattedDate}
-            </Grid>
+            </Box>
             <Grid container>{schesBox}</Grid>
-          </Grid>
+          </Stack>
         </Grid>,
       );
       day = addDays(day, 1);
     }
     rows.push(
-      <Grid className="row" key={formattedDate}>
+      <Grid className="row" key={formattedDate} maxHeight={rowHeight}>
         {days}
       </Grid>,
     );
     days = [];
   }
   return (
-    <Box height={'500px'} className="body">
+    <Box height={'100%'} className="body">
       {rows}
     </Box>
   );
 };
 
-export const Calendar = () => {
+export const Calendar = ({ onClick, height, width, schedules }: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -216,111 +216,38 @@ export const Calendar = () => {
     setSelectedDate(day);
   };
 
-  const [sches, setSches] = useState<StateTypes[]>([
-    {
-      name: 'KWEB 해커톤 최종발표',
-      startDate: new Date('2024-01-19'),
-      endDate: new Date('2024-01-19'),
-      explanation: '우정정보관',
-      color: 'red',
-    },
-    {
-      name: '해커톤 시작',
-      startDate: new Date('2024-01-08'),
-      endDate: new Date('2024-01-13'),
-      explanation: 'test1',
-      color: 'red',
-    },
-    {
-      name: '해커톤 시작222',
-      startDate: new Date('2024-01-02'),
-      endDate: new Date('2024-01-04'),
-      explanation: 'test2',
-      color: 'red',
-    },
-    {
-      name: 'testtest',
-      startDate: new Date('2023-12-31'),
-      endDate: new Date('2023-12-31'),
-      explanation: 'test2',
-      color: '',
-    },
-    {
-      name: 'testtttt',
-      startDate: new Date('2024-01-29'),
-      endDate: new Date('2024-02-02'),
-      explanation: 'test2',
-      color: '',
-    },
-    {
-      name: 'stacktest',
-      startDate: new Date('2024-01-10'),
-      endDate: new Date('2024-01-10'),
-      explanation: 'test2',
-      color: 'blue',
-    },
-    {
-      name: 'stacktest',
-      startDate: new Date('2024-01-10'),
-      endDate: new Date('2024-01-10'),
-      explanation: 'test2',
-      color: '',
-    },
-    {
-      name: 'stacktest',
-      startDate: new Date('2024-01-10'),
-      endDate: new Date('2024-01-10'),
-      explanation: 'test2',
-      color: '',
-    },
-    {
-      name: 'stacktest',
-      startDate: new Date('2024-01-10'),
-      endDate: new Date('2024-01-10'),
-      explanation: 'test2',
-      color: '',
-    },
-  ]);
-
-  useEffect(() => setSches((curr) => curr));
-
-  /*
-  async function fetchSches() {
-    const url = 'http://localhost:3000/schedule';
-
-    const { data: allSche, status } = await axios.get(url);
-    if (status === 200) {
-      setSches(allSche);
-    }
-  }
-  */
-
-  /*
-  useEffect(() => {
-  // fetchSches();
-  setSches((curr) => [
-    {
-      name: '해커톤 시작',
-      startDate: new Date('2024-01-08'),
-      endDate: new Date('2024-01-13'),
-      explanation: 'test1',
-    },
-    {
-      name: '해커톤 시작222',
-      startDate: new Date('2024-01-02'),
-      endDate: new Date('2024-01-04'),
-      explanation: 'test2',
-    },
-    ...curr,
-  ]);
-  }, []); // 일정 생성 / 수정 / 삭제 버튼이 눌려졌을 때만 useEffect가 실행되도록 변경 필요!!
-  */
+  const sches = schedules
+    .filter((sche) => {
+      if (
+        sche.startDate >= startOfWeek(startOfMonth(currentMonth)) ||
+        sche.endDate <= endOfWeek(endOfMonth(currentMonth))
+      )
+        return true;
+      return false;
+    })
+    .sort((a, b) => {
+      if (a.startDate < b.startDate) return -1;
+      return 1;
+    });
+  // 불러온 일정들 중 해당 월에 포함되는 일정들 필터링 후, 시작일 기준으로 정렬
 
   return (
-    <Box className="calendar">
+    <Box
+      className="calendar"
+      sx={{
+        height: { height },
+        width: { width },
+      }}
+    >
       <RenderHeader currentMonth={currentMonth} prevMonth={prevMonth} nextMonth={nextMonth} />
       <RenderDays />
-      <RenderCells currentMonth={currentMonth} selectedDate={selectedDate} onDateClick={onDateClick} schedule={sches} />
+      <RenderCells
+        currentMonth={currentMonth}
+        selectedDate={selectedDate}
+        schedule={sches}
+        onDateClick={onDateClick}
+        onScheClick={onClick}
+      />
     </Box>
   );
 };

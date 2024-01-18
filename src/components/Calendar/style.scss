@@ -3,9 +3,11 @@
 
 .calendar {
   @include common.size(100%, 100%);
-  height: 500px;
-  width: 700px;
   background-color: theme.$dashboard-color;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   .header {
     @include common.size(100%, 7%);
     @include common.flex-row(space-between, baseline);
@@ -48,7 +50,7 @@
       @include common.size(12.9%, 100%);
       @include common.flex-column(flex-end, flex-start);
       padding-left: 1%;
-      background: transparentize(theme.$step-color, 0.6);
+      background: transparentize(#d3e9f6, 0.6);
       border-radius: 10px;
     }
   }
@@ -58,6 +60,10 @@
     .row {
       @include common.size(100%, 100%);
       @include common.flex-row(space-between, center);
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      scroll-behavior: smooth;
       .col {
         @include common.size(13.5%, 93%);
         @include common.flex-row(flex-start, flex-start);
@@ -69,7 +75,9 @@
           margin: 4px 0 0 4px;
         }
         .not-valid {
-          color: theme.$gray-color;
+          color: #7e7e7e;
+          height: 100%;
+          background: transparentize(#d4d4d4, 0.5);
           .schedule {
             @include common.size(12.9%, 100%);
             @include common.flex-column(flex-end, flex-start);
@@ -99,14 +107,14 @@
           background: transparentize(theme.$dark-gray-color, 0.6);
           border-top-right-radius: 5px;
           border-bottom-right-radius: 5px;
-          border: 0.5px solid theme.$sub-color;
+          border: 0.5px solid #9da7d4;
         }
       }
       .col.cell.selected {
-        @include common.shadow(1.5px, theme.$main-color, 0.1);
+        @include common.shadow(1.5px, #4b5269, 0.1);
         transform: scale(1.02);
         border: none;
-        background: theme.$sub-color;
+        background: transparentize(#d3e9f6, 0.5);
         color: black;
         text-shadow: 0 0 2px white;
         font-weight: 600;
@@ -116,10 +124,30 @@
           padding-left: 1%;
           background: transparentize(theme.$black, 0.6);
           text-shadow: 0 0 2px white;
-          color: rgb(0, 0, 0);
+          color: black;
           border-top-right-radius: 5px;
           border-bottom-right-radius: 5px;
-          border: 0.5px solid theme.$step-color;
+          border: 0.5px solid #c6c7eb;
+        }
+      }
+      .col.cell.today {
+        @include common.hover-event();
+        background: theme.$sub-color;
+        &:hover {
+          @include common.hover-event();
+          @include common.shadow(1.5px, #4b5269, 0.1);
+          transform: scale(1.01);
+          border: none;
+          background: transparentize(#d3e9f6, 0.5);
+        }
+        .schedule {
+          @include common.size(12.9%, 100%);
+          @include common.flex-column(flex-end, flex-start);
+          padding-left: 1%;
+          background: transparentize(theme.$dark-gray-color, 0.6);
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
+          border: 0.5px solid theme.$sub-color;
         }
       }
     }
