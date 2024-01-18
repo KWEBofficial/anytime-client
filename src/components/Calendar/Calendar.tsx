@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import React, { useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import {
   format,
   addMonths,
@@ -249,10 +250,10 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
         },
       );
       if (response.status === 200) {
-        openAlert({ title: '일정이 성공적으로 생성되었습니다' });
+        enqueueSnackbar('일정이 추가되었습니다.', { variant: 'success' });
       }
     } catch (e) {
-      openAlert({ title: '일정 생성에 실패하였습니다..' });
+      enqueueSnackbar('일정 추가에 실패하였습니다.', { variant: 'error' });
     }
   }
 
@@ -275,10 +276,10 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
         },
       );
       if (response.status === 200) {
-        openAlert({ title: '일정이 성공적으로 수정되었습니다' });
+        enqueueSnackbar('일정이 수정되었습니다.', { variant: 'success' });
       }
     } catch (e) {
-      openAlert({ title: '일정 수정에 실패하였습니다..' });
+      enqueueSnackbar('일정 수정에 실패하였습니다.', { variant: 'error' });
     }
   }
 
@@ -291,10 +292,10 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
         withCredentials: true,
       });
       if (response.status === 200) {
-        openAlert({ title: '일정이 성공적으로 삭제되었습니다' });
+        enqueueSnackbar('일정이 삭제되었습니다.', { variant: 'success' });
       }
     } catch (e) {
-      openAlert({ title: '일정 삭제에 실패하였습니다..' });
+      enqueueSnackbar('일정 삭제에 실패하였습니다..', { variant: 'error' });
     }
   }
 
