@@ -5,13 +5,11 @@ import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
 
 import { userState } from '../state/userState';
 import { ScheType } from '../models/calendar';
 import TeamTitle from '../components/TeamTitle';
 import TeamExp from '../components/TeamExp';
-import NoticeBox from '../components/NoticeBox';
 import { Layout } from '../components/Layout';
 import CustomBox from '../components/CustomBox';
 import { Calendar } from '../components/Calendar/Calendar';
@@ -162,14 +160,14 @@ export default function AdminPage() {
     <Layout>
       <Grid container>
         <Grid item xs={8}>
-          <TeamTitle title={teamInfo.teamname} onClick={handleDeleteClick} />
-          <NoticeBox notices={teamInfo.notices.map((notice) => notice.content)} />
-
-          <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>
-            <Calendar width="700px" height="800px" schedules={sche} onClick={() => {}} />
-          </Box>
-
+          <TeamTitle
+            teamId={teamId as unknown as number}
+            title={teamInfo.teamname}
+            isAdmin={teamInfo.isAdmin}
+            onClick={handleDeleteClick}
+          />
           <TeamExp explanation={teamInfo.explanation} />
+            <Calendar width="700px" height="800px" schedules={sche} isEditable={true} />
         </Grid>
         <Grid item xs={4} md={4}>
           <CustomBox title="인원명단" items={memberList} isAdmins={isAdminList} onClick={handleMemberClick} />

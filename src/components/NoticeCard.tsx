@@ -109,7 +109,7 @@ const NoticeCard = ({
                 whiteSpace: 'pre-wrap',
               }}
             >
-              {isPrior ? '!중요! ' : ''}
+              {isPrior ? '⭐️ ' : ''}
               {content}
             </Typography>
           </CardContent>

@@ -52,8 +52,11 @@ export default function LoginPage() {
     <Grid container style={{ height: '100vh' }}>
       <Grid item xs={8}></Grid>
       <Grid item xs={4} sx={{ backgroundColor: '#d3e9f6', height: '100%' }}>
-        <Box sx={{ maxWidth: 300, margin: 'auto', p: 4 }}>
-          <Typography variant="h5" fontWeight="bold">
+        <Box sx={{ maxWidth: 300, margin: 'auto', p: 4, marginTop: 10 }}>
+          <Typography variant="body2" fontWeight="bold" color="#696969">
+            우리 언제 만날래
+          </Typography>
+          <Typography variant="h4" fontWeight="bold" color="#696969" marginBottom="10px">
             언제든지
           </Typography>
           <form onSubmit={handleLogin}>
@@ -81,10 +84,3 @@ export default function LoginPage() {
     </Grid>
   );
 }
-
-/*
-      <div>
-        <button onClick={() => navigate('/main')}>Login Success</button>
-        <button onClick={() => navigate('/register')}>Register</button>
-      </div>
-*/

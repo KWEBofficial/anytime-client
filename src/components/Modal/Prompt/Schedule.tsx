@@ -13,9 +13,15 @@ import { Stack, Typography } from '@mui/material';
 import { IModal } from '../../../types/modal';
 
 export interface SchedulePromptProps extends IModal {
-  isEmpty: boolean; // 일정 생성 or 일정 확인 및 수정
+  isEmpty: boolean; // 일정 생성 or 일정 확인 or 일정 확인 및 수정삭제
+  isEditable?: boolean;
   scheduleId?: number;
+  name?: string;
+  startDate?: Date;
+  endDate?: Date;
+  explanation?: string;
   onSubmit?: (title: string, content: string, start: Dayjs | null, end: Dayjs | null) => void;
+  onDelete?: (ondelete: boolean) => void;
 }
 
 const style = {
@@ -30,7 +36,18 @@ const style = {
   p: 4,
 };
 
-const SchedulePrompt = ({ visible = false, onClose, isEmpty, onSubmit }: SchedulePromptProps) => {
+const SchedulePrompt = ({
+  visible = false,
+  onClose,
+  isEmpty,
+  name,
+  startDate,
+  endDate,
+  explanation,
+  isEditable,
+  onDelete,
+  onSubmit,
+}: SchedulePromptProps) => {
   const { register, handleSubmit: handleFormSubmit } = useForm<{
     title: string;
     content: string;
@@ -47,15 +64,13 @@ const SchedulePrompt = ({ visible = false, onClose, isEmpty, onSubmit }: Schedul
     onClose?.();
   };
 
-  const content = {
-    scheduleName: '해커톤 회의',
-    startTime: dayjs('2024-01-17T15:30'),
-    endTime: dayjs('2024-01-17T18:30'),
-    explanation: '최종 발표 전 마지막 회의',
+  const handleDelete = () => {
+    onDelete?.(true);
+    onClose?.();
   };
 
-  const [start, setStart] = React.useState<Dayjs | null>(dayjs(content.startTime ? dayjs(content.startTime) : dayjs()));
-  const [end, setEnd] = React.useState<Dayjs | null>(dayjs(content.endTime ? dayjs(content.endTime) : dayjs()));
+  const [start, setStart] = React.useState<Dayjs | null>(dayjs(startDate ? dayjs(startDate) : dayjs()));
+  const [end, setEnd] = React.useState<Dayjs | null>(dayjs(endDate ? dayjs(endDate) : dayjs()));
 
   const handleStartChange = (value: Dayjs | null) => {
     setStart(value);
@@ -122,14 +137,14 @@ const SchedulePrompt = ({ visible = false, onClose, isEmpty, onSubmit }: Schedul
                 label="시작"
                 value={start}
                 onChange={handleStartChange}
-                defaultValue={content.startTime}
+                defaultValue={dayjs(startDate)}
               />
               <DateTimePicker
                 sx={{ width: '100%' }}
                 label="종료"
                 value={end}
                 onChange={handleEndChange}
-                defaultValue={content.endTime}
+                defaultValue={dayjs(endDate)}
               />
             </LocalizationProvider>
 
@@ -138,7 +153,7 @@ const SchedulePrompt = ({ visible = false, onClose, isEmpty, onSubmit }: Schedul
               sx={{ width: '100%', marginBottom: 2 }}
               label="제목"
               variant="filled"
-              defaultValue={content.scheduleName}
+              defaultValue={name}
             />
             <TextField
               {...register('content', { required: false })}
@@ -147,19 +162,27 @@ const SchedulePrompt = ({ visible = false, onClose, isEmpty, onSubmit }: Schedul
               variant="filled"
               multiline
               rows={4}
-              defaultValue={content.explanation}
+              defaultValue={explanation}
             />
 
             <Stack direction="row" justifyContent="flex-end" alignItems="flex-end" spacing={2}>
-              <Button variant="outlined" onClick={handleFormSubmit(handleSubmit)}>
-                수정
-              </Button>
-              <Button variant="outlined" onClick={handleCancel}>
-                삭제
-              </Button>
-              <Button variant="outlined" onClick={handleCancel}>
-                취소
-              </Button>
+              {isEditable ? (
+                <>
+                  <Button variant="outlined" onClick={handleFormSubmit(handleSubmit)}>
+                    수정
+                  </Button>
+                  <Button variant="outlined" onClick={handleDelete}>
+                    삭제
+                  </Button>
+                  <Button variant="outlined" onClick={handleCancel}>
+                    취소
+                  </Button>
+                </>
+              ) : (
+                <Button variant="outlined" onClick={handleCancel}>
+                  확인
+                </Button>
+              )}
             </Stack>
           </Stack>
         )}

@@ -22,6 +22,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import AddIcon from '@mui/icons-material/Add';
 
+import { useSidebar } from '../contexts/sidebarContext';
+
 import ResponsiveAppBar from './TopNavigation';
 import { useModal } from './Modal/useModal';
 // import { PromptProps } from './Modal/Prompt/Team';
@@ -44,6 +46,7 @@ export default function ClippedDrawer() {
   const [publicIsFavor, setPublicIsFavor] = useState<number[]>([]);
   const [privateIsFavor, setPrivateIsFavor] = useState<number[]>([]);
   const { openAlert, openPrompt } = useModal();
+  const { refresh } = useSidebar();
 
   const handlePrivateClick = () => {
     setOpenPrivate(!openPrivate);
@@ -85,7 +88,7 @@ export default function ClippedDrawer() {
       }
     };
     fetchData();
-  }, []);
+  }, [refresh]);
 
   const publicTeamNames = myTeam.filter((team) => team.isPublic === 1).map((team) => team.teamname);
   const publicTeamIds = myTeam.filter((team) => team.isPublic === 1).map((team) => team.teamId);
@@ -105,6 +108,7 @@ export default function ClippedDrawer() {
           withCredentials: true,
         },
       );
+      refresh();
     } catch (e) {
       /* empty */
     }
@@ -136,6 +140,7 @@ export default function ClippedDrawer() {
       );
       if (response.status === 201) {
         enqueueSnackbar('모임이 생성되었습니다.', { variant: 'success' });
+        refresh();
       }
     } catch (e) {
       openAlert({ title: '모임 생성에 실패하였습니다..' });
