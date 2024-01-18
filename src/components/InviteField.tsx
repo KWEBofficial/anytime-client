@@ -37,7 +37,7 @@ interface TeamInfo {
   member: TeamMember[];
   schedule: TeamSchedule[];
   notice: TeamNotice[];
-  isAdmin: number;
+  isAdmin: boolean;
 }
 
 interface InviteFieldProps {
