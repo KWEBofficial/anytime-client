@@ -59,7 +59,7 @@ export default function MyPage() {
         });
 
         if (response.status === 200) {
-          response.data;
+          setMember(response.data.membername);
         }
       } catch (e) {
         /* empty */
@@ -121,7 +121,7 @@ export default function MyPage() {
         <Grid lg={0.5} xl={1}></Grid>
         <Grid item xs={8} xl={7}>
           <Typography variant="h3" sx={{ color: '#696969', marginRight: '300px', marginBottom: 2 }}>
-            {userId}
+            {member}
           </Typography>
           <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>
             <Calendar width={'55vw'} height={'90vh'} schedules={sche} onClick={editSchedule} />
@@ -130,7 +130,7 @@ export default function MyPage() {
 
         <Grid item xs={3} xl={4}>
           <TeamShowBox
-            teams={allSche.teamSchedules?.map((team) => ({
+            teams={allSche.teamSchedules.map((team) => ({
               id: team.teamId,
               name: team.teamname,
               isHide: team.isHide,

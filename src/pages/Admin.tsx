@@ -8,12 +8,13 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
 import { userState } from '../state/userState';
+import { ScheType } from '../models/calendar';
 import TeamTitle from '../components/TeamTitle';
 import TeamExp from '../components/TeamExp';
 import NoticeBox from '../components/NoticeBox';
 import { Layout } from '../components/Layout';
 import CustomBox from '../components/CustomBox';
-// import { Calendar } from '../components/Calendar/Calendar';
+import { Calendar } from '../components/Calendar/Calendar';
 
 interface TeamSchedule {
   id: number;
@@ -35,7 +36,7 @@ interface TeamMemberDTO {
 }
 interface TeamReadResDTO {
   teamname: string;
-  color: number;
+  color: string;
   explanation: string;
   isPublic: boolean;
   members: TeamMemberDTO[];
@@ -49,9 +50,10 @@ export default function AdminPage() {
   const { teamId } = params;
   const navigate = useNavigate();
   const userId = useRecoilValue(userState);
+  const [sche, setSche] = useState<ScheType[]>([]);
   const [teamInfo, setTeamInfo] = useState<TeamReadResDTO>({
     teamname: '',
-    color: 0,
+    color: '',
     explanation: '',
     isPublic: false,
     members: [],
@@ -120,7 +122,6 @@ export default function AdminPage() {
           },
           withCredentials: true,
         });
-
         if (response.status === 200) {
           setTeamInfo({
             teamname: response.data.teamname,
@@ -139,6 +140,21 @@ export default function AdminPage() {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    setSche(
+      teamInfo.schedules.map((Sche) => ({
+        scheId: Sche.id,
+        teamId: Number(teamId),
+        name: Sche.schedulename,
+        startDate: new Date(Sche.startTime),
+        endDate: new Date(Sche.endTime),
+        explanation: Sche.explanation,
+        color: teamInfo.color,
+      })),
+    );
+  }, [teamInfo.schedules]);
+
   const memberList = teamInfo.members.map((member) => member.name);
   const isAdminList = teamInfo.members.map((member) => member.isAdmin);
 
@@ -148,7 +164,9 @@ export default function AdminPage() {
         <Grid item xs={8}>
           <TeamTitle title={teamInfo.teamname} onClick={handleDeleteClick} />
           <NoticeBox notices={teamInfo.notices.map((notice) => notice.content)} />
-          <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>{/* <Calendar /> */}</Box>
+          <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>
+            <Calendar width="700px" height="800px" schedules={sche} onClick={() => {}} />
+          </Box>
           <TeamExp explanation={teamInfo.explanation} />
         </Grid>
         <Grid item xs={4} md={4}>
