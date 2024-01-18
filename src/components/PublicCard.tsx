@@ -1,3 +1,4 @@
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -19,17 +20,21 @@ interface PublicCardProps {
 const PublicCard = ({ id, teamname, color, explanation }: PublicCardProps) => {
   const handleAddClick = async () => {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/team/subscribe/${id}`, {
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/team/subscribe/${id}`,
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
         },
-        withCredentials: true,
-      });
+      );
       if (response.status === 200) {
-        window.alert('구독되었습니다.');
+        enqueueSnackbar('구독되었습니다.', { variant: 'success' });
       }
     } catch (e) {
-      window.alert('이미 구독 중입니다.');
+      enqueueSnackbar('이미 구독중입니다. ', { variant: 'error' });
     }
   };
 
