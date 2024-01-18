@@ -10,18 +10,12 @@ import './style.scss';
 import { useModal } from '../Modal/useModal';
 
 interface Sche {
-  startDate: Date;
-  endDate: Date;
+  startTime: Date;
+  endTime: Date;
 }
 
 interface TeamMemSche {
   memberId: number | null;
-  schedules: Sche[];
-}
-
-interface TeamSchedule {
-  teamId: number;
-  teamname: string;
   schedules: Sche[];
 }
 
@@ -33,7 +27,6 @@ interface RenderCellsProps {
 
 const RenderCells = ({ start, end, validSche }: RenderCellsProps) => {
   const timeline = [];
-
   if (start === null || end === null) return null;
 
   let day = startOfDay(start);
@@ -55,15 +48,17 @@ const RenderCells = ({ start, end, validSche }: RenderCellsProps) => {
     }
 
     validSche.forEach((sche) => {
-      const startDate = format(sche.startDate, 'yyyy-MM-dd');
-      const endDate = format(sche.endDate, 'yyyy-MM-dd');
+      const startTime = format(new Date(sche.startTime), 'yyyy-MM-dd');
+      const endTime = format(new Date(sche.endTime), 'yyyy-MM-dd');
       const date = format(today, 'yyyy-MM-dd');
-      const isValid = startDate <= date && endDate >= date;
+      const isValid = startTime <= date && endTime >= date;
       let time = today;
 
       if (isValid) {
+        const sT = format(new Date(sche.startTime), 'yyyy-MM-dd HH:mm');
+        const eT = format(new Date(sche.endTime), 'yyyy-MM-dd HH:mm');
         for (let i = 0; i < 48; i += 1) {
-          if (sche.startDate <= time && sche.endDate > time) {
+          if (sT <= format(time, 'yyyy-MM-dd HH:mm') && eT > format(time, 'yyyy-MM-dd HH:mm')) {
             daily[2 * i] = (
               <Grid
                 sx={{
@@ -136,57 +131,42 @@ export default function Timeline({ teamId }: TimelineProps) {
   const { openAlert, openSchedulePrompt } = useModal();
   const [start, setStart] = useState<Date | null>(null);
   const [end, setEnd] = useState<Date | null>(null);
-  const [total, setTotal] = useState<TeamMemSche[]>([
-    {
-      memberId: 1,
-      schedules: [
-        {
-          startDate: new Date('2024-01-20 12:00:00'),
-          endDate: new Date('2024-01-20 18:00:00'),
-        },
-      ],
-    },
-    {
-      memberId: 41,
-      schedules: [
-        {
-          startDate: new Date('2024-01-17 14:00'),
-          endDate: new Date('2024-01-19 18:30'),
-        },
-        {
-          startDate: new Date('2024-01-15 11:30'),
-          endDate: new Date('2024-01-16 03:00'),
-        },
-        {
-          startDate: new Date('2024-01-20 19:00:00'),
-          endDate: new Date('2024-01-21 03:00'),
-        },
-      ],
-    },
-  ]); // 전체 인원 schedule
-  const [teamSche, setTeamSche] = useState<TeamSchedule>({
-    teamId: 1,
-    teamname: 'test',
-    schedules: [
-      {
-        startDate: new Date('2024-01-22 12:00:00'),
-        endDate: new Date('2024-01-22 19:00:00'),
-      },
-    ],
-  }); // 모임 일정
+  const [total, setTotal] = useState<TeamMemSche[]>([]); // 전체 인원 schedule
   const [validSche, setValidSche] = useState<Sche[]>([]); // 유효한 일정 filter
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/schedule/team/${teamId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        });
+
+        if (response.status === 200) {
+          setTotal(response.data);
+        }
+      } catch (e) {
+        /* empty */
+      }
+    };
+    fetchData();
+  }, [teamId]);
 
   const valid = () => {
     if (start !== null && end !== null && start <= end) {
+      const s = format(start, 'yyyy-MM-dd');
+      const e = format(end, 'yyyy-MM-dd');
       const valids: Sche[] = total.flatMap((mem: TeamMemSche) => {
         return mem.schedules.filter((sche: Sche) => {
-          if (sche.startDate >= start || sche.endDate <= end) return true;
+          const sD = format(new Date(sche.startTime), 'yyyy-MM-dd');
+          const eD = format(new Date(sche.endTime), 'yyyy-MM-dd');
+          if ((sD >= s && eD <= e) || (sD <= s && eD >= e) || (sD <= s && eD <= e) || (sD >= s && eD >= e)) return true;
           return false;
         });
       });
-      teamSche?.schedules.forEach((sche: Sche) => {
-        if (sche.startDate >= start || sche.endDate <= end) valids.push(sche);
-      });
+
       setValidSche(valids);
     } else setValidSche([]); // start, end가 null이면 validSche 초기화
   };
@@ -263,7 +243,7 @@ export default function Timeline({ teamId }: TimelineProps) {
   const onClick = () => {
     scheduleModal();
     // 모달 실행하여 새로운 일정을 추가할 경우 setTeamSche 실행 후 기간 초기화 => 사적모임 메인페이지로 이동?
-    setTeamSche((curr) => curr); // 새로운 팀 일정 추가
+    // setTeamSche((curr) => curr); // 새로운 팀 일정 추가
     setStart(null);
     setEnd(null);
   };

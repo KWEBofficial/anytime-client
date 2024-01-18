@@ -57,6 +57,7 @@ export default function TeamTitle({ title, teamId, isAdmin, isPublic, onClick }:
       });
       if (response.status === 200) {
         enqueueSnackbar('모임이 삭제되었습니다.', { variant: 'success' });
+        refresh();
         navigate(`/main`, { replace: true });
       }
     } catch (e) {
@@ -74,6 +75,7 @@ export default function TeamTitle({ title, teamId, isAdmin, isPublic, onClick }:
       });
       if (response.status === 200) {
         enqueueSnackbar('모임에서 탈퇴되었습니다.', { variant: 'success' });
+        refresh();
         navigate(`/main`, { replace: true });
       }
     } catch (e) {
