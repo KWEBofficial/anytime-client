@@ -8,7 +8,6 @@ import { AllScheSearchDTO } from '../models/AllScheSearch';
 import TeamShowBox from '../components/TeamShowBox/TeamShowBox';
 import { useModal } from '../components/Modal/useModal';
 import { Layout } from '../components/Layout';
-import Examples from '../components/Example';
 import { Calendar } from '../components/Calendar/Calendar';
 // import Examples from '../components/Example';
 
@@ -28,6 +27,7 @@ interface ScheType {
 }
 export default function MyPage() {
   const userId = useRecoilValue(userState);
+  const [member, setMember] = useState();
   const [sche, setSche] = useState<ScheType[]>([]);
   const [allSche, setAllSche] = useState<AllScheSearchDTO>({
     mySchedules: [],
@@ -35,18 +35,40 @@ export default function MyPage() {
   });
   const { openAlert, openSchedulePrompt } = useModal();
 
-  const createSchedule = () => {
-    openSchedulePrompt({
-      onSubmit: (title, content, start, end) => {
-        openAlert({
-          title: '일정이 생성되었습니다',
-          message: `${title} ${content} ${start} ${end} `,
-        });
-      },
-    });
+  const editSchedule = (Sche: ScheType) => {
+    if (Sche.teamId)
+      openSchedulePrompt({
+        isEmpty: false,
+        onSubmit: (title, content, start, end) => {
+          openAlert({
+            title: '일정이 수정되었습니다',
+            message: `${title} ${content} ${start} ${end} `,
+          });
+        },
+      });
   };
+
   useEffect(() => {
-    // 유저 닉네임, 이메일도 가져와야 함
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/member/${userId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        });
+
+        if (response.status === 200) {
+          response.data;
+        }
+      } catch (e) {
+        /* empty */
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/schedule`, {
@@ -93,8 +115,6 @@ export default function MyPage() {
         ),
     ]);
   }, [allSche]);
-  console.log(sche);
-  console.log(allSche);
   return (
     <Layout>
       <Grid container sx={{ marginTop: 5, minWidth: '1100px' }}>
@@ -104,7 +124,7 @@ export default function MyPage() {
             {userId}
           </Typography>
           <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>
-            <Calendar width={'55vw'} height={'90vh'} schedules={sche} onClick={() => {}} />
+            <Calendar width={'55vw'} height={'90vh'} schedules={sche} onClick={editSchedule} />
           </Box>
         </Grid>
 
@@ -118,7 +138,6 @@ export default function MyPage() {
             }))}
             setState={setAllSche}
           />
-          <Examples></Examples>
         </Grid>
       </Grid>
     </Layout>
