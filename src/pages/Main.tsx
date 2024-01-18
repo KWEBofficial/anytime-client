@@ -23,9 +23,7 @@ export default function MainPage() {
     teamSchedules: [],
   });
 
-  const onClick = () => {
-    /* empty */
-  };
+  const isEditable = false;
 
   const height = '90vh';
   const width = '80vw';
@@ -80,7 +78,7 @@ export default function MainPage() {
 
   return (
     <Layout>
-      <Calendar height={height} width={width} schedules={sche} onClick={onClick} />
+      <Calendar isEditable={isEditable} height={height} width={width} schedules={sches} />
       <FavorTeamSche />
     </Layout>
   );

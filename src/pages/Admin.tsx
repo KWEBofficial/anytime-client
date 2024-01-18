@@ -161,8 +161,14 @@ export default function AdminPage() {
     <Layout>
       <Grid container>
         <Grid item xs={8}>
-          <TeamTitle title={teamInfo.teamname} onClick={handleDeleteClick} />
+          <TeamTitle
+            teamId={teamId as unknown as number}
+            title={teamInfo.teamname}
+            isAdmin={teamInfo.isAdmin}
+            onClick={handleDeleteClick}
+          />
           <TeamExp explanation={teamInfo.explanation} />
+            <Calendar width="700px" height="800px" schedules={sche} isEditable={true} />
           <Calendar width="700px" height="800px" schedules={sche} onClick={() => {}} />
         </Grid>
         <Grid item xs={4} md={4}>

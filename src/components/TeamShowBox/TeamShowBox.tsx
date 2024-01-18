@@ -9,6 +9,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import './TeamShowBox.css';
+
 import { AllScheSearchDTO } from '../../models/AllScheSearch';
 
 interface Team {

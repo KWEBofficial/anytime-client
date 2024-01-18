@@ -6,7 +6,7 @@ import { Grid, Typography } from '@mui/material';
 import { userState } from '../state/userState';
 import { AllScheSearchDTO } from '../models/AllScheSearch';
 import TeamShowBox from '../components/TeamShowBox/TeamShowBox';
-import { useModal } from '../components/Modal/useModal';
+// import { useModal } from '../components/Modal/useModal';
 import { Layout } from '../components/Layout';
 import { Calendar } from '../components/Calendar/Calendar';
 
@@ -27,8 +27,9 @@ export default function MyPage() {
     mySchedules: [],
     teamSchedules: [],
   });
+  /*
   const { openAlert, openSchedulePrompt } = useModal();
-
+  
   const editSchedule = (Sche: ScheType) => {
     if (Sche.teamId)
       openSchedulePrompt({
@@ -41,6 +42,7 @@ export default function MyPage() {
         },
       });
   };
+  */
 
   useEffect(() => {
     const fetchData = async () => {
@@ -117,7 +119,7 @@ export default function MyPage() {
           <Typography variant="h4" sx={{ color: '#696969', marginRight: '300px', marginBottom: 2 }}>
             {member}님의 일정
           </Typography>
-          <Calendar width={'55vw'} height={'90vh'} schedules={sche} onClick={editSchedule} />
+            <Calendar width={'55vw'} height={'90vh'} schedules={sche} isEditable={true} isMyPage={true} />
         </Grid>
 
         <Grid item xs={3} xl={4}>
