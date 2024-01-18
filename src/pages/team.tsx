@@ -141,10 +141,11 @@ export default function TeamPage() {
     return null;
   };
 
-  const onClick = () => {};
+  // const onClick = () => {};
   const height = '90vh';
   const width = '55vw';
-
+  let isEditable = true;
+  if (teamInfo.isPublic) isEditable = false;
   return (
     <Layout>
       <Grid container sx={{ marginTop: 2, minWidth: '1100px' }}>
@@ -153,7 +154,7 @@ export default function TeamPage() {
           <TeamTitle title={teamInfo.teamname} teamId={teamId as unknown as number} isAdmin={teamInfo.isAdmin} />
           <TeamExp explanation={teamInfo.explanation} />
           {teamInfo.isPublic ? <NoticeBox notices={teamInfo.notice.map((n) => n.content)} /> : null}
-          <Calendar onClick={onClick} height={height} width={width} schedules={sches} />
+          <Calendar isEditable={isEditable} height={height} width={width} schedules={sches} />
         </Grid>
         <Grid item xs={3} xl={4}>
           <InviteField teamId={teamId} setTeamInfo={setTeamInfo} />
