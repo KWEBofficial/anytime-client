@@ -20,7 +20,7 @@ const NoticeBox = ({ notices }: NoticeBoxProps) => {
   const isToggleRequired = (notice: string) => notice.length > MAX_LENGTH;
 
   return (
-    <Box sx={{ width: 700 }}>
+    <Box sx={{ width: 700, marginBottom: 1 }}>
       {notices.map((notice, index) => (
         <Accordion key={index}>
           <AccordionSummary

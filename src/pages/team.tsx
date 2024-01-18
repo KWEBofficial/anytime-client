@@ -5,15 +5,33 @@ import axios from 'axios';
 // import { userState } from '../state/userState';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
 
 import TeamTitle from '../components/TeamTitle';
+import TeamScheduleList from '../components/TeamSchduleList/TeamScheduleList';
 import TeamExp from '../components/TeamExp';
+import NoticeBox from '../components/NoticeBox';
 import { Layout } from '../components/Layout';
 import { InviteField } from '../components/InviteField';
 import CustomBox from '../components/CustomBox';
 import { Calendar } from '../components/Calendar/Calendar';
 
+const buttonStyle = {
+  width: '100%',
+  maxWidth: 300,
+  borderRadius: 5,
+  border: '2px solid',
+  borderColor: 'divider',
+  backgroundColor: 'transparent',
+  marginBottom: 2,
+  color: '#696969',
+};
+
+interface TeamNotice {
+  noticeId: number;
+  content: string;
+  createdAt: Date;
+  isPrior: boolean;
+}
 interface TeamSchedule {
   id: number;
   schedulename: string;
@@ -33,13 +51,14 @@ interface TeamInfo {
   isPublic: number;
   member: TeamMember[];
   schedule: TeamSchedule[];
+  notice: TeamNotice[];
+  isAdmin: number;
 }
 
 export default function TeamPage() {
   const params = useParams();
   const { teamId } = params;
   const navigate = useNavigate();
-  // const userId = useRecoilValue(userState); // {userId}
 
   const [teamInfo, setTeamInfo] = useState<TeamInfo>({
     teamname: '',
@@ -48,6 +67,8 @@ export default function TeamPage() {
     isPublic: 0,
     member: [],
     schedule: [],
+    notice: [],
+    isAdmin: 0,
   });
 
   useEffect(() => {
@@ -68,6 +89,8 @@ export default function TeamPage() {
             isPublic: response.data.isPublic,
             member: response.data.members,
             schedule: response.data.schedules,
+            notice: response.data.notices,
+            isAdmin: response.data.isAdmin,
           });
         }
       } catch (e) {
@@ -78,6 +101,25 @@ export default function TeamPage() {
   }, [teamId]);
 
   const memberList = teamInfo.member.map((member) => member.name);
+  const adminList = teamInfo.member.filter((member) => member.isAdmin === 1).map((member) => member.name);
+
+  const pageButton = () => {
+    if (teamInfo.isPublic && teamInfo.isAdmin) {
+      return (
+        <Button onClick={() => navigate(`/team/${teamId}/admin`)} variant="outlined" style={buttonStyle}>
+          어드민 페이지
+        </Button>
+      );
+    }
+    if (!teamInfo.isPublic) {
+      return (
+        <Button onClick={() => navigate(`/team/${teamId}/schedule`)} variant="outlined" style={buttonStyle}>
+          일정 생성 페이지
+        </Button>
+      );
+    }
+    return null;
+  };
 
   const onClick = () => {};
   const height = '90vh';
@@ -168,42 +210,23 @@ export default function TeamPage() {
 
   return (
     <Layout>
-      <Grid container sx={{ marginTop: 5, minWidth: '1100px' }}>
+      <Grid container sx={{ marginTop: 2, minWidth: '1100px' }}>
         <Grid lg={0.5} xl={1}></Grid>
         <Grid item xs={8} xl={7}>
           <TeamTitle title={teamInfo.teamname} />
-          <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>
-            <Calendar onClick={onClick} height={height} width={width} schedules={sches} />
-          </Box>
           <TeamExp explanation={teamInfo.explanation} />
+          {teamInfo.isPublic ? <NoticeBox notices={teamInfo.notice.map((n) => n.content)} /> : null}
+          <Calendar onClick={onClick} height={height} width={width} schedules={sches} />
         </Grid>
-
         <Grid item xs={3} xl={4}>
           <InviteField teamId={teamId} setTeamInfo={setTeamInfo} />
-
-          <CustomBox title="인원명단" items={memberList} />
-          <Button
-            onClick={() => {
-              if (teamInfo.isPublic) {
-                navigate(`/team/${teamId}/admin`);
-              } else {
-                navigate(`/team/${teamId}/schedule`);
-              }
-            }}
-            variant="outlined"
-            style={{
-              width: '100%',
-              maxWidth: 300,
-              borderRadius: 5,
-              border: '2px solid',
-              borderColor: 'divider',
-              backgroundColor: 'transparent',
-              marginBottom: 2,
-              color: '#696969',
-            }}
-          >
-            {teamInfo.isPublic ? '공적모임 어드민' : '사적모임 일정생성'}
-          </Button>
+          {teamInfo.isPublic ? (
+            <CustomBox title="관리자" items={adminList} />
+          ) : (
+            <CustomBox title="만날 사람들" items={memberList} />
+          )}
+          <TeamScheduleList teamSche={teamInfo.schedule} />
+          {pageButton()}
         </Grid>
       </Grid>
     </Layout>

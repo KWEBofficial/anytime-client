@@ -7,6 +7,8 @@ import { RouteComponent } from './route';
 
 import './App.css';
 
+// import { ModalContextProvider } from './components/Modal/useModal';
+
 /**
  * mui에서 제공하는 테마 설정입니다.
  * 글꼴을 Pretendard로 설정했습니다.
@@ -65,6 +67,7 @@ function App() {
  
       </BrowserRouter>
     </ThemeProvider>
+
     */
 }
 
