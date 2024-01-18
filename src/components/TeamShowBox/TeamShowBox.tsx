@@ -8,7 +8,6 @@ import { Checkbox, Box, List } from '@mui/material';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import './TeamShowBox.css';
-import { useState, useEffect } from 'react';
 
 interface Team {
   name: string;

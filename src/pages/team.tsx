@@ -53,7 +53,7 @@ interface TeamInfo {
   member: TeamMember[];
   schedule: TeamSchedule[];
   notice: TeamNotice[];
-  isAdmin: number;
+  isAdmin: boolean;
 }
 
 export default function TeamPage() {
@@ -71,7 +71,7 @@ export default function TeamPage() {
     member: [],
     schedule: [],
     notice: [],
-    isAdmin: 0,
+    isAdmin: true,
   });
 
   useEffect(() => {
@@ -150,7 +150,7 @@ export default function TeamPage() {
       <Grid container sx={{ marginTop: 2, minWidth: '1100px' }}>
         <Grid lg={0.5} xl={1}></Grid>
         <Grid item xs={8} xl={7}>
-          <TeamTitle title={teamInfo.teamname} />
+          <TeamTitle title={teamInfo.teamname} teamId={teamId as unknown as number} isAdmin={teamInfo.isAdmin} />
           <TeamExp explanation={teamInfo.explanation} />
           {teamInfo.isPublic ? <NoticeBox notices={teamInfo.notice.map((n) => n.content)} /> : null}
           <Calendar onClick={onClick} height={height} width={width} schedules={sches} />

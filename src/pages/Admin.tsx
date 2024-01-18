@@ -146,7 +146,12 @@ export default function AdminPage() {
     <Layout>
       <Grid container>
         <Grid item xs={8}>
-          <TeamTitle title={teamInfo.teamname} onClick={handleDeleteClick} />
+          <TeamTitle
+            teamId={teamId as unknown as number}
+            title={teamInfo.teamname}
+            isAdmin={teamInfo.isAdmin}
+            onClick={handleDeleteClick}
+          />
           <NoticeBox notices={teamInfo.notices.map((notice) => notice.content)} />
           <Box sx={{ width: '700px', height: '500px', backgroundColor: 'gray' }}>{/* <Calendar /> */}</Box>
           <TeamExp explanation={teamInfo.explanation} />
