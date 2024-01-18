@@ -10,17 +10,17 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import AppBar from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
-import Alarm from './alarm';
 
 import { userState } from '../state/userState';
-import Examples from './Example';
 
-const pages = ['알람'];
+import Examples from './Example';
+import Alarm from './alarm';
+
+// const pages = ['알람'];
 const settings = ['로그아웃'];
 
 function ResponsiveAppBar() {
@@ -116,14 +116,6 @@ function ResponsiveAppBar() {
               <MenuItem onClick={handleCloseNavMenu}>
                 <Alarm />
               </MenuItem>
-
-              {/*}
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-              {*/}
             </Menu>
           </Box>
           <Typography
@@ -146,13 +138,7 @@ function ResponsiveAppBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'flex-end' }}>
             <Alarm />
-            {/*}
-            {pages.map((page) => (
-              <Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: '#696969', display: 'block' }}>
-                {page}
-              </Button>
-            ))}
-            {*/}
+            <Examples />
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

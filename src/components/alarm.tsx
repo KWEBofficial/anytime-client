@@ -4,8 +4,6 @@ import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Divider, IconButton, List, ListItem, ListItemText, Stack } from '@mui/material';
-import { useRecoilValue } from 'recoil';
-import { userState } from '../state/userState';
 
 //AlarmResDTO
 interface AlarmProps {
@@ -19,8 +17,6 @@ export default function Alarm() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [selectedContents, setSelectedContents] = React.useState<number[]>([]);
   const [alarmInfo, setAlarmInfo] = React.useState<AlarmProps[]>([]);
-
-  const userId = useRecoilValue(userState);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -50,7 +46,7 @@ export default function Alarm() {
 
   const handleClose = () => {
     setAnchorEl(null);
-    //db에서 selectedContent에 있는 것들을 지움
+    // db에서 selectedContent에 있는 것들을 지움
     selectedContents.map((id) => deleteData(id));
     setAlarmInfo((prevAlarmInfo) => prevAlarmInfo.filter((item) => !selectedContents.includes(item.id)));
     setSelectedContents([]);
@@ -70,6 +66,11 @@ export default function Alarm() {
     return {
       color: selectedContents.includes(index) ? '#bcbcbc' : '#173A5E',
     };
+  };
+
+  const dateStyle = (original: string) => {
+    const dateObject = new Date(original);
+    return dateObject.toLocaleString();
   };
 
   const open = Boolean(anchorEl);
@@ -101,7 +102,7 @@ export default function Alarm() {
                   </IconButton>
                 }
               >
-                <ListItemText primary={alarm.content} secondary={alarm.createdAt} sx={textStyle(alarm.id)} />
+                <ListItemText primary={alarm.content} secondary={dateStyle(alarm.createdAt)} sx={textStyle(alarm.id)} />
               </ListItem>
               <Divider component="li" />
             </Stack>

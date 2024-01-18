@@ -1,5 +1,5 @@
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
+import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 
 import { useModal } from './Modal/useModal';
@@ -16,9 +16,22 @@ function Examples() {
 
   const createSchedule = () => {
     openSchedulePrompt({
+      isEmpty: true,
       onSubmit: (title, content, start, end) => {
         openAlert({
           title: '일정이 생성되었습니다',
+          message: `${title} ${content} ${start} ${end} `,
+        });
+      },
+    });
+  };
+
+  const editSchedule = () => {
+    openSchedulePrompt({
+      isEmpty: false,
+      onSubmit: (title, content, start, end) => {
+        openAlert({
+          title: '일정이 수정되었습니다',
           message: `${title} ${content} ${start} ${end} `,
         });
       },
@@ -43,6 +56,7 @@ function Examples() {
           <Button onClick={openAlertExample}>Alert</Button>
           <Button onClick={openConfirmExample}>Confirm</Button>
           <Button onClick={createSchedule}>일정 생성</Button>
+          <Button onClick={editSchedule}>일정 확인</Button>
         </Grid>
       </Grid>
     </Container>
