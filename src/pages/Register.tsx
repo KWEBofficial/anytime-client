@@ -6,11 +6,6 @@ import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 
 import { CustomTextfield } from '../components/CustomTextfield';
 
-/**
- * 유저 생성 페이지입니다.
- * 회원가입을 위한 정보를 입력받습니다.
- * 회원가입 버튼을 누르면 백엔드 서버에 회원가입 요청을 보냅니다.
- */
 export default function RegisterPage() {
   const [input, setInput] = useState({
     email: '',
@@ -111,10 +106,12 @@ export default function RegisterPage() {
       boxShadow="0px 4px 8px rgba(0, 0, 0, 0.2)"
     >
       <Box marginBottom={4} textAlign={'center'}>
-        <Typography variant="h4">Register</Typography>
+        <Typography variant="h4" color="#696969">
+          Register
+        </Typography>
       </Box>
       <Box>
-        <Box marginY={2}>
+        <Box marginY={4}>
           <Divider />
         </Box>
         <Stack spacing={3}>
@@ -168,8 +165,14 @@ export default function RegisterPage() {
           />
         </Stack>
       </Box>
-      <Box paddingY={6} marginX={'auto'} width={350}>
-        <Button fullWidth variant="contained" color="primary" onClick={handleRegister}>
+      <Box paddingY={6} marginX={'auto'} width={370}>
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          onClick={handleRegister}
+          sx={{ backgroundColor: '#d3e9f6', color: '#696969' }}
+        >
           회원 가입
         </Button>
       </Box>

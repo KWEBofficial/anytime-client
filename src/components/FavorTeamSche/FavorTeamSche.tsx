@@ -116,8 +116,8 @@ export default function FavorTeamSche() {
   });
 
   return (
-    <Stack display={'flex'} justifyContent={'center'} direction={'row'} spacing={10} width={'88vw'}>
-      <Grid container spacing={2}>
+    <Stack display={'flex'} justifyContent={'center'} direction={'row'} spacing={10} width={'80vw'}>
+      <Grid container spacing={5}>
         {validSche.map((team, index) => (
           <Grid item xs={12} sm={6} md={4} key={index} onClick={() => navigateToTeam(team.teamId)}>
             <List
