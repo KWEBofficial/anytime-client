@@ -9,6 +9,8 @@ import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import AddIcon from '@mui/icons-material/Add';
 
+import { useSidebar } from '../contexts/sidebarContext';
+
 // TeamListResDTO
 interface PublicCardProps {
   id: number;
@@ -18,6 +20,7 @@ interface PublicCardProps {
 }
 
 const PublicCard = ({ id, teamname, color, explanation }: PublicCardProps) => {
+  const { refresh } = useSidebar();
   const handleAddClick = async () => {
     try {
       const response = await axios.post(
@@ -32,6 +35,7 @@ const PublicCard = ({ id, teamname, color, explanation }: PublicCardProps) => {
       );
       if (response.status === 200) {
         enqueueSnackbar('구독되었습니다.', { variant: 'success' });
+        refresh();
       }
     } catch (e) {
       enqueueSnackbar('이미 구독중입니다. ', { variant: 'error' });
