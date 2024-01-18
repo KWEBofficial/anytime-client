@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import Toolbar from '@mui/material/Toolbar';
 import ListItemText from '@mui/material/ListItemText';
@@ -125,7 +126,7 @@ export default function ClippedDrawer() {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/team/create`,
-        { teamname, color: 1, explanation, isPublic },
+        { teamname, color, explanation, isPublic },
         {
           headers: {
             'Content-Type': 'application/json',
@@ -134,7 +135,7 @@ export default function ClippedDrawer() {
         },
       );
       if (response.status === 201) {
-        openAlert({ title: '모임이 성공적으로 생성되었습니다' });
+        enqueueSnackbar('모임이 생성되었습니다.', { variant: 'success' });
       }
     } catch (e) {
       openAlert({ title: '모임 생성에 실패하였습니다..' });

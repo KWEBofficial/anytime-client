@@ -1,12 +1,12 @@
 import { useForm } from 'react-hook-form';
-import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-
-import { IModal } from '../../../types/modal';
-import ColorPick from '../../colorPick';
+import Box from '@mui/material/Box';
 import { Stack, Typography } from '@mui/material';
+
+import ColorPick from '../../colorPick';
+import { IModal } from '../../../types/modal';
 
 export interface PromptProps extends IModal {
   isPublic: boolean;
@@ -16,13 +16,13 @@ export interface PromptProps extends IModal {
 }
 
 const style = {
-  position: 'absolute' as 'absolute',
+  position: 'absolute' as const,
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  //border: '1px solid #000',
+  // border: '1px solid #000',
   boxShadow: 24,
   borderRadius: 5,
   p: 4,

@@ -6,8 +6,8 @@ import { Grid, Stack, List, ListItemText, Typography, ListItem, Divider } from '
 
 interface Schedule {
   name: string;
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   explanation: string;
 }
 interface TeamDetail {
@@ -175,10 +175,13 @@ export default function FavorTeamSche() {
                               variant="body2"
                               color="text.primary"
                             >
-                              {format(sche.startTime, 'y-M-d') === format(sche.endTime, 'y-M-d')
-                                ? `${format(sche.startTime, 'yy년 MM월 dd일 hh:mm')} ~ ${format(sche.endTime, 'hh:mm')}`
-                                : `${format(sche.startTime, 'yy년 MM월 dd일 hh:mm')} ~ ${format(
-                                    sche.endTime,
+                              {format(new Date(sche.startTime), 'y-M-d') === format(new Date(sche.endTime), 'y-M-d')
+                                ? `${format(new Date(sche.startTime), 'yy년 MM월 dd일 hh:mm')} ~ ${format(
+                                    new Date(sche.endTime),
+                                    'hh:mm',
+                                  )}`
+                                : `${format(new Date(sche.startTime), 'yy년 MM월 dd일 hh:mm')} ~ ${format(
+                                    new Date(sche.endTime),
                                     'yy년 MM월 dd일 hh:mm',
                                   )}`}
                             </Typography>

@@ -2,10 +2,10 @@ import * as React from 'react';
 import axios from 'axios';
 import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { Divider, IconButton, List, ListItem, ListItemText, Stack } from '@mui/material';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-//AlarmResDTO
+// AlarmResDTO
 interface AlarmProps {
   id: number;
   content: string;
@@ -32,7 +32,7 @@ export default function Alarm() {
   }, []);
 
   const deleteData = async (id: number) => {
-    const response = await axios.delete(`${process.env.REACT_APP_API_URL}/alarm/${id}`, {
+    await axios.delete(`${process.env.REACT_APP_API_URL}/alarm/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -54,11 +54,8 @@ export default function Alarm() {
 
   const handleDeleteClick = (index: number) => {
     setSelectedContents((prevSelected) => {
-      if (prevSelected.includes(index)) {
-        return prevSelected.filter((item) => item !== index);
-      } else {
-        return [...prevSelected, index];
-      }
+      if (prevSelected.includes(index)) return prevSelected.filter((item) => item !== index);
+      return [...prevSelected, index];
     });
   };
 

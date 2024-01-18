@@ -14,11 +14,13 @@ import {
   parse,
   isToday,
 } from 'date-fns';
+import axios from 'axios';
 import { Box, Grid, Stack } from '@mui/material';
 import ArrowCircleRightSharpIcon from '@mui/icons-material/ArrowCircleRightSharp';
 import ArrowCircleLeftSharpIcon from '@mui/icons-material/ArrowCircleLeftSharp';
-import './style.scss';
 
+import './style.scss';
+import { useModal } from '../Modal/useModal';
 import { ScheType, CalendarProps } from '../../models/calendar';
 
 interface RenderHeaderProps {
@@ -205,6 +207,7 @@ const RenderCells = ({ currentMonth, selectedDate, schedule, onDateClick, onSche
 export const Calendar = ({ onClick, height, width, schedules }: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const { openAlert, openSchedulePrompt } = useModal();
 
   const prevMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
@@ -214,6 +217,47 @@ export const Calendar = ({ onClick, height, width, schedules }: CalendarProps) =
   };
   const onDateClick = (day: Date) => {
     setSelectedDate(day);
+    scheduleModal();
+  };
+
+  async function createSchedule(
+    scheName: string,
+    explanation: string,
+    startTime: Date,
+    endTime: Date,
+    teamId?: number,
+  ) {
+    try {
+      const apiUrl = teamId
+        ? `${process.env.REACT_APP_API_URL}/schedule/create/${teamId}`
+        : `${process.env.REACT_APP_API_URL}/schedule/create`;
+
+      const response = await axios.post(
+        apiUrl,
+        { name: scheName, startTime, endTime, explanation },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        },
+      );
+      if (response.status === 200) {
+        openAlert({ title: '일정이 성공적으로 생성되었습니다' });
+      }
+    } catch (e) {
+      openAlert({ title: '일정 생성에 실패하였습니다..' });
+    }
+  }
+
+  const scheduleModal = () => {
+    openSchedulePrompt({
+      isEmpty: true,
+      onSubmit: (title, content, startTime, endTime) => {
+        if (startTime != null && endTime != null) createSchedule(title, content, startTime.toDate(), endTime.toDate());
+        else openAlert({ title: '일정 생성 실패', message: '일정의 시작과 끝을 입력해주세요' });
+      },
+    });
   };
 
   const sches = schedules
