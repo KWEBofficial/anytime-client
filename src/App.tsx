@@ -10,13 +10,15 @@ import { SidebarProvider } from './contexts/sidebarContext';
 import { CalenderProvider } from './contexts/calenderContext';
 import { ModalContextProvider } from './components/Modal/useModal';
 
+import './fonts/fonts.css';
+
 /**
  * mui에서 제공하는 테마 설정입니다.
  * 글꼴을 Pretendard로 설정했습니다.
  */
 const theme = createTheme({
   typography: {
-    fontFamily: 'Pretendard-Regular',
+    fontFamily: 'GmarketSansMedium',
   },
 });
 

@@ -8,6 +8,8 @@ import { TextField, Button, Typography, Link, Box, Grid } from '@mui/material';
 import { userState } from '../state/userState';
 import Intro from '../components/intro';
 
+import '../fonts/fonts.css';
+
 export default function LoginPage() {
   const [input, setInput] = useState({
     email: '',
@@ -59,7 +61,7 @@ export default function LoginPage() {
           <Typography variant="body2" fontWeight="bold" color="#696969">
             우리 언제 만날래
           </Typography>
-          <Typography variant="h4" fontWeight="bold" color="#696969" marginBottom="10px">
+          <Typography variant="h4" fontWeight="bold" color="#696969" marginBottom="10px" fontFamily={'GmarketSansBold'}>
             언제든지
           </Typography>
           <form onSubmit={handleLogin}>

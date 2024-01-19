@@ -29,7 +29,7 @@ import ResponsiveAppBar from './TopNavigation';
 import { useModal } from './Modal/useModal';
 // import { PromptProps } from './Modal/Prompt/Team';
 
-const drawerWidth = 180;
+const drawerWidth = 190;
 
 interface TeamInfo {
   teamId: number;
