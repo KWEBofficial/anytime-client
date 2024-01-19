@@ -28,7 +28,7 @@ import { useSidebar } from '../contexts/sidebarContext';
 import ResponsiveAppBar from './TopNavigation';
 import { useModal } from './Modal/useModal';
 
-const drawerWidth = 180;
+const drawerWidth = 190;
 
 interface TeamInfo {
   teamId: number;

@@ -10,9 +10,13 @@ import { SidebarProvider } from './contexts/sidebarContext';
 import { CalenderProvider } from './contexts/calenderContext';
 import { ModalContextProvider } from './components/Modal/useModal';
 
+import './fonts/fonts.css';
+
+import './fonts/fonts.css';
+
 const theme = createTheme({
   typography: {
-    fontFamily: 'Pretendard-Regular',
+    fontFamily: 'GmarketSansMedium',
   },
 });
 
