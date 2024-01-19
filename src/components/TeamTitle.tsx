@@ -44,7 +44,6 @@ export default function TeamTitle({ title, teamId, isAdmin, isPublic, onClick }:
         enqueueSnackbar('모임 정보가 수정되었습니다.', { variant: 'success' });
         refresh();
         refreshTitle();
-        console.log(refreshTitle);
       }
     } catch (e) {
       enqueueSnackbar('모임 정보 수정에 실패하였습니다..', { variant: 'error' });

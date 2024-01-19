@@ -34,7 +34,6 @@ export default function MyPage() {
   const navigate = useNavigate();
   const { refreshCalender } = useCalender();
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {

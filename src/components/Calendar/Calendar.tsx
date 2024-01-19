@@ -74,7 +74,6 @@ interface RenderCellsProps {
   onDateClick: (date: Date) => void;
   onScheClick: (sche: ScheType) => void;
 }
-const navigate = useNavigate();
 
 const RenderCells = ({ currentMonth, selectedDate, schedule, onDateClick, onScheClick }: RenderCellsProps) => {
   const monthStart = startOfMonth(currentMonth);
@@ -261,6 +260,8 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
       if (axios.isAxiosError<ResponseDataType>(e)) {
         if (e.response?.status === 401) {
           enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+          const navigate = useNavigate();
+
           navigate('/');
         } else {
           enqueueSnackbar(e.response?.data.message, { variant: 'error' });
