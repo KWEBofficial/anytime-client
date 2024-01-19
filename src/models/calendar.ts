@@ -22,11 +22,10 @@ export interface ScheType {
   startDate: Date;
   endDate: Date;
   explanation: string;
-  color: string; // 개인 일정의 경우 color를 빈 문자열로 설정하시면 됩니다.
+  color: string;
 }
 
 export interface CalendarProps {
-  // onClick: (sche: ScheType) => void;
   isMyPage?: boolean;
   isEditable: boolean;
   height: string;

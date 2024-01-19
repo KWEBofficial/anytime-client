@@ -220,7 +220,7 @@ const RenderCells = ({ currentMonth, selectedDate, schedule, onDateClick, onSche
 export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: CalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const { openAlert, openSchedulePrompt } = useModal();
+  const { openSchedulePrompt } = useModal();
   const params = useParams();
   const { teamId } = params;
   const { refreshCalender } = useCalender();
@@ -321,8 +321,11 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
       startDate: clickDay,
       endDate: clickDay,
       onSubmit: (title, content, startTime, endTime) => {
-        if (startTime != null && endTime != null) createSchedule(title, content, startTime.toDate(), endTime.toDate());
-        else openAlert({ title: '일정 생성 실패', message: '일정의 시작과 끝을 입력해주세요' });
+        if (startTime != null && endTime != null) {
+          if (startTime > endTime)
+            enqueueSnackbar('일정 생성 실패 : 시작 시간이 끝나는 시간보다 늦습니다', { variant: 'error' });
+          else createSchedule(title, content, startTime.toDate(), endTime.toDate());
+        } else enqueueSnackbar('일정 생성 실패 : 일정의 시작과 끝을 입력해주세요', { variant: 'error' });
       },
     });
   };
@@ -336,9 +339,11 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
       endDate: sche.endDate,
       explanation: sche.explanation,
       onSubmit: (title, content, startTime, endTime) => {
-        if (startTime != null && endTime != null)
-          editSchedule(title, content, startTime.toDate(), endTime.toDate(), sche.scheId);
-        else openAlert({ title: '일정 수정 실패', message: '일정의 시작과 끝을 입력해주세요' });
+        if (startTime != null && endTime != null) {
+          if (startTime > endTime)
+            enqueueSnackbar('일정 수정 실패 : 시작 시간이 끝나는 시간보다 늦습니다', { variant: 'error' });
+          else editSchedule(title, content, startTime.toDate(), endTime.toDate(), sche.scheId);
+        } else enqueueSnackbar('일정 수정 실패 : 일정의 시작과 끝을 입력해주세요', { variant: 'error' });
       },
       onDelete: (ondelete) => {
         if (ondelete) deleteSchedule(sche.scheId);

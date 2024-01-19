@@ -13,11 +13,10 @@ import AddIcon from '@mui/icons-material/Add';
 import { ResponseDataType } from '../models/ResponseDataType';
 import { useSidebar } from '../contexts/sidebarContext';
 
-// TeamListResDTO
 interface PublicCardProps {
   id: number;
   teamname: string;
-  color: string; // string
+  color: string;
   explanation: string;
 }
 

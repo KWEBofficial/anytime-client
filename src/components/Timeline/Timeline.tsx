@@ -187,40 +187,6 @@ export default function Timeline({ teamId }: TimelineProps) {
     valid();
   }, [start, end]); // start, end 바뀔 때마다 개인 일정 불러 온 후, valid() 실행
 
-  /*
-  const [isMouseDown, setIsMouseDown] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    setIsMouseDown(true);
-    setStartX(e.pageX - e.currentTarget.offsetLeft);
-    setScrollLeft(e.currentTarget.scrollLeft);
-  };
-
-  const handleMouseLeave = () => {
-    setIsMouseDown(false);
-  };
-
-  const handleMouseUp = () => {
-    setIsMouseDown(false);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isMouseDown) return;
-    e.preventDefault();
-    const x = e.pageX - e.currentTarget.offsetLeft;
-    const walk = (x - startX) * 2;
-    e.currentTarget.scrollLeft = scrollLeft - walk;
-  };
-
-  .scroll-container 에 추가
-    onMouseDown={handleMouseDown}
-    onMouseLeave={handleMouseLeave}
-    onMouseUp={handleMouseUp}
-    onMouseMove={handleMouseMove}
-  */
-
   async function createSchedule(scheName: string, explanation: string, startTime: Date, endTime: Date) {
     try {
       const response = await axios.post(
@@ -258,8 +224,6 @@ export default function Timeline({ teamId }: TimelineProps) {
 
   const onClick = () => {
     scheduleModal();
-    // 모달 실행하여 새로운 일정을 추가할 경우 setTeamSche 실행 후 기간 초기화 => 사적모임 메인페이지로 이동?
-    // setTeamSche((curr) => curr); // 새로운 팀 일정 추가
   };
 
   const isVisible = () => {

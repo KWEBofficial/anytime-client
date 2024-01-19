@@ -27,7 +27,6 @@ import { useSidebar } from '../contexts/sidebarContext';
 
 import ResponsiveAppBar from './TopNavigation';
 import { useModal } from './Modal/useModal';
-// import { PromptProps } from './Modal/Prompt/Team';
 
 const drawerWidth = 190;
 
@@ -85,7 +84,7 @@ export default function ClippedDrawer() {
           setPrivateIsFavor(initialPrivateIsFavor);
         }
       } catch (e) {
-        /* empty 어차피 에러가 뜨면 사이드바가 쓰이는 곳에 있는 곳에서도 에러가 발생하고 거기서 핸들링함. snackbar가 여러개 뜰 뿐 */
+        /* empty */
       }
     };
     fetchData();
@@ -97,7 +96,6 @@ export default function ClippedDrawer() {
   const privateTeamIds = myTeam.filter((team) => team.isPublic === 0).map((team) => team.teamId);
 
   const toggleFavor = async (teamId: number) => {
-    // 별 눌렀을때 patch 요청 보내기
     try {
       await axios.patch(
         `${process.env.REACT_APP_API_URL}/team/favorite/${teamId}`,
@@ -111,7 +109,6 @@ export default function ClippedDrawer() {
       );
       refresh();
     } catch (e) {
-      // 페이지 띄워놓고 로그인이 만료될 수도 있으니깐
       if (axios.isAxiosError<ResponseDataType>(e)) {
         if (e.response?.status === 401) {
           enqueueSnackbar(e.response?.data.message, { variant: 'error' });
@@ -123,7 +120,6 @@ export default function ClippedDrawer() {
     }
   };
 
-  // 별 모양 변경을 위한 함수
   const togglePrivateFavor = (index: number) => {
     const updatedIsFavor = [...privateIsFavor];
     updatedIsFavor[index] = updatedIsFavor[index] === 0 ? 1 : 0;

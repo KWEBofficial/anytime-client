@@ -9,7 +9,6 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import { ResponseDataType } from '../models/ResponseDataType';
 
-// AlarmResDTO
 interface AlarmProps {
   id: number;
   content: string;

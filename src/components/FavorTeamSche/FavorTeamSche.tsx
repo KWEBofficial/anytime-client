@@ -4,6 +4,8 @@ import { format } from 'date-fns';
 import axios from 'axios';
 import { Grid, Stack, List, ListItemText, Typography, ListItem, Divider } from '@mui/material';
 
+import { useSidebar } from '../../contexts/sidebarContext';
+
 interface Schedule {
   name: string;
   startTime: string;
@@ -27,6 +29,7 @@ interface TeamInfo {
 
 export default function FavorTeamSche() {
   const navigate = useNavigate();
+  const { refresh } = useSidebar();
 
   const [myTeam, setMyTeam] = useState<TeamInfo[]>([]);
   const [teamDetails, setTeamDetails] = useState<TeamDetail[]>([]);
@@ -54,7 +57,7 @@ export default function FavorTeamSche() {
       }
     };
     fetchData();
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     // 즐겨찾기 팀 정보

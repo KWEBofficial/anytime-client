@@ -8,6 +8,7 @@ import SchedulePrompt, { SchedulePromptProps } from './Prompt/Schedule';
 import Confirm, { ConfirmProps } from './Confirm';
 import Alert from './Alert';
 import { AlertProps } from './Alert';
+
 // IModalContext : context가 갖는 타입
 interface IModalContext {
   openAlert: OpenModal<AlertProps>;

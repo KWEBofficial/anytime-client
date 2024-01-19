@@ -113,12 +113,12 @@ export default function AdminPage() {
         setTeamInfo({
           ...teamInfo,
           members: [
-            ...teamInfo.members.slice(0, index), // 기존 members 배열에서 해당 인덱스 이전의 요소들을 그대로 복사
+            ...teamInfo.members.slice(0, index),
             {
-              ...teamInfo.members[index], // 해당 인덱스에 있는 객체를 복사
-              isAdmin: !teamInfo.members[index].isAdmin, // 또는 다른 값을 할당
+              ...teamInfo.members[index],
+              isAdmin: !teamInfo.members[index].isAdmin,
             },
-            ...teamInfo.members.slice(index + 1), // 해당 인덱스 이후의 요소들을 그대로 복사
+            ...teamInfo.members.slice(index + 1),
           ],
         });
         enqueueSnackbar('권한이 변경되었습니다', { variant: 'success' });
