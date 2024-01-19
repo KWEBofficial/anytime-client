@@ -65,8 +65,13 @@ export default function NoticePage() {
         setNotices(response.data.notices.reverse());
       } catch (e) {
         if (axios.isAxiosError<ResponseDataType>(e)) {
-          navigate(-1);
-          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+          if (e.response?.status === 401) {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate('/');
+          } else {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate(-1);
+          }
         }
       }
     };

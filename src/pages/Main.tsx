@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 
+import { ResponseDataType } from '../models/ResponseDataType';
 import { AllScheSearchDTO } from '../models/AllScheSearch';
 import { Layout } from '../components/Layout';
 import FavorTeamSche from '../components/FavorTeamSche/FavorTeamSche';
@@ -22,6 +25,7 @@ export default function MainPage() {
     mySchedules: [],
     teamSchedules: [],
   });
+  const navigate = useNavigate();
 
   const isEditable = false;
 
@@ -42,7 +46,15 @@ export default function MainPage() {
           setAllSche(response.data);
         }
       } catch (e) {
-        /* empty */
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          if (e.response?.status === 401) {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate('/');
+          } else {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate(-1);
+          }
+        }
       }
     };
     fetchData();

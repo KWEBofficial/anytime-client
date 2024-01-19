@@ -1,4 +1,6 @@
+import { useNavigate } from 'react-router-dom';
 import * as React from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -10,6 +12,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import './TeamShowBox.css';
 
+import { ResponseDataType } from '../../models/ResponseDataType';
 import { AllScheSearchDTO } from '../../models/AllScheSearch';
 
 interface Team {
@@ -24,6 +27,7 @@ interface TeamShowBoxProps {
 }
 
 export default function TeamShowBox({ teams, setState }: TeamShowBoxProps) {
+  const navigate = useNavigate();
   const handleClick = async (id: number, index: number) => {
     try {
       const response = await axios.patch(
@@ -47,7 +51,14 @@ export default function TeamShowBox({ teams, setState }: TeamShowBoxProps) {
         }));
       }
     } catch (e) {
-      /* empty */
+      if (axios.isAxiosError<ResponseDataType>(e)) {
+        if (e.response?.status === 401) {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+          navigate('/');
+        } else {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+        }
+      }
     }
   };
   const teamBox = teams.map((t, index) => {
@@ -119,3 +130,8 @@ export default function TeamShowBox({ teams, setState }: TeamShowBoxProps) {
     </Box>
   );
 }
+/*
+function navigate(arg0: string) {
+  throw new Error('Function not implemented.');
+}
+*/

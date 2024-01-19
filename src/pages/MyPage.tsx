@@ -1,9 +1,12 @@
 import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import { Grid, Typography } from '@mui/material';
 
 import { userState } from '../state/userState';
+import { ResponseDataType } from '../models/ResponseDataType';
 import { AllScheSearchDTO } from '../models/AllScheSearch';
 import { useCalender } from '../contexts/calenderContext';
 import TeamShowBox from '../components/TeamShowBox/TeamShowBox';
@@ -27,7 +30,10 @@ export default function MyPage() {
     mySchedules: [],
     teamSchedules: [],
   });
+
+  const navigate = useNavigate();
   const { refreshCalender } = useCalender();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +49,9 @@ export default function MyPage() {
           setMember(response.data.membername);
         }
       } catch (e) {
-        /* empty */
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+        }
       }
     };
     fetchData();
@@ -63,7 +71,15 @@ export default function MyPage() {
           setAllSche(response.data);
         }
       } catch (e) {
-        /* empty */
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          if (e.response?.status === 401) {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate('/');
+          } else {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate(-1);
+          }
+        }
       }
     };
     fetchData();
