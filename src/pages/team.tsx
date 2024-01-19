@@ -1,12 +1,12 @@
-// import { useRecoilValue } from 'recoil';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-// import { userState } from '../state/userState';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
 import { ScheType } from '../models/calendar';
+import { useTeamTitle } from '../contexts/teamTitleContext';
+import { useCalender } from '../contexts/calenderContext';
 import TeamTitle from '../components/TeamTitle';
 import TeamScheduleList from '../components/TeamSchduleList/TeamScheduleList';
 import TeamExp from '../components/TeamExp';
@@ -74,6 +74,9 @@ export default function TeamPage() {
     isAdmin: true,
   });
 
+  const { refreshTitle } = useTeamTitle();
+  const { refreshCalender } = useCalender();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -101,7 +104,7 @@ export default function TeamPage() {
       }
     };
     fetchData();
-  }, [teamId]);
+  }, [teamId, refreshTitle, refreshCalender]);
 
   useEffect(() => {
     setSche(

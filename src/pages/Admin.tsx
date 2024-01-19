@@ -8,6 +8,8 @@ import Button from '@mui/material/Button';
 
 import { userState } from '../state/userState';
 import { ScheType } from '../models/calendar';
+import { useTeamTitle } from '../contexts/teamTitleContext';
+import { useCalender } from '../contexts/calenderContext';
 import TeamTitle from '../components/TeamTitle';
 import TeamExp from '../components/TeamExp';
 import { Layout } from '../components/Layout';
@@ -59,6 +61,9 @@ export default function AdminPage() {
     notices: [],
     isAdmin: false,
   });
+  const { refreshTitle } = useTeamTitle();
+  const { refreshCalender } = useCalender();
+
   const handleDeleteClick = async () => {
     const fetchData = async () => {
       await axios.delete(`${process.env.REACT_APP_API_URL}/team/${teamId}`, {
@@ -137,7 +142,7 @@ export default function AdminPage() {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshTitle, refreshCalender]);
 
   useEffect(() => {
     setSche(

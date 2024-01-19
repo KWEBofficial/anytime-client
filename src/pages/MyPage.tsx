@@ -5,8 +5,8 @@ import { Grid, Typography } from '@mui/material';
 
 import { userState } from '../state/userState';
 import { AllScheSearchDTO } from '../models/AllScheSearch';
+import { useCalender } from '../contexts/calenderContext';
 import TeamShowBox from '../components/TeamShowBox/TeamShowBox';
-// import { useModal } from '../components/Modal/useModal';
 import { Layout } from '../components/Layout';
 import { Calendar } from '../components/Calendar/Calendar';
 
@@ -27,22 +27,7 @@ export default function MyPage() {
     mySchedules: [],
     teamSchedules: [],
   });
-  /*
-  const { openAlert, openSchedulePrompt } = useModal();
-  
-  const editSchedule = (Sche: ScheType) => {
-    if (Sche.teamId)
-      openSchedulePrompt({
-        isEmpty: false,
-        onSubmit: (title, content, start, end) => {
-          openAlert({
-            title: '일정이 수정되었습니다',
-            message: `${title} ${content} ${start} ${end} `,
-          });
-        },
-      });
-  };
-  */
+  const { refreshCalender } = useCalender();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,7 +67,7 @@ export default function MyPage() {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshCalender]);
 
   useEffect(() => {
     setSche(() => [

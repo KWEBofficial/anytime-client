@@ -9,6 +9,7 @@ import AppBar from '@mui/material/AppBar';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+import { useTeamTitle } from '../contexts/teamTitleContext';
 import { useSidebar } from '../contexts/sidebarContext';
 
 import { useModal } from './Modal/useModal';
@@ -25,6 +26,7 @@ export default function TeamTitle({ title, teamId, isAdmin, isPublic, onClick }:
   const { openPrompt, openConfirm } = useModal();
   const navigate = useNavigate();
   const { refresh } = useSidebar();
+  const { refreshTitle } = useTeamTitle();
 
   async function editTeamFunc(teamname: string, explanation: string, color: string) {
     try {
@@ -41,6 +43,8 @@ export default function TeamTitle({ title, teamId, isAdmin, isPublic, onClick }:
       if (response.status === 200) {
         enqueueSnackbar('모임 정보가 수정되었습니다.', { variant: 'success' });
         refresh();
+        refreshTitle();
+        console.log(refreshTitle);
       }
     } catch (e) {
       enqueueSnackbar('모임 정보 수정에 실패하였습니다..', { variant: 'error' });
