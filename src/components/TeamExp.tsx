@@ -2,8 +2,7 @@ import { Box } from '@mui/material';
 
 const style = {
   py: 1,
-  width: '100%',
-  maxWidth: 700,
+  width: 800,
   borderRadius: 2,
   border: '2px solid',
   borderColor: 'divider',

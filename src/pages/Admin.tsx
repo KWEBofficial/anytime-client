@@ -162,7 +162,7 @@ export default function AdminPage() {
 
   return (
     <Layout>
-      <Grid container>
+      <Grid container sx={{ minWidth: 1250 }}>
         <Grid item xs={8}>
           <TeamTitle
             teamId={teamId as unknown as number}
@@ -172,7 +172,7 @@ export default function AdminPage() {
             isPublic={true}
           />
           <TeamExp explanation={teamInfo.explanation} />
-          <Calendar width="700px" height="800px" schedules={sche} isEditable={true} />
+          <Calendar width="800px" height="500px" schedules={sche} isEditable={true} />
         </Grid>
         <Grid item xs={4} md={4}>
           <CustomBox title="인원명단" items={memberList} isAdmins={isAdminList} onClick={handleMemberClick} />

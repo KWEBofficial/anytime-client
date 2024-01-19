@@ -68,6 +68,7 @@ export default function TeamShowBox({ teams, setState }: TeamShowBoxProps) {
           className="scroll"
           sx={{
             width: '18vw',
+            minWidth: 275,
             overflow: 'auto',
           }}
           value="start"
@@ -97,7 +98,7 @@ export default function TeamShowBox({ teams, setState }: TeamShowBoxProps) {
         borderRadius: '10px',
         display: 'inline-flex',
         flexGrow: 1,
-        flexShrink: 1,
+        flexShrink: 0,
         flexDirection: 'column',
         flexWrap: 'wrap',
         margin: 2,
@@ -105,6 +106,7 @@ export default function TeamShowBox({ teams, setState }: TeamShowBoxProps) {
         '& > :not(style)': {
           m: 2,
           width: '20vw',
+          minWidth: 300,
         },
       }}
     >
