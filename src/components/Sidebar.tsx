@@ -179,7 +179,7 @@ export default function ClippedDrawer() {
             {['나의일정'].map((text) => (
               <ListItem key={text} disablePadding>
                 <ListItemButton onClick={() => navigate('/mypage')}>
-                  <ListItemText primary={text} />
+                  <ListItemText primary={text} sx={{ marginLeft: '32px' }} />
                 </ListItemButton>
               </ListItem>
             ))}

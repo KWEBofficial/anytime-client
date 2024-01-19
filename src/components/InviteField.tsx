@@ -68,7 +68,6 @@ export function InviteField({ teamId, setTeamInfo }: InviteFieldProps) {
           withCredentials: true,
         },
       );
-      console.log(3);
       if (response.status === 200) {
         enqueueSnackbar(`${keyword} 유저가 초대되었습니다. `, { variant: 'success' });
         if (setTeamInfo)

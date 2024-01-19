@@ -114,11 +114,11 @@ export default function TeamTitle({ title, teamId, isAdmin, isPublic, onClick }:
       onConfirm: () => exitTeamFunc(),
     });
   };
-
+  // 색, 버튼 위치 고정, 팀명이 너무 길 경우 고려,
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#fff', boxShadow: 'none' }}>
-      <Toolbar>
-        <Typography variant="h3" sx={{ color: '#696969', marginRight: '300px', marginBottom: 2 }}>
+    <AppBar position="static" sx={{ backgroundColor: '#fff', boxShadow: 'none', maxWidth: 700 }}>
+      <Toolbar style={{ padding: 0 }}>
+        <Typography variant="h3" sx={{ color: 'black', flexGrow: 1, marginBottom: 2 }}>
           {title}
         </Typography>
         {isAdmin ? (
