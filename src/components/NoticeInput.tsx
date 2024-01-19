@@ -1,7 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import { Box, Button, Checkbox, FormControlLabel, Paper, Stack } from '@mui/material';
+
+import { ResponseDataType } from '../models/ResponseDataType';
 
 import { CustomTextfield } from './CustomTextfield';
 
@@ -19,6 +22,7 @@ interface Prop {
 }
 
 export default function NoticeInput({ noticeId, type, teamId, content, startDate, endDate, isPrior }: Prop) {
+  const navigate = useNavigate();
   const [input, setInput] = useState({
     startDate,
     endDate,
@@ -63,7 +67,14 @@ export default function NoticeInput({ noticeId, type, teamId, content, startDate
         }
       }
     } catch (e) {
-      enqueueSnackbar('공지사항 생성에 실패했습니다.', { variant: 'error' });
+      if (axios.isAxiosError<ResponseDataType>(e)) {
+        if (e.response?.status === 401) {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+          navigate('/');
+        } else {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+        }
+      }
     }
   }
   async function clickUpdate() {
@@ -92,7 +103,14 @@ export default function NoticeInput({ noticeId, type, teamId, content, startDate
         }
       }
     } catch (e) {
-      enqueueSnackbar('공지사항 수정에 실패했습니다.', { variant: 'error' });
+      if (axios.isAxiosError<ResponseDataType>(e)) {
+        if (e.response?.status === 401) {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+          navigate('/');
+        } else {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+        }
+      }
     }
   }
 

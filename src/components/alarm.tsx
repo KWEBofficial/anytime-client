@@ -1,9 +1,13 @@
+import { useNavigate } from 'react-router-dom';
 import * as React from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
 import { Divider, IconButton, List, ListItem, ListItemText, Stack } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
+import { ResponseDataType } from '../models/ResponseDataType';
 
 // AlarmResDTO
 interface AlarmProps {
@@ -17,6 +21,7 @@ export default function Alarm() {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const [selectedContents, setSelectedContents] = React.useState<number[]>([]);
   const [alarmInfo, setAlarmInfo] = React.useState<AlarmProps[]>([]);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -32,12 +37,23 @@ export default function Alarm() {
   }, []);
 
   const deleteData = async (id: number) => {
-    await axios.delete(`${process.env.REACT_APP_API_URL}/alarm/${id}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      withCredentials: true,
-    });
+    try {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/alarm/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
+    } catch (e) {
+      if (axios.isAxiosError<ResponseDataType>(e)) {
+        if (e.response?.status === 401) {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+          navigate('/');
+        } else {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+        }
+      }
+    }
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

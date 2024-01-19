@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
 import { userState } from '../state/userState';
+import { ResponseDataType } from '../models/ResponseDataType';
 import { ScheType } from '../models/calendar';
 import TeamTitle from '../components/TeamTitle';
 import TeamExp from '../components/TeamExp';
@@ -61,12 +62,23 @@ export default function AdminPage() {
   });
   const handleDeleteClick = async () => {
     const fetchData = async () => {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/team/${teamId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-      });
+      try {
+        await axios.delete(`${process.env.REACT_APP_API_URL}/team/${teamId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        });
+      } catch (e) {
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          if (e.response?.status === 401) {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate('/');
+          } else {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+          }
+        }
+      }
     };
 
     if (window.confirm('정말 삭제하시겠습니까?')) {
@@ -107,7 +119,14 @@ export default function AdminPage() {
         enqueueSnackbar('권한이 변경되었습니다', { variant: 'success' });
       }
     } catch (e) {
-      /* empty */
+      if (axios.isAxiosError<ResponseDataType>(e)) {
+        if (e.response?.status === 401) {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+          navigate('/');
+        } else {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+        }
+      }
     }
   };
 
@@ -121,8 +140,8 @@ export default function AdminPage() {
           withCredentials: true,
         });
         if (!response.data.isAdmin) {
-          navigate('/main');
           enqueueSnackbar('권한이 없습니다', { variant: 'error' });
+          navigate('/main');
         }
         if (response.status === 200) {
           setTeamInfo({
@@ -137,7 +156,15 @@ export default function AdminPage() {
           });
         }
       } catch (e) {
-        /* empty */
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          if (e.response?.status === 401) {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate('/');
+          } else {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate(-1);
+          }
+        }
       }
     };
     fetchData();

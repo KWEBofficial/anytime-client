@@ -1,11 +1,11 @@
-// import { useRecoilValue } from 'recoil';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
-// import { userState } from '../state/userState';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
+import { ResponseDataType } from '../models/ResponseDataType';
 import { ScheType } from '../models/calendar';
 import TeamTitle from '../components/TeamTitle';
 import TeamScheduleList from '../components/TeamSchduleList/TeamScheduleList';
@@ -97,7 +97,15 @@ export default function TeamPage() {
           });
         }
       } catch (e) {
-        /* empty */
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          if (e.response?.status === 401) {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate('/');
+          } else {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate(-1);
+          }
+        }
       }
     };
     fetchData();

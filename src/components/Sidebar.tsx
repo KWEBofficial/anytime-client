@@ -22,6 +22,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import AddIcon from '@mui/icons-material/Add';
 
+import { ResponseDataType } from '../models/ResponseDataType';
 import { useSidebar } from '../contexts/sidebarContext';
 
 import ResponsiveAppBar from './TopNavigation';
@@ -84,7 +85,7 @@ export default function ClippedDrawer() {
           setPrivateIsFavor(initialPrivateIsFavor);
         }
       } catch (e) {
-        /* empty */
+        /* empty 어차피 에러가 뜨면 사이드바가 쓰이는 곳에 있는 곳에서도 에러가 발생하고 거기서 핸들링함. snackbar가 여러개 뜰 뿐 */
       }
     };
     fetchData();
@@ -110,7 +111,15 @@ export default function ClippedDrawer() {
       );
       refresh();
     } catch (e) {
-      /* empty */
+      // 페이지 띄워놓고 로그인이 만료될 수도 있으니깐
+      if (axios.isAxiosError<ResponseDataType>(e)) {
+        if (e.response?.status === 401) {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+          navigate('/');
+        } else {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+        }
+      }
     }
   };
 

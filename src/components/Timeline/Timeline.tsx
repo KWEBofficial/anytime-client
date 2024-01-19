@@ -1,4 +1,6 @@
+import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import { addDays, addHours, addMinutes, format, startOfDay } from 'date-fns';
 import axios from 'axios';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -8,6 +10,7 @@ import { Grid, Stack, List, Box, Divider, Button } from '@mui/material';
 import './style.scss';
 
 import { useModal } from '../Modal/useModal';
+import { ResponseDataType } from '../../models/ResponseDataType';
 
 interface Sche {
   startTime: Date;
@@ -133,6 +136,7 @@ export default function Timeline({ teamId }: TimelineProps) {
   const [end, setEnd] = useState<Date | null>(null);
   const [total, setTotal] = useState<TeamMemSche[]>([]); // 전체 인원 schedule
   const [validSche, setValidSche] = useState<Sche[]>([]); // 유효한 일정 filter
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -148,7 +152,15 @@ export default function Timeline({ teamId }: TimelineProps) {
           setTotal(response.data);
         }
       } catch (e) {
-        /* empty */
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          if (e.response?.status === 401) {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate('/');
+          } else {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate(-1);
+          }
+        }
       }
     };
     fetchData();
