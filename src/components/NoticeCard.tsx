@@ -42,7 +42,7 @@ interface DateBlockProp {
 
 function DateBlock({ date }: DateBlockProp) {
   return (
-    <CardContent sx={{ width: '80px' }}>
+    <CardContent sx={{ width: '90px' }}>
       <Typography variant="body2">
         {new Date(date).toLocaleDateString()}
         <br />
