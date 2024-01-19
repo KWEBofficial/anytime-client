@@ -172,7 +172,6 @@ export default function Timeline({ teamId }: TimelineProps) {
   };
 
   useEffect(() => {
-    setTotal((curr) => curr);
     valid();
   }, [start, end]); // start, end 바뀔 때마다 개인 일정 불러 온 후, valid() 실행
 
@@ -223,7 +222,10 @@ export default function Timeline({ teamId }: TimelineProps) {
         },
       );
       if (response.status === 200) {
-        openAlert({ title: '일정이 성공적으로 생성되었습니다' });
+        await openAlert({ title: '일정이 성공적으로 생성되었습니다' });
+        setTotal((curr) => [...curr, { memberId: null, schedules: [{ startTime, endTime }] }]);
+        setStart(startTime);
+        setEnd(endTime);
       }
     } catch (e) {
       openAlert({ title: '일정 생성에 실패하였습니다..' });
@@ -233,6 +235,8 @@ export default function Timeline({ teamId }: TimelineProps) {
   const scheduleModal = () => {
     openSchedulePrompt({
       isEmpty: true,
+      startDate: start as Date,
+      endDate: start as Date,
       onSubmit: (title, content, startTime, endTime) => {
         if (startTime != null && endTime != null) createSchedule(title, content, startTime.toDate(), endTime.toDate());
         else openAlert({ title: '일정 생성 실패', message: '일정의 시작과 끝을 입력해주세요' });
@@ -244,8 +248,6 @@ export default function Timeline({ teamId }: TimelineProps) {
     scheduleModal();
     // 모달 실행하여 새로운 일정을 추가할 경우 setTeamSche 실행 후 기간 초기화 => 사적모임 메인페이지로 이동?
     // setTeamSche((curr) => curr); // 새로운 팀 일정 추가
-    setStart(null);
-    setEnd(null);
   };
 
   const isVisible = () => {
