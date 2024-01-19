@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { enqueueSnackbar } from 'notistack';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 
 import { CustomTextfield } from '../components/CustomTextfield';
@@ -92,7 +92,12 @@ export default function RegisterPage() {
         }
       }
     } catch (e) {
-      enqueueSnackbar('회원가입에 실패했습니다.', { variant: 'error' });
+      const error = e as AxiosError;
+      if (error.response && error.response.status === 400) {
+        enqueueSnackbar('이미 존재하는 이메일입니다.', { variant: 'error' });
+      } else {
+        enqueueSnackbar('회원가입에 실패했습니다.', { variant: 'error' });
+      }
     }
   }
 
