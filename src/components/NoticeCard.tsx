@@ -1,4 +1,6 @@
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -10,6 +12,8 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+
+import { ResponseDataType } from '../models/ResponseDataType';
 
 import NoticeInput from './NoticeInput';
 
@@ -60,6 +64,7 @@ const NoticeCard = ({
 }: NoticeCardProps) => {
   const [swit, setSwit] = useState(false);
   const [modify, setModify] = useState(false);
+  const navigate = useNavigate();
 
   const handleAddClick = () => {
     setModify(() => false);
@@ -70,12 +75,23 @@ const NoticeCard = ({
   };
   const handleDeleteClick = () => {
     const fetchData = async () => {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/notice/${noticeId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-      });
+      try {
+        await axios.delete(`${process.env.REACT_APP_API_URL}/notice/${noticeId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        });
+      } catch (e) {
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          if (e.response?.status === 401) {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate('/');
+          } else {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+          }
+        }
+      }
     };
     if (window.confirm('정말 삭제하시겠습니까?')) {
       alert('삭제되었습니다.');
@@ -107,6 +123,7 @@ const NoticeCard = ({
                 WebkitLineClamp: !swit ? 3 : '',
                 overflow: 'hidden',
                 whiteSpace: 'pre-wrap',
+                wordBreak: 'break-all',
               }}
             >
               {isPrior ? '⭐️ ' : ''}

@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import {
@@ -23,6 +23,7 @@ import ArrowCircleLeftSharpIcon from '@mui/icons-material/ArrowCircleLeftSharp';
 
 import './style.scss';
 import { useModal } from '../Modal/useModal';
+import { ResponseDataType } from '../../models/ResponseDataType';
 import { ScheType, CalendarProps } from '../../models/calendar';
 import { useCalender } from '../../contexts/calenderContext';
 
@@ -203,7 +204,7 @@ const RenderCells = ({ currentMonth, selectedDate, schedule, onDateClick, onSche
       day = addDays(day, 1);
     }
     rows.push(
-      <Grid className="row" key={formattedDate} maxHeight={rowHeight}>
+      <Grid className="row" key={format(day, 'yyyy-MM-dd')} maxHeight={rowHeight}>
         {days}
       </Grid>,
     );
@@ -256,7 +257,16 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
         refreshCalender();
       }
     } catch (e) {
-      enqueueSnackbar('일정 추가에 실패하였습니다.', { variant: 'error' });
+      if (axios.isAxiosError<ResponseDataType>(e)) {
+        if (e.response?.status === 401) {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+          const navigate = useNavigate();
+
+          navigate('/');
+        } else {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+        }
+      }
     }
   }
 

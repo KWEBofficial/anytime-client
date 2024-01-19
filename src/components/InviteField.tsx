@@ -1,7 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import { Box, Button, TextField } from '@mui/material';
+
+import { ResponseDataType } from '../models/ResponseDataType';
 
 const style = {
   py: 0,
@@ -47,6 +50,7 @@ interface InviteFieldProps {
 
 export function InviteField({ teamId, setTeamInfo }: InviteFieldProps) {
   const [keyword, setKeyword] = useState('');
+  const navigate = useNavigate();
 
   const handleClick = async () => {
     try {
@@ -68,7 +72,6 @@ export function InviteField({ teamId, setTeamInfo }: InviteFieldProps) {
           withCredentials: true,
         },
       );
-      console.log(3);
       if (response.status === 200) {
         enqueueSnackbar(`${keyword} 유저가 초대되었습니다. `, { variant: 'success' });
         if (setTeamInfo)
@@ -78,7 +81,14 @@ export function InviteField({ teamId, setTeamInfo }: InviteFieldProps) {
           }));
       }
     } catch (e) {
-      enqueueSnackbar('초대에 실패했습니다.', { variant: 'error' });
+      if (axios.isAxiosError<ResponseDataType>(e)) {
+        if (e.response?.status === 401) {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+          navigate('/');
+        } else {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+        }
+      }
     }
   };
   return (

@@ -1,8 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import Pagination from '@mui/material/Pagination';
 import { Box, Button, TextField, Typography } from '@mui/material';
 
+import { ResponseDataType } from '../models/ResponseDataType';
 import PublicCard from '../components/PublicCard';
 import { Layout } from '../components/Layout';
 
@@ -19,6 +22,7 @@ export default function SearchTeamPage() {
   const [teamInfoAll, setTeamInfoAll] = useState<PublicCardProps[]>([]);
   const [teamInfoFind, setTeamInfoFind] = useState<PublicCardProps[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
 
   const InfoPerPage = 10;
   const totalPages = Math.ceil(teamInfoFind.length / InfoPerPage);
@@ -42,15 +46,27 @@ export default function SearchTeamPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/team/search/`, {
-        params: { name: keyword },
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-      });
-      setTeamInfoAll(response.data);
-      setTeamInfoFind(response.data);
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/team/search/`, {
+          params: { name: keyword },
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        });
+        setTeamInfoAll(response.data);
+        setTeamInfoFind(response.data);
+      } catch (e) {
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          if (e.response?.status === 401) {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate('/');
+          } else {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate(-1);
+          }
+        }
+      }
     };
     fetchData();
   }, []);

@@ -1,5 +1,6 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import Pagination from '@mui/material/Pagination/Pagination';
 import { Box, Grid, Card, CardContent, IconButton, Typography } from '@mui/material';
@@ -9,6 +10,10 @@ import NoticeInput from '../components/NoticeInput';
 import NoticeCard from '../components/NoticeCard';
 import { Layout } from '../components/Layout';
 
+interface ResponseDataType {
+  message: string;
+  code: number;
+}
 interface NoticeAllResDTO {
   teamname: string;
   noticeId: number;
@@ -24,6 +29,7 @@ export default function NoticePage() {
   const [isOpen, setIsOpen] = useState(false);
   const [notices, setNotices] = useState<NoticeAllResDTO[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
 
   const handleAddClick = () => {
     setIsOpen(() => !isOpen);
@@ -49,13 +55,25 @@ export default function NoticePage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/notice/all/${teamId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-      });
-      setNotices(response.data.notices.reverse());
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/notice/all/${teamId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        });
+        setNotices(response.data.notices.reverse());
+      } catch (e) {
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          if (e.response?.status === 401) {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate('/');
+          } else {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate(-1);
+          }
+        }
+      }
     };
     fetchData();
   }, []);

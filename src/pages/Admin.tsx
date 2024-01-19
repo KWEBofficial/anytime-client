@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
 import { userState } from '../state/userState';
+import { ResponseDataType } from '../models/ResponseDataType';
 import { ScheType } from '../models/calendar';
 import { useTeamTitle } from '../contexts/teamTitleContext';
 import { useCalender } from '../contexts/calenderContext';
@@ -66,12 +67,23 @@ export default function AdminPage() {
 
   const handleDeleteClick = async () => {
     const fetchData = async () => {
-      await axios.delete(`${process.env.REACT_APP_API_URL}/team/${teamId}`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        withCredentials: true,
-      });
+      try {
+        await axios.delete(`${process.env.REACT_APP_API_URL}/team/${teamId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        });
+      } catch (e) {
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          if (e.response?.status === 401) {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate('/');
+          } else {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+          }
+        }
+      }
     };
 
     if (window.confirm('정말 삭제하시겠습니까?')) {
@@ -112,7 +124,14 @@ export default function AdminPage() {
         enqueueSnackbar('권한이 변경되었습니다', { variant: 'success' });
       }
     } catch (e) {
-      /* empty */
+      if (axios.isAxiosError<ResponseDataType>(e)) {
+        if (e.response?.status === 401) {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+          navigate('/');
+        } else {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+        }
+      }
     }
   };
 
@@ -125,6 +144,10 @@ export default function AdminPage() {
           },
           withCredentials: true,
         });
+        if (!response.data.isAdmin) {
+          enqueueSnackbar('권한이 없습니다', { variant: 'error' });
+          navigate('/main');
+        }
         if (response.status === 200) {
           setTeamInfo({
             teamname: response.data.teamname,
@@ -138,7 +161,15 @@ export default function AdminPage() {
           });
         }
       } catch (e) {
-        /* empty */
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          if (e.response?.status === 401) {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate('/');
+          } else {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate(-1);
+          }
+        }
       }
     };
     fetchData();
@@ -163,7 +194,7 @@ export default function AdminPage() {
 
   return (
     <Layout>
-      <Grid container>
+      <Grid container sx={{ minWidth: 1250 }}>
         <Grid item xs={8}>
           <TeamTitle
             teamId={teamId as unknown as number}
@@ -173,7 +204,7 @@ export default function AdminPage() {
             isPublic={true}
           />
           <TeamExp explanation={teamInfo.explanation} />
-          <Calendar width="700px" height="800px" schedules={sche} isEditable={true} />
+          <Calendar width="800px" height="500px" schedules={sche} isEditable={true} />
         </Grid>
         <Grid item xs={4} md={4}>
           <CustomBox title="인원명단" items={memberList} isAdmins={isAdminList} onClick={handleMemberClick} />

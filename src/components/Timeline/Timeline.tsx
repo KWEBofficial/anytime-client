@@ -1,4 +1,6 @@
+import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import { addDays, addHours, addMinutes, format, startOfDay } from 'date-fns';
 import axios from 'axios';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -8,6 +10,7 @@ import { Grid, Stack, List, Box, Divider, Button } from '@mui/material';
 import './style.scss';
 
 import { useModal } from '../Modal/useModal';
+import { ResponseDataType } from '../../models/ResponseDataType';
 
 interface Sche {
   startTime: Date;
@@ -133,6 +136,7 @@ export default function Timeline({ teamId }: TimelineProps) {
   const [end, setEnd] = useState<Date | null>(null);
   const [total, setTotal] = useState<TeamMemSche[]>([]); // 전체 인원 schedule
   const [validSche, setValidSche] = useState<Sche[]>([]); // 유효한 일정 filter
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -148,7 +152,15 @@ export default function Timeline({ teamId }: TimelineProps) {
           setTotal(response.data);
         }
       } catch (e) {
-        /* empty */
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          if (e.response?.status === 401) {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate('/');
+          } else {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate(-1);
+          }
+        }
       }
     };
     fetchData();
@@ -172,7 +184,6 @@ export default function Timeline({ teamId }: TimelineProps) {
   };
 
   useEffect(() => {
-    setTotal((curr) => curr);
     valid();
   }, [start, end]); // start, end 바뀔 때마다 개인 일정 불러 온 후, valid() 실행
 
@@ -223,7 +234,10 @@ export default function Timeline({ teamId }: TimelineProps) {
         },
       );
       if (response.status === 200) {
-        openAlert({ title: '일정이 성공적으로 생성되었습니다' });
+        await openAlert({ title: '일정이 성공적으로 생성되었습니다' });
+        setTotal((curr) => [...curr, { memberId: null, schedules: [{ startTime, endTime }] }]);
+        setStart(startTime);
+        setEnd(endTime);
       }
     } catch (e) {
       openAlert({ title: '일정 생성에 실패하였습니다..' });
@@ -233,6 +247,8 @@ export default function Timeline({ teamId }: TimelineProps) {
   const scheduleModal = () => {
     openSchedulePrompt({
       isEmpty: true,
+      startDate: start as Date,
+      endDate: start as Date,
       onSubmit: (title, content, startTime, endTime) => {
         if (startTime != null && endTime != null) createSchedule(title, content, startTime.toDate(), endTime.toDate());
         else openAlert({ title: '일정 생성 실패', message: '일정의 시작과 끝을 입력해주세요' });
@@ -244,8 +260,6 @@ export default function Timeline({ teamId }: TimelineProps) {
     scheduleModal();
     // 모달 실행하여 새로운 일정을 추가할 경우 setTeamSche 실행 후 기간 초기화 => 사적모임 메인페이지로 이동?
     // setTeamSche((curr) => curr); // 새로운 팀 일정 추가
-    setStart(null);
-    setEnd(null);
   };
 
   const isVisible = () => {

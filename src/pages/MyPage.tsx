@@ -1,9 +1,12 @@
 import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
 import axios from 'axios';
 import { Grid, Typography } from '@mui/material';
 
 import { userState } from '../state/userState';
+import { ResponseDataType } from '../models/ResponseDataType';
 import { AllScheSearchDTO } from '../models/AllScheSearch';
 import { useCalender } from '../contexts/calenderContext';
 import TeamShowBox from '../components/TeamShowBox/TeamShowBox';
@@ -27,6 +30,8 @@ export default function MyPage() {
     mySchedules: [],
     teamSchedules: [],
   });
+
+  const navigate = useNavigate();
   const { refreshCalender } = useCalender();
 
   useEffect(() => {
@@ -43,7 +48,9 @@ export default function MyPage() {
           setMember(response.data.membername);
         }
       } catch (e) {
-        /* empty */
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+        }
       }
     };
     fetchData();
@@ -63,7 +70,15 @@ export default function MyPage() {
           setAllSche(response.data);
         }
       } catch (e) {
-        /* empty */
+        if (axios.isAxiosError<ResponseDataType>(e)) {
+          if (e.response?.status === 401) {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate('/');
+          } else {
+            enqueueSnackbar(e.response?.data.message, { variant: 'error' });
+            navigate(-1);
+          }
+        }
       }
     };
     fetchData();
@@ -98,16 +113,15 @@ export default function MyPage() {
   }, [allSche]);
   return (
     <Layout>
-      <Grid container sx={{ minWidth: '1100px' }}>
-        <Grid lg={0.5} xl={1}></Grid>
-        <Grid item xs={8} xl={7}>
-          <Typography variant="h4" sx={{ color: '#696969', marginRight: '300px', marginBottom: 2 }}>
+      <Grid container sx={{ marginTop: 2, minWidth: '1100px' }}>
+        <Grid sx={{ marginLeft: '5vw' }} item xs={8.4} xl={7}>
+          <Typography variant="h4" sx={{ color: 'black', marginBottom: 2, maxWidth: 700 }}>
             {member}님의 일정
           </Typography>
-          <Calendar width={'55vw'} height={'90vh'} schedules={sche} isEditable={true} isMyPage={true} />
+          <Calendar width={'800px'} height={'500px'} schedules={sche} isEditable={true} isMyPage={true} />
         </Grid>
 
-        <Grid item xs={3} xl={4}>
+        <Grid sx={{ marginLeft: '5vw' }} item xs={2}>
           <TeamShowBox
             teams={allSche.teamSchedules.map((team) => ({
               id: team.teamId,
@@ -117,6 +131,7 @@ export default function MyPage() {
             }))}
             setState={setAllSche}
           />
+          <Grid xs={0.5}></Grid>
         </Grid>
       </Grid>
     </Layout>
