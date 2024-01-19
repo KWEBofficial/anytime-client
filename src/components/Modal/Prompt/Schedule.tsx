@@ -13,7 +13,7 @@ import { Stack, Typography } from '@mui/material';
 import { IModal } from '../../../types/modal';
 
 export interface SchedulePromptProps extends IModal {
-  isEmpty: boolean; // 일정 생성 or 일정 확인 or 일정 확인 및 수정삭제
+  isEmpty: boolean;
   isEditable?: boolean;
   scheduleId?: number;
   name?: string;
@@ -94,7 +94,6 @@ const SchedulePrompt = ({
               sx={{ width: '100%', marginBottom: 2 }}
               label="제목"
               placeholder="어떤 일정이 있나요?"
-              // variant="standard"
             />
             <TextField
               {...register('content', { required: false })}
@@ -103,7 +102,6 @@ const SchedulePrompt = ({
               multiline
               rows={4}
               placeholder="간단 메모"
-              // variant="standard"
             />
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
