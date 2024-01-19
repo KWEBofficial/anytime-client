@@ -202,7 +202,7 @@ const RenderCells = ({ currentMonth, selectedDate, schedule, onDateClick, onSche
       day = addDays(day, 1);
     }
     rows.push(
-      <Grid className="row" key={formattedDate} maxHeight={rowHeight}>
+      <Grid className="row" key={format(day, 'yyyy-MM-dd')} maxHeight={rowHeight}>
         {days}
       </Grid>,
     );
@@ -265,7 +265,6 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
     scheduleId: number,
   ) {
     try {
-      console.log(scheduleId);
       const response = await axios.patch(
         `${process.env.REACT_APP_API_URL}/schedule/${scheduleId}`,
         { name: scheName, startTime, endTime, explanation },
