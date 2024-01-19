@@ -8,6 +8,7 @@ import { Grid, Typography } from '@mui/material';
 import { userState } from '../state/userState';
 import { ResponseDataType } from '../models/ResponseDataType';
 import { AllScheSearchDTO } from '../models/AllScheSearch';
+import { useCalender } from '../contexts/calenderContext';
 import TeamShowBox from '../components/TeamShowBox/TeamShowBox';
 import { Layout } from '../components/Layout';
 import { Calendar } from '../components/Calendar/Calendar';
@@ -29,7 +30,10 @@ export default function MyPage() {
     mySchedules: [],
     teamSchedules: [],
   });
+
   const navigate = useNavigate();
+  const { refreshCalender } = useCalender();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,7 +83,7 @@ export default function MyPage() {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshCalender]);
 
   useEffect(() => {
     setSche(() => [
@@ -111,15 +115,14 @@ export default function MyPage() {
   return (
     <Layout>
       <Grid container sx={{ marginTop: 2, minWidth: '1100px' }}>
-        <Grid lg={0.5} xl={1}></Grid>
-        <Grid item xs={8} xl={7}>
+        <Grid sx={{ marginLeft: '5vw' }} item xs={8.4} xl={7}>
           <Typography variant="h4" sx={{ color: 'black', marginBottom: 2, maxWidth: 700 }}>
             {member}님의 일정
           </Typography>
-          <Calendar width={'55vw'} height={'90vh'} schedules={sche} isEditable={true} isMyPage={true} />
+          <Calendar width={'800px'} height={'500px'} schedules={sche} isEditable={true} isMyPage={true} />
         </Grid>
 
-        <Grid item xs={3} xl={4}>
+        <Grid sx={{ marginLeft: '5vw' }} item xs={2}>
           <TeamShowBox
             teams={allSche.teamSchedules.map((team) => ({
               id: team.teamId,
@@ -129,6 +132,7 @@ export default function MyPage() {
             }))}
             setState={setAllSche}
           />
+          <Grid xs={0.5}></Grid>
         </Grid>
       </Grid>
     </Layout>

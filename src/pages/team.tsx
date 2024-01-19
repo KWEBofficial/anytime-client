@@ -7,6 +7,8 @@ import Button from '@mui/material/Button';
 
 import { ResponseDataType } from '../models/ResponseDataType';
 import { ScheType } from '../models/calendar';
+import { useTeamTitle } from '../contexts/teamTitleContext';
+import { useCalender } from '../contexts/calenderContext';
 import TeamTitle from '../components/TeamTitle';
 import TeamScheduleList from '../components/TeamSchduleList/TeamScheduleList';
 import TeamExp from '../components/TeamExp';
@@ -74,6 +76,9 @@ export default function TeamPage() {
     isAdmin: true,
   });
 
+  const { refreshTitle } = useTeamTitle();
+  const { refreshCalender } = useCalender();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -109,7 +114,7 @@ export default function TeamPage() {
       }
     };
     fetchData();
-  }, [teamId]);
+  }, [teamId, refreshTitle, refreshCalender]);
 
   useEffect(() => {
     setSche(
@@ -150,16 +155,15 @@ export default function TeamPage() {
   };
 
   // const onClick = () => {};
-  const height = '90vh';
-  const width = '55vw';
+  const height = '500px';
+  const width = '800px';
   let isEditable = true;
   if (teamInfo.isPublic) isEditable = false;
 
   return (
     <Layout>
-      <Grid container sx={{ marginTop: 2, minWidth: '1100px' }}>
-        <Grid lg={0.5} xl={1}></Grid>
-        <Grid item xs={8} xl={7}>
+      <Grid container sx={{ marginTop: 2, minWidth: '1200px' }}>
+        <Grid sx={{ marginLeft: '3vw' }} item xs={8} md={7.4} xl={7}>
           <TeamTitle
             title={teamInfo.teamname}
             teamId={teamId as unknown as number}
@@ -170,7 +174,7 @@ export default function TeamPage() {
           {teamInfo.isPublic ? <NoticeBox notices={teamInfo.notice.map((n) => n.content)} /> : null}
           <Calendar isEditable={isEditable} height={height} width={width} schedules={sches} />
         </Grid>
-        <Grid item xs={3} xl={4}>
+        <Grid sx={{ marginLeft: '8vw' }} item xs={3}>
           <InviteField teamId={teamId} setTeamInfo={setTeamInfo} />
           {teamInfo.isPublic ? (
             <CustomBox title="관리자" items={adminList} />

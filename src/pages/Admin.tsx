@@ -9,6 +9,8 @@ import Button from '@mui/material/Button';
 import { userState } from '../state/userState';
 import { ResponseDataType } from '../models/ResponseDataType';
 import { ScheType } from '../models/calendar';
+import { useTeamTitle } from '../contexts/teamTitleContext';
+import { useCalender } from '../contexts/calenderContext';
 import TeamTitle from '../components/TeamTitle';
 import TeamExp from '../components/TeamExp';
 import { Layout } from '../components/Layout';
@@ -60,6 +62,9 @@ export default function AdminPage() {
     notices: [],
     isAdmin: false,
   });
+  const { refreshTitle } = useTeamTitle();
+  const { refreshCalender } = useCalender();
+
   const handleDeleteClick = async () => {
     const fetchData = async () => {
       try {
@@ -168,7 +173,7 @@ export default function AdminPage() {
       }
     };
     fetchData();
-  }, []);
+  }, [refreshTitle, refreshCalender]);
 
   useEffect(() => {
     setSche(
@@ -189,7 +194,7 @@ export default function AdminPage() {
 
   return (
     <Layout>
-      <Grid container>
+      <Grid container sx={{ minWidth: 1250 }}>
         <Grid item xs={8}>
           <TeamTitle
             teamId={teamId as unknown as number}
@@ -199,7 +204,7 @@ export default function AdminPage() {
             isPublic={true}
           />
           <TeamExp explanation={teamInfo.explanation} />
-          <Calendar width="700px" height="800px" schedules={sche} isEditable={true} />
+          <Calendar width="800px" height="500px" schedules={sche} isEditable={true} />
         </Grid>
         <Grid item xs={4} md={4}>
           <CustomBox title="인원명단" items={memberList} isAdmins={isAdminList} onClick={handleMemberClick} />
