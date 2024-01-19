@@ -24,6 +24,7 @@ import ArrowCircleLeftSharpIcon from '@mui/icons-material/ArrowCircleLeftSharp';
 import './style.scss';
 import { useModal } from '../Modal/useModal';
 import { ScheType, CalendarProps } from '../../models/calendar';
+import { useCalender } from '../../contexts/calenderContext';
 
 interface RenderHeaderProps {
   currentMonth: Date;
@@ -221,6 +222,7 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
   const { openAlert, openSchedulePrompt } = useModal();
   const params = useParams();
   const { teamId } = params;
+  const { refreshCalender } = useCalender();
 
   const prevMonth = () => {
     setCurrentMonth(subMonths(currentMonth, 1));
@@ -230,7 +232,7 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
   };
   const onDateClick = (day: Date) => {
     setSelectedDate(day);
-    if (isEditable) createScheduleModal();
+    if (isEditable) createScheduleModal(day);
   };
 
   async function createSchedule(scheName: string, explanation: string, startTime: Date, endTime: Date) {
@@ -251,6 +253,7 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
       );
       if (response.status === 200) {
         enqueueSnackbar('일정이 추가되었습니다.', { variant: 'success' });
+        refreshCalender();
       }
     } catch (e) {
       enqueueSnackbar('일정 추가에 실패하였습니다.', { variant: 'error' });
@@ -265,7 +268,6 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
     scheduleId: number,
   ) {
     try {
-      console.log(scheduleId);
       const response = await axios.patch(
         `${process.env.REACT_APP_API_URL}/schedule/${scheduleId}`,
         { name: scheName, startTime, endTime, explanation },
@@ -278,6 +280,7 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
       );
       if (response.status === 200) {
         enqueueSnackbar('일정이 수정되었습니다.', { variant: 'success' });
+        refreshCalender();
       }
     } catch (e) {
       enqueueSnackbar('일정 수정에 실패하였습니다.', { variant: 'error' });
@@ -294,16 +297,19 @@ export const Calendar = ({ isEditable, height, width, schedules, isMyPage }: Cal
       });
       if (response.status === 200) {
         enqueueSnackbar('일정이 삭제되었습니다.', { variant: 'success' });
+        refreshCalender();
       }
     } catch (e) {
       enqueueSnackbar('일정 삭제에 실패하였습니다..', { variant: 'error' });
     }
   }
 
-  const createScheduleModal = () => {
+  const createScheduleModal = (clickDay: Date) => {
     openSchedulePrompt({
       isEmpty: true,
       isEditable,
+      startDate: clickDay,
+      endDate: clickDay,
       onSubmit: (title, content, startTime, endTime) => {
         if (startTime != null && endTime != null) createSchedule(title, content, startTime.toDate(), endTime.toDate());
         else openAlert({ title: '일정 생성 실패', message: '일정의 시작과 끝을 입력해주세요' });

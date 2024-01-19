@@ -112,8 +112,15 @@ const SchedulePrompt = ({
                 label="시작 날짜/시간"
                 value={start}
                 onChange={handleStartChange}
+                defaultValue={dayjs(startDate)}
               />
-              <DateTimePicker sx={{ width: '100%' }} label="종료 날짜/시간" value={end} onChange={handleEndChange} />
+              <DateTimePicker
+                sx={{ width: '100%' }}
+                label="종료 날짜/시간"
+                value={end}
+                onChange={handleEndChange}
+                defaultValue={dayjs(startDate)}
+              />
             </LocalizationProvider>
 
             <Stack direction="row" justifyContent="flex-end" alignItems="flex-end" spacing={2}>
