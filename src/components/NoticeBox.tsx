@@ -46,21 +46,3 @@ const NoticeBox = ({ notices }: NoticeBoxProps) => {
 };
 
 export default NoticeBox;
-
-/*  
-기존코드
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-    <List sx={style}>
-      {notices.map((notice, index) => (
-        <React.Fragment key={index}>
-          <ListItem>
-            <ListItemText primary={`notice ${index + 1}`} secondary={notice} />
-          </ListItem>
-          {index < notices.length - 1 && <Divider component="li" />}
-        </React.Fragment>
-      ))}
-    </List> 
-*/

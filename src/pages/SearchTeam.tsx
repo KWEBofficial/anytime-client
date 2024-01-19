@@ -9,11 +9,10 @@ import { ResponseDataType } from '../models/ResponseDataType';
 import PublicCard from '../components/PublicCard';
 import { Layout } from '../components/Layout';
 
-// TeamListResDTO
 interface PublicCardProps {
   id: number;
   teamname: string;
-  color: string; // string
+  color: string;
   explanation: string;
 }
 

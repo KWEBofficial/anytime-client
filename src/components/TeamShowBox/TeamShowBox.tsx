@@ -130,8 +130,3 @@ export default function TeamShowBox({ teams, setState }: TeamShowBoxProps) {
     </Box>
   );
 }
-/*
-function navigate(arg0: string) {
-  throw new Error('Function not implemented.');
-}
-*/

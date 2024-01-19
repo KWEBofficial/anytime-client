@@ -17,10 +17,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 import { userState } from '../state/userState';
 
-// import Examples from './Example';
 import Alarm from './alarm';
 
-// const pages = ['알람'];
 const settings = ['로그아웃'];
 
 function ResponsiveAppBar() {

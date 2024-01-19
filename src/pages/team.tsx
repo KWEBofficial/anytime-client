@@ -154,7 +154,6 @@ export default function TeamPage() {
     return null;
   };
 
-  // const onClick = () => {};
   const height = '500px';
   const width = '800px';
   let isEditable = true;
