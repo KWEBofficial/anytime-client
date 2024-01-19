@@ -89,16 +89,16 @@ export default function NoticePage() {
         <Grid xs={10.5}>
           <Card sx={{ height: '50px', marginBottom: 1 }}>
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch' }}>
-              <CardContent sx={{ width: '85px' }}>
+              <CardContent sx={{ width: '95px' }}>
                 <Typography variant="body2">생성 일자</Typography>
               </CardContent>
-              <CardContent sx={{ width: '85px' }}>
+              <CardContent sx={{ width: '95px' }}>
                 <Typography variant="body2">게시 일자</Typography>
               </CardContent>
               <CardContent sx={{ flex: 1, textAlign: 'center' }}>
                 <Typography variant="body2">내용</Typography>
               </CardContent>
-              <CardContent sx={{ width: '85px' }}>
+              <CardContent sx={{ width: '95px' }}>
                 <Typography variant="body2">게시 기한</Typography>
               </CardContent>
               <CardContent sx={{ justifyContent: 'flex-end', width: '50px', padding: '4px' }}>
