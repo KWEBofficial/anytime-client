@@ -43,7 +43,7 @@ const PublicCard = ({ id, teamname, color, explanation }: PublicCardProps) => {
   };
 
   return (
-    <Card sx={{ minWidth: 275, height: 'auto', marginBottom: 2, overflow: 'hidden' }}>
+    <Card sx={{ minWidth: 275, height: 'auto', marginBottom: 2, overflow: 'hidden', marginX: '50px' }}>
       <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'stretch', height: 'auto' }}>
         <Box sx={{ backgroundColor: color, width: '20px', flexShrink: 0 }} />
         <CardContent sx={{ maxWidth: '1200px', flexGrow: 1, whiteSpace: 'normal', overflowWrap: 'break-word' }}>

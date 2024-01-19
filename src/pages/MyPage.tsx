@@ -113,10 +113,10 @@ export default function MyPage() {
   }, [allSche]);
   return (
     <Layout>
-      <Grid container sx={{ minWidth: '1100px' }}>
+      <Grid container sx={{ marginTop: 2, minWidth: '1100px' }}>
         <Grid lg={0.5} xl={1}></Grid>
         <Grid item xs={8} xl={7}>
-          <Typography variant="h4" sx={{ color: '#696969', marginRight: '300px', marginBottom: 2 }}>
+          <Typography variant="h4" sx={{ color: 'black', marginBottom: 2, maxWidth: 700 }}>
             {member}님의 일정
           </Typography>
           <Calendar width={'55vw'} height={'90vh'} schedules={sche} isEditable={true} isMyPage={true} />

@@ -107,6 +107,7 @@ const NoticeCard = ({
                 WebkitLineClamp: !swit ? 3 : '',
                 overflow: 'hidden',
                 whiteSpace: 'pre-wrap',
+                wordBreak: 'break-all',
               }}
             >
               {isPrior ? '⭐️ ' : ''}

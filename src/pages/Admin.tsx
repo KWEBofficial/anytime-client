@@ -120,6 +120,10 @@ export default function AdminPage() {
           },
           withCredentials: true,
         });
+        if (!response.data.isAdmin) {
+          navigate('/main');
+          enqueueSnackbar('권한이 없습니다', { variant: 'error' });
+        }
         if (response.status === 200) {
           setTeamInfo({
             teamname: response.data.teamname,
