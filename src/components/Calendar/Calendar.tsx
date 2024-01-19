@@ -203,7 +203,7 @@ const RenderCells = ({ currentMonth, selectedDate, schedule, onDateClick, onSche
       day = addDays(day, 1);
     }
     rows.push(
-      <Grid className="row" key={formattedDate} maxHeight={rowHeight}>
+      <Grid className="row" key={format(day, 'yyyy-MM-dd')} maxHeight={rowHeight}>
         {days}
       </Grid>,
     );
